@@ -6,6 +6,16 @@ const routes = [
     path: '/admin/nha-san-xuat',
     component: () => import('../components/Admin/NhaSanXuat/index.vue'),
   },
+
+
+
+
+  //client
+  {
+    path: '/test',
+    component: () => import('../components/Client/Test/index.vue'),
+    meta : {layout : 'client'} ,
+  },
 ]
 
 const router = createRouter({
