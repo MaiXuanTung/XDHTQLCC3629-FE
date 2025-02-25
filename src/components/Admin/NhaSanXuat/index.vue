@@ -16,8 +16,8 @@
                 <th>Loại Đối Tác</th>
                 <th>Địa Chỉ</th>
                 <th>Số Điện Thoại</th>
-                <th>Ngày Tạo</th>
-                <th>Ngày Cập Nhật</th>
+                <!-- <th>Ngày Tạo</th>
+                <th>Ngày Cập Nhật</th> -->
                 <th>Tình Trạng</th>
                 <th>Action</th>
               </tr>
@@ -30,8 +30,8 @@
                   <td>{{ v.loai_doi_tac }}</td>
                   <td>{{ v.dia_chi }}</td>
                   <td>{{ v.so_dien_thoai }}</td>
-                  <td>{{ v.ngay_tao }}</td>
-                  <td>{{ v.ngay_cap_nhat }}</td>
+                  <!-- <td>{{ v.ngay_tao }}</td>
+                  <td>{{ v.ngay_cap_nhat }}</td> -->
                   <td>
                     <div v-if="v.tinh_trang == 1"
                       class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3">
