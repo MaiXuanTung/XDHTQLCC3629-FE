@@ -76,8 +76,8 @@
                     Login</button>
                 </router-link>
               </form>
-            </template>
-<template v-else>
+            </template> -->
+            <template v-if="is_check == true">
               <div class="user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -95,7 +95,7 @@
                   </li>
                 </ul>
               </div>
-            </template> -->
+            </template>
           </div>
         </div>
       </nav>
@@ -103,59 +103,59 @@
   </header>
 </template>
 <script>
-// import axios from "axios";
-// import baseRequest from '../../core/baseRequest';
-// import { createToaster } from "@meforma/vue-toaster";
-// const toaster = createToaster({ position: "top-right" });
+import axios from "axios";
+import baseRequest from '../../core/baseRequest';
+import { createToaster } from "@meforma/vue-toaster";
+const toaster = createToaster({ position: "top-right" });
 export default {
   data() {
-    // return {
-    // 	ten_hien_thi: 'Chưa đăng nhập',
-    // 	is_check: false,
-    // }
+    return {
+      ten_hien_thi: 'Chưa đăng nhập',
+      is_check: false,
+    }
   },
   mounted() {
-    // this.checkLogin();
+    this.checkLogin();
   },
   methods: {
-    // dangXuat() {
-    // 	baseRequest
-    // 		.get('account-admin/dang-xuat')
-    // 		.then((res) => {
-    // 			if (res.data.status) {
-    // 				toaster.success('Thông báo<br>' + res.data.message);
-    // 				this.$router.push('/admin/dang-nhap');
-    // 			} else {
-    // 				toaster.error('Thông báo<br>' + res.data.message);
-    // 			}
-    // 		});
-    // },
-    // dangXuatAll() {
-    // 	baseRequest
-    // 		.get('account-admin/dang-xuat-tat-ca')
-    // 		.then((res) => {
-    // 			if (res.data.status) {
-    // 				toaster.success('Thông báo<br>' + res.data.message);
-    // 				this.$router.push('/admin/dang-nhap');
-    // 			} else {
-    // 				toaster.error('Thông báo<br>' + res.data.message);
-    // 			}
-    // 		});
-    // },
-    // checkLogin() {
-    // 	axios
-    // 		.get('http://127.0.0.1:8000/api/account-admin/kiem-tra-token-client', {
-    // 			headers: {
-    // 				Authorization: 'Bearer ' + localStorage.getItem("token")
-    // 			}
-    // 		})
-    // 		.then((res) => {
-    // 			if (res.data.status) {
-    // 				this.is_check = true;
-    // 				this.ten_hien_thi = localStorage.getItem('ho_ten');
-    // 			}
-    // 		});
-    // },
+    dangXuat() {
+      baseRequest
+        .get('auth-admin/dang-xuat')
+        .then((res) => {
+          if (res.data.status) {
+            toaster.success('Thông báo<br>' + res.data.message);
+            this.$router.push('/admin/dang-nhap');
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    dangXuatAll() {
+      baseRequest
+        .get('auth-admin/dang-xuat-tat-ca')
+        .then((res) => {
+          if (res.data.status) {
+            toaster.success('Thông báo<br>' + res.data.message);
+            this.$router.push('/admin/dang-nhap');
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    checkLogin() {
+      axios
+        .get('http://127.0.0.1:8000/api/auth-admin/kiem-tra-token', {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem("token")
+          }
+        })
+        .then((res) => {
+          if (res.data.status) {
+            this.is_check = true;
+            this.ten_hien_thi = localStorage.getItem('ho_ten');
+          }
+        });
+    },
   },
 }
 </script>

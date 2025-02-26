@@ -14,7 +14,7 @@
           <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
             <div class="col mx-auto">
               <div class="mb-4 text-center">
-                <img src="../../../layout/imgae/logo-admin.png" width="180" alt="">
+                <img src="../../../layout/image/logo-admin.png" width="180" alt="">
               </div>
               <div class="card border">
                 <div class="card-body">
@@ -95,7 +95,7 @@ export default {
           localStorage.setItem('ho_ten', res.data.ho_ten);
           if (res.status === 200) {
             this.list_token = res.data.list;
-            this.$router.push('/admin/nhan-vien');
+            this.$router.push('/admin/nha-san-xuat');
           } if (res.status === 401) {
             toaster.error('Thông báo<br>' + res.message);
           }
