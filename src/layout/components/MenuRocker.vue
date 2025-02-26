@@ -34,7 +34,7 @@
           <router-link to="/admin/nha-san-xuat">
             <a href="/admin/nha-san-xuat" class="nav-link">
               <div class="parent-icon">
-                <i class="fa-solid fa-map-location-dot"></i>
+                <i class="fa-solid fa-truck-field"></i>
               </div>
               <div class="menu-title">Nhà Sản Xuất</div>
             </a>
