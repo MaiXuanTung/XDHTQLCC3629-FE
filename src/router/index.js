@@ -13,6 +13,12 @@ const routes = [
     beforeEnter: checkLogin,
   },
 
+  {
+    path: '/admin/dai-ly',
+    component: () => import('../components/Admin/DaiLy/index.vue'),
+    beforeEnter: checkLogin,
+  },
+
   //client
   {
     path: '/test',
