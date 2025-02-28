@@ -7,6 +7,11 @@ const routes = [
     component: () => import('../components/Admin/NhaSanXuat/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/admin/ql-nhan-vien',
+    component: () => import('../components/Admin/NhanVien/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {
