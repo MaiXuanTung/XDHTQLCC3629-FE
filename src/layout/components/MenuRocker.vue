@@ -41,6 +41,16 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/admin/ql-nhan-vien">
+            <a href="/admin/ql-nhan-vien" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-person-through-window"></i>
+              </div>
+              <div class="menu-title">QL Nhân Viên</div>
+           </a>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/admin/dai-ly">
             <a href="/admin/dai-ly" class="nav-link">
               <div class="parent-icon">

@@ -8,6 +8,12 @@ const routes = [
     beforeEnter: checkLogin,
   },
   {
+    path: '/admin/ql-nhan-vien',
+    component: () => import('../components/Admin/NhanVien/index.vue'),
+    beforeEnter: checkLogin,
+  },
+
+  {
     path: '/admin/dai-ly',
     component: () => import('../components/Admin/DaiLy/index.vue'),
     beforeEnter: checkLogin,
