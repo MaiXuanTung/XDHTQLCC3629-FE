@@ -7,6 +7,11 @@ const routes = [
     component: () => import('../components/Admin/NhaSanXuat/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/admin/dai-ly',
+    component: () => import('../components/Admin/DaiLy/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {
