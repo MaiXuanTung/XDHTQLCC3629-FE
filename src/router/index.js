@@ -19,6 +19,12 @@ const routes = [
     beforeEnter: checkLogin,
   },
 
+  {
+    path: '/admin/danh-muc-sp',
+    component: () => import('../components/Admin/DanhMucSP/index.vue'),
+    beforeEnter: checkLogin,
+  },
+
   //client
   {
     path: '/test',
