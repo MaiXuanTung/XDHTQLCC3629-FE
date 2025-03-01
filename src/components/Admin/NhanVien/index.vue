@@ -36,7 +36,7 @@
             <tbody>
               <template v-for="(v, k) in list_nhan_vien" :key="k">
                 <tr>
-                  <td>{{ k+1 }}</td>
+                  <td>{{ k + 1 }}</td>
                   <td>{{ v.ho_ten }}</td>
                   <td>{{ v.email }}</td>
                   <td>{{ v.id_chuc_vu }}</td>
@@ -80,9 +80,9 @@
                   <hr>
                   <form class="row g-3">
                     <div class="col-md-6">
-                      <label for="inputTenCongTy" class="form-label">Tên Nhân Viên</label>
-                      <input v-model="create_nhan_vien.ho_ten" type="text" class="form-control"
-                        id="inputTenCongTy" placeholder="Nhập Tên NV">
+                      <label for="inputTenNhanVien" class="form-label">Tên Nhân Viên</label>
+                      <input v-model="create_nhan_vien.ho_ten" type="text" class="form-control" id="inputTenNhanVien"
+                        placeholder="Nhập Tên NV">
                     </div>
                     <div class="col-md-6">
                       <label for="inputEmail" class="form-label">Email</label>
@@ -91,11 +91,11 @@
                     </div>
                     <div class="col-md-6">
                       <label for="inputPassword" class="form-label">Password</label>
-                      <input v-model="create_nhan_vien.password" type="password" class="form-control"
-                        id="inputPassword" placeholder="Nhập password">
+                      <input v-model="create_nhan_vien.password" type="password" class="form-control" id="inputPassword"
+                        placeholder="Nhập password">
                     </div>
                     <div class="col-md-6">
-                      <label for="inputSoDienThoai" class="form-label">Chức Vụ - chưa làm</label>
+                      <label for="selectChucVu" class="form-label">Chức Vụ - chưa làm</label>
                       <input v-model="create_nhan_vien.id_chuc_vu" type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
@@ -117,8 +117,6 @@
             </div>
           </div>
         </div>
-
-        
         <div class="modal fade" id="capNhatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -129,10 +127,9 @@
                   </div>
                   <hr>
                   <div class="row mb-3">
-                    <label for="inputTenCongTy" class="col-sm-3 col-form-label">Họ Và Tên</label>
+                    <label for="inputTenNhanVien" class="col-sm-3 col-form-label">Họ Và Tên</label>
                     <div class="col-sm-9">
-                      <input v-model="update_nhan_vien.ho_ten" type="text" class="form-control"
-                        id="inputTenCongTy">
+                      <input v-model="update_nhan_vien.ho_ten" type="text" class="form-control" id="inputTenNhanVien">
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -142,7 +139,7 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputSoDienThoai" class="col-sm-3 col-form-label">Chức Vụ</label>
+                    <label for="selectChucVu" class="col-sm-3 col-form-label">Chức Vụ</label>
                     <div class="col-sm-9">
                       <input v-model="update_nhan_vien.id_chuc_vu" type="text" class="form-control">
                     </div>
@@ -160,14 +157,12 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button v-on:click="updateNhanVien()" type="button" class="btn btn-primary"
-                  data-bs-dismiss="modal">Cập
+                <button v-on:click="updateNhanVien()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Cập
                   Nhật</button>
               </div>
             </div>
           </div>
         </div>
-
         <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
