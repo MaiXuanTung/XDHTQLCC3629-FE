@@ -38,10 +38,12 @@
             <tbody>
               <template v-for="(v, k) in list_nha_san_xuat">
                 <tr>
-                  <td>{{ v.id }}</td>
+                  <td>{{ k + 1 }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
-                  <td v-if="v.tinh_trang == 1">Nhà Cung Cấp</td>
+                  <td>
+                  <td v-if="v.loai_doi_tac == 1">Nhà Cung Cấp</td>
                   <td v-else>Đại Lý</td>
+                  </td>
                   <td>{{ v.dia_chi }}</td>
                   <td>{{ v.so_dien_thoai }}</td>
                   <td>{{ v.email }}</td>
@@ -92,7 +94,7 @@
                     <div class="col-md-6">
                       <label for="selectLoaiDoiTac" class="form-label">Loại Đối Tác</label>
                       <select v-model="create_nha_san_xuat.loai_doi_tac" class="form-control">
-                        <option value="1">Nhà Sản Xuất</option>
+                        <option value="1">Nhà Cung Cấp</option>
                         <option value="2">Đại Lý</option>
                       </select>
                     </div>
@@ -154,8 +156,10 @@
                   <div class="row mb-3">
                     <label for="inputLoaiDoiTac" class="col-sm-3 col-form-label">Loại Đối Tác</label>
                     <div class="col-sm-9">
-                      <input v-model="update_nha_san_xuat.loai_doi_tac" type="text" class="form-control"
-                        id="inputLoaiDoiTac">
+                      <select v-model="update_nha_san_xuat.loai_doi_tac" class="form-control">
+                        <option value="1">Nhà Cung Cấp</option>
+                        <option value="2">Đại Lý</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row mb-3">
