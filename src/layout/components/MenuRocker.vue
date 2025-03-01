@@ -31,6 +31,16 @@
         </li>
 
         <li class="nav-item">
+          <router-link to="/admin/danh-muc-sp">
+            <a href="/admin/danh-muc-sp" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div class="menu-title">Danh Mục SP</div>
+            </a>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/admin/nha-san-xuat">
             <a href="/admin/nha-san-xuat" class="nav-link">
               <div class="parent-icon">
@@ -60,6 +70,7 @@
             </a>
           </router-link>
         </li>
+        
       </ul>
     </nav>
   </div>
