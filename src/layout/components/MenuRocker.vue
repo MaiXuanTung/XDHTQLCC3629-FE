@@ -70,6 +70,16 @@
             </a>
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/admin/san-pham">
+            <a href="/admin/san-pham" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-store"></i>
+              </div>
+              <div class="menu-title">Sản Phẩm</div>
+            </a>
+          </router-link>
+        </li>
         
       </ul>
     </nav>
