@@ -266,6 +266,7 @@ export default {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataNhaSanXuat();
+            this.create_nha_san_xuat = { ten_cong_ty: ""};
           }
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);
