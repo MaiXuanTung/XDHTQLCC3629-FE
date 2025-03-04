@@ -36,9 +36,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <template v-for="(v, k) in list_san_pham">
+                            <template v-for="(v, k) in list_san_pham" :key="k">
                                 <tr>
-                                    <td>{{ v.id }}</td>
+                                    <td>{{ k + 1 }}</td>
                                     <td>{{ v.ma_san_pham }}</td>
                                     <td>{{ v.ten_san_pham }}</td>
                                     <td>{{ v.mo_ta }}</td>
@@ -144,17 +144,19 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputTenSanPham" class="col-sm-3 col-form-label">Tên Sản Phẩm</label>
+                                        <label for="inputTenSanPham" class="col-sm-3 col-form-label">Tên Sản
+                                            Phẩm</label>
                                         <div class="col-sm-9">
                                             <input v-model="create_san_pham.ten_san_pham" type="text"
-                                                class="form-control" id="inputTenSanPham" placeholder="Nhập tên sản phẩm">
+                                                class="form-control" id="inputTenSanPham"
+                                                placeholder="Nhập tên sản phẩm">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputMoTa" class="col-sm-3 col-form-label">Mô Tả</label>
                                         <div class="col-sm-9">
-                                            <input v-model="create_san_pham.mo_ta" type="text" 
-                                                class="form-control" id="inputMoTa" placeholder="Nhập mô tả">
+                                            <textarea v-model="create_san_pham.mo_ta" class="form-control"
+                                                id="inputMoTa" placeholder="Nhập mô tả" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -162,7 +164,7 @@
                                         <div class="col-9">
                                             <select v-model="create_san_pham.id_danh_muc" class="form-control">
                                                 <template v-for="(value, index) in list_danh_muc_sp" :key="index">
-                                                    <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
+                                                    <option v-bind:value="value.id">{{ value.ten_danh_muc }} </option>
                                                 </template>
                                             </select>
                                         </div>
@@ -182,7 +184,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                 <button v-on:click="themMoiSanPham()" type="button" class="btn btn-primary"
-                                    data-bs-dismiss="modal">Thêm mới</button>
+                                    data-bs-dismiss="modal">Thêm
+                                    mới</button>
                             </div>
                         </div>
                     </div>
@@ -310,10 +313,10 @@ export default {
         },
         loadDataDanhMucSp() {
             baseRequest
-                .get('admin/san-pham/lay-du-lieu-danh-muc')
+                .get('admin/danh-muc-sp/lay-du-lieu')
                 .then((res) => {
                     if (res.data.status) {
-                        this.list_danh_muc_sp = res.data.danh_muc;
+                        this.list_danh_muc_sp = res.data.ma_danh_muc;
                     } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                     }
@@ -327,6 +330,8 @@ export default {
                     if (res.data.status == true) {
                         toaster.success('Thông báo<br>' + res.data.message);
                         this.loadDataSanPham();
+                        this.create_san_pham = { ma_san_pham: "", ten_san_pham: "", mo_ta: "" };
+
                     }
                     else {
                         toaster.error(); ('Thông báo<br>' + res.data.message);
