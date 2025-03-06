@@ -23,7 +23,7 @@
       <div class="card-body">
         <div class="table-responsive" style="height: 390px;">
           <table class="table align-middle mb-0">
-            <thead class="table-light">
+            <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
               <tr>
                 <th>#</th>
                 <th>Tên Công Ty</th>

@@ -21,27 +21,35 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive" style="height: 390px;">
-                    <table class="table align-middle mb-0">
-                        <thead class="table-light">
+                <div class="table-responsive" style="height: 600px;">
+                    <table  class="table align-middle mb-0 ">
+                        <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
                             <tr>
-                                <th>#</th>
-                                <th>Mã Sản Phẩm</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Mô Tả</th>
-                                <th>Tên Danh Mục</th>
-                                <!-- <th>Transaction hash</th> -->
-                                <th>Tình Trạng</th>
-                                <th>Action</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Mã Sản Phẩm</th>
+                                <th class="text-center">Tên Sản Phẩm</th>
+                                <th class="text-center">Mô Tả</th>
+                                <th class="text-center">Hình ảnh</th>
+                                <th class="text-center">Tên Danh Mục</th>
+                                <!-- <th class="text-center">Transaction hash</th> -->
+                                <th class="text-center">Tình Trạng</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <template v-for="(v, k) in list_san_pham" :key="k">
-                                <tr>
+                                <tr class="">
                                     <td>{{ k + 1 }}</td>
                                     <td>{{ v.ma_san_pham }}</td>
                                     <td>{{ v.ten_san_pham }}</td>
-                                    <td>{{ v.mo_ta }}</td>
+                                    <td>
+                                        <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp,v)" class="fa-solid fa-circle-info ms-2" data-bs-toggle="modal"
+                                            data-bs-target="#MotaModal"></i>
+                                    </td>
+                                    <!-- <td>{{ v.mo_ta }}</td> -->
+                                    <td>
+                                        <img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80">
+                                    </td>
                                     <td>{{ v.ten_danh_muc }}</td>
                                     <!-- <td>{{ v.transaction_hash }}</td> -->
                                     <td>
@@ -72,6 +80,25 @@
                             </template>
                         </tbody>
                     </table>
+                </div>
+                <div class="modal fade" id="MotaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Mô tả sản phẩm</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ mo_ta_sp.mo_ta }}
+                                <!-- {{ mo_ta_sp.mo_ta }} -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal fade" id="themMoiModal" tabindex="-1" aria-hidden="true" style="display: none;">
                     <!-- <div class="modal-dialog modal-lg">
@@ -170,6 +197,13 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
+                                        <label for="inputHinhAnh" class="col-sm-3 col-form-label">Hình ảnh</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="create_san_pham.hinh_anh" type="text" class="form-control"
+                                                id="inputHinhAnh" placeholder="Link hình ảnh">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label">Tình Trạng</label>
                                         <div class="col-sm-9">
                                             <select v-model="create_san_pham.tinh_trang" class="form-control">
@@ -228,6 +262,13 @@
                                                     <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
                                                 </template>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputHinhAnh" class="col-sm-3 col-form-label">Hình ảnh</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="update_san_pham.hinh_anh" type="text" class="form-control"
+                                                id="inputHinhAnh" placeholder="Link hình ảnh">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -290,6 +331,7 @@ export default {
             list_danh_muc_sp: [],
             create_san_pham: {},
             id_can_xoa: '',
+            mo_ta_sp: {},
             update_san_pham: {},
             key_search: {},
         }
@@ -331,7 +373,6 @@ export default {
                         toaster.success('Thông báo<br>' + res.data.message);
                         this.loadDataSanPham();
                         this.create_san_pham = { ma_san_pham: "", ten_san_pham: "", mo_ta: "" };
-
                     }
                     else {
                         toaster.error(); ('Thông báo<br>' + res.data.message);
