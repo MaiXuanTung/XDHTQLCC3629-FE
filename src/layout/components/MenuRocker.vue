@@ -57,7 +57,7 @@
                 <i class="fa-solid fa-person-through-window"></i>
               </div>
               <div class="menu-title">QL Nhân Viên</div>
-           </a>
+            </a>
           </router-link>
         </li>
         <li class="nav-item">
@@ -80,7 +80,26 @@
             </a>
           </router-link>
         </li>
-        
+        <li class="nav-item">
+          <router-link to="/admin/nguyen-lieu">
+            <a href="/admin/nguyen-lieu" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div class="menu-title">Nguyên Liệu</div>
+            </a>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/admin/nguyen-lieu-san-pham">
+            <a href="/admin/nguyen-lieu-san-pham" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-regular fa-building"></i>
+              </div>
+              <div class="menu-title">Nguyên Liệu Sản Phẩm </div>
+            </a>
+          </router-link>
+        </li>
       </ul>
     </nav>
   </div>
