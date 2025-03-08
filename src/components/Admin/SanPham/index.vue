@@ -21,27 +21,35 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive" style="height: 390px;">
-                    <table class="table align-middle mb-0">
-                        <thead class="table-light">
+                <div class="table-responsive" style="height: 600px;">
+                    <table  class="table align-middle mb-0 ">
+                        <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
                             <tr>
-                                <th>#</th>
-                                <th>Mã Sản Phẩm</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Mô Tả</th>
-                                <th>Tên Danh Mục</th>
-                                <!-- <th>Transaction hash</th> -->
-                                <th>Tình Trạng</th>
-                                <th>Action</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Mã Sản Phẩm</th>
+                                <th class="text-center">Tên Sản Phẩm</th>
+                                <th class="text-center">Mô Tả</th>
+                                <th class="text-center">Hình ảnh</th>
+                                <th class="text-center">Tên Danh Mục</th>
+                                <!-- <th class="text-center">Transaction hash</th> -->
+                                <th class="text-center">Tình Trạng</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <template v-for="(v, k) in list_san_pham">
-                                <tr>
-                                    <td>{{ v.id }}</td>
+                            <template v-for="(v, k) in list_san_pham" :key="k">
+                                <tr class="">
+                                    <td>{{ k + 1 }}</td>
                                     <td>{{ v.ma_san_pham }}</td>
                                     <td>{{ v.ten_san_pham }}</td>
-                                    <td>{{ v.mo_ta }}</td>
+                                    <td>
+                                        <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp,v)" class="fa-solid fa-circle-info ms-2" data-bs-toggle="modal"
+                                            data-bs-target="#MotaModal"></i>
+                                    </td>
+                                    <!-- <td>{{ v.mo_ta }}</td> -->
+                                    <td>
+                                        <img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80">
+                                    </td>
                                     <td>{{ v.ten_danh_muc }}</td>
                                     <!-- <td>{{ v.transaction_hash }}</td> -->
                                     <td>
@@ -72,6 +80,25 @@
                             </template>
                         </tbody>
                     </table>
+                </div>
+                <div class="modal fade" id="MotaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Mô tả sản phẩm</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ mo_ta_sp.mo_ta }}
+                                <!-- {{ mo_ta_sp.mo_ta }} -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal fade" id="themMoiModal" tabindex="-1" aria-hidden="true" style="display: none;">
                     <!-- <div class="modal-dialog modal-lg">
@@ -144,17 +171,19 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputTenSanPham" class="col-sm-3 col-form-label">Tên Sản Phẩm</label>
+                                        <label for="inputTenSanPham" class="col-sm-3 col-form-label">Tên Sản
+                                            Phẩm</label>
                                         <div class="col-sm-9">
                                             <input v-model="create_san_pham.ten_san_pham" type="text"
-                                                class="form-control" id="inputTenSanPham" placeholder="Nhập tên sản phẩm">
+                                                class="form-control" id="inputTenSanPham"
+                                                placeholder="Nhập tên sản phẩm">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label for="inputMoTa" class="col-sm-3 col-form-label">Mô Tả</label>
                                         <div class="col-sm-9">
-                                            <input v-model="create_san_pham.mo_ta" type="text" 
-                                                class="form-control" id="inputMoTa" placeholder="Nhập mô tả">
+                                            <textarea v-model="create_san_pham.mo_ta" class="form-control"
+                                                id="inputMoTa" placeholder="Nhập mô tả" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -162,9 +191,16 @@
                                         <div class="col-9">
                                             <select v-model="create_san_pham.id_danh_muc" class="form-control">
                                                 <template v-for="(value, index) in list_danh_muc_sp" :key="index">
-                                                    <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
+                                                    <option v-bind:value="value.id">{{ value.ten_danh_muc }} </option>
                                                 </template>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputHinhAnh" class="col-sm-3 col-form-label">Hình ảnh</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="create_san_pham.hinh_anh" type="text" class="form-control"
+                                                id="inputHinhAnh" placeholder="Link hình ảnh">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -182,7 +218,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                 <button v-on:click="themMoiSanPham()" type="button" class="btn btn-primary"
-                                    data-bs-dismiss="modal">Thêm mới</button>
+                                    data-bs-dismiss="modal">Thêm
+                                    mới</button>
                             </div>
                         </div>
                     </div>
@@ -225,6 +262,13 @@
                                                     <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
                                                 </template>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputHinhAnh" class="col-sm-3 col-form-label">Hình ảnh</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="update_san_pham.hinh_anh" type="text" class="form-control"
+                                                id="inputHinhAnh" placeholder="Link hình ảnh">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -287,6 +331,7 @@ export default {
             list_danh_muc_sp: [],
             create_san_pham: {},
             id_can_xoa: '',
+            mo_ta_sp: {},
             update_san_pham: {},
             key_search: {},
         }
@@ -310,10 +355,10 @@ export default {
         },
         loadDataDanhMucSp() {
             baseRequest
-                .get('admin/san-pham/lay-du-lieu-danh-muc')
+                .get('admin/danh-muc-sp/lay-du-lieu')
                 .then((res) => {
                     if (res.data.status) {
-                        this.list_danh_muc_sp = res.data.danh_muc;
+                        this.list_danh_muc_sp = res.data.ma_danh_muc;
                     } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                     }
@@ -327,6 +372,7 @@ export default {
                     if (res.data.status == true) {
                         toaster.success('Thông báo<br>' + res.data.message);
                         this.loadDataSanPham();
+                        this.create_san_pham = { ma_san_pham: "", ten_san_pham: "", mo_ta: "" };
                     }
                     else {
                         toaster.error(); ('Thông báo<br>' + res.data.message);

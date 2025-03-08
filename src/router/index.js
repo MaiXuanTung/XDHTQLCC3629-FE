@@ -41,6 +41,11 @@ const routes = [
     component: () => import('../components/Admin/NguyenLieuSanPham/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/admin/phuong-tien',
+    component: () => import('../components/Admin/PhuongTien/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {

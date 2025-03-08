@@ -74,7 +74,7 @@
           <router-link to="/admin/san-pham">
             <a href="/admin/san-pham" class="nav-link">
               <div class="parent-icon">
-                <i class="fa-solid fa-store"></i>
+                <i class="fa-solid fa-cart-shopping"></i>
               </div>
               <div class="menu-title">Sản Phẩm</div>
             </a>
@@ -97,6 +97,16 @@
                 <i class="fa-regular fa-building"></i>
               </div>
               <div class="menu-title">Nguyên Liệu Sản Phẩm </div>
+              </a>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/admin/phuong-tien">
+            <a href="/admin/phuong-tien" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-truck-plane"></i>
+              </div>
+              <div class="menu-title">Phương Tiện</div>
             </a>
           </router-link>
         </li>

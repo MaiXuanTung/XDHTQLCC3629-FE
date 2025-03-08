@@ -23,7 +23,7 @@
       <div class="card-body">
         <div class="table-responsive" style="height: 390px;">
           <table class="table align-middle mb-0">
-            <thead class="table-light">
+            <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
               <tr>
                 <th>#</th>
                 <th>Tên Công Ty</th>
@@ -36,16 +36,14 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for="(v, k) in list_dai_ly">
+              <template v-for="(v, k) in list_dai_ly" :key="k">
                 <tr>
-                  <td>{{ v.id }}</td>
+                  <td>{{ k+1 }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
                   <td>{{ v.email }}</td>
                   <td>{{ v.mat_khau }}</td>
                   <td>{{ v.dia_chi }}</td>
                   <td>{{ v.so_dien_thoai }}</td>
-                  <!-- <td v-if="v.tinh_trang == 1">Nhà Cung Cấp</td>
-                    <td v-else>Đại Lý</td> -->
                   <td>
                     <div>
                       <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
@@ -81,7 +79,7 @@
                   <div class="card-title d-flex align-items-center">
                     <div><i class="bx bxs-user me-1 font-22 text-primary"></i>
                     </div>
-                    <h5 class="mb-0 text-primary">Thêm Mới Đại LýLý</h5>
+                    <h5 class="mb-0 text-primary">Thêm Mới Đại Lý</h5>
                   </div>
                   <hr>
                   <form class="row g-3">
@@ -253,6 +251,7 @@ export default {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataDaiLy();
+            this.create_dai_ly = { ten_cong_ty: "", email: "", mat_khau: "", dia_chi: "", so_dien_thoai: "", tinh_trang: "" };
           }
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);
