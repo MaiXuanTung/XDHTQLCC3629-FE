@@ -32,6 +32,16 @@ const routes = [
   },
 
   {
+    path: '/admin/nguyen-lieu',
+    component: () => import('../components/Admin/NguyenLieu/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  {
+    path: '/admin/nguyen-lieu-san-pham',
+    component: () => import('../components/Admin/NguyenLieuSanPham/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  {
     path: '/admin/phuong-tien',
     component: () => import('../components/Admin/PhuongTien/index.vue'),
     beforeEnter: checkLogin,
