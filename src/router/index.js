@@ -46,6 +46,16 @@ const routes = [
     component: () => import('../components/Admin/PhuongTien/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/admin/chi-tiet-san-pham',
+    component: () => import('../components/Admin/ChiTietSanPham/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  {
+    path: '/admin/san-pham-nsx',
+    component: () => import('../components/Admin/SanPhamNSX/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {
@@ -73,3 +83,4 @@ const router = createRouter({
 })
 
 export default router
+
