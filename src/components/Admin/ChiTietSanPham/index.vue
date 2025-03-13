@@ -4,7 +4,7 @@
             <div style="max-height: 110px;" class="card-header">
                 <div class="row mb-2">
                     <div class="col-sm-6 text-start">
-                        <h4 class="text-dark">Danh Sách Sản Phẩm</h4>
+                        <h4 class="text-dark">Danh Sách Chi Tiết Sản Phẩm</h4>
                     </div>
                     <div class="col-sm-6 text-end">
                         <button type="button" class="btn btn-sm btn-outline-primary px-5" data-bs-toggle="modal"
@@ -26,32 +26,29 @@
                         <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
                             <tr>
                                 <th>#</th>
-                                <th>Mã Sản Phẩm</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Mô Tả</th>
-                                <th>Hình ảnh</th>
-                                <th>Tên Danh Mục</th>
-                                <!-- <th>Transaction hash</th> -->
+                                <th>Mã Đơn Hàng</th>
+                                <th>Sản Phẩm</th>
+                                <th>Ghi Chú</th>
+                                <th>Đơn Giá</th>
+                                <th>Số Lượng</th>
+                                <th>Đơn Vị Tính</th>
                                 <th>Tình Trạng</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <template v-for="(v, k) in list_san_pham" :key="k">
+                            <template v-for="(v, k) in list_chi_tiet" :key="k">
                                 <tr class="">
                                     <td>{{ k + 1 }}</td>
-                                    <td>{{ v.ma_san_pham }}</td>
+                                    <td>{{ v.ma_don_hang }}</td>
                                     <td>{{ v.ten_san_pham }}</td>
                                     <td>
-                                        <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp,v)" class="fa-solid fa-circle-info ms-2" data-bs-toggle="modal"
+                                        <i style="font-size: 25px;" v-on:click="Object.assign(ghi_chu_sp,v)" class="fa-solid fa-circle-info ms-2" data-bs-toggle="modal"
                                             data-bs-target="#MotaModal"></i>
                                     </td>
-                                    <!-- <td>{{ v.mo_ta }}</td> -->
-                                    <td>
-                                        <img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80">
-                                    </td>
-                                    <td>{{ v.ten_danh_muc }}</td>
-                                    <!-- <td>{{ v.transaction_hash }}</td> -->
+                                    <td>{{ v.don_gia }}</td>
+                                    <td>{{ v.so_luong }}</td>
+                                    <td>{{ v.don_vi_tinh }}</td>
                                     <td>
                                         <div>
                                             <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
@@ -65,7 +62,7 @@
                                     <td>
                                         <div class="d-flex order-actions">
                                             <div class="d-flex order-actions">
-                                                <a v-on:click="Object.assign(update_san_pham, v)" type="button"
+                                                <a v-on:click="Object.assign(update_chi_tiet, v)" type="button"
                                                     title="Cập Nhật" data-bs-toggle="modal"
                                                     data-bs-target="#capNhatModal" class="ms-2 bg-light-info"><i
                                                         class="fa-solid fa-arrows-rotate text-info"></i></a>
@@ -91,8 +88,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {{ mo_ta_sp.mo_ta }}
-                                <!-- {{ mo_ta_sp.mo_ta }} -->
+                                {{ ghi_chu_sp.ghi_chu }}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -106,53 +102,58 @@
                             <div class="card-body">
                                 <div class="border p-4 rounded">
                                     <div class="card-title d-flex align-items-center">
-                                        <h4 class="mb-0 text-info">Thêm Mới Sản Phẩm</h4>
+                                        <h4 class="mb-0 text-info">Thêm Mới Chi Tiết</h4>
                                     </div>
                                     <hr>
                                     <div class="row mb-3">
-                                        <label for="inputMaSanPham" class="col-sm-3 form-label">Mã Sản Phẩm</label>
+                                        <label for="inputMaDonHang" class="col-sm-3 col-form-label">Mã Đơn Hàng</label>
                                         <div class="col-sm-9">
-                                            <input v-model="create_san_pham.ma_san_pham" type="text"
-                                                class="form-control" id="inputMaSanPham" placeholder="Nhập mã sản phẩm">
+                                            <input v-model="create_chi_tiet.ma_don_hang" type="text"
+                                                class="form-control" id="inputMaDonHang">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputTenSanPham" class="col-sm-3 col-form-label">Tên Sản
-                                            Phẩm</label>
-                                        <div class="col-sm-9">
-                                            <input v-model="create_san_pham.ten_san_pham" type="text"
-                                                class="form-control" id="inputTenSanPham"
-                                                placeholder="Nhập tên sản phẩm">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputMoTa" class="col-sm-3 col-form-label">Mô Tả</label>
-                                        <div class="col-sm-9">
-                                            <textarea v-model="create_san_pham.mo_ta" class="form-control"
-                                                id="inputMoTa" placeholder="Nhập mô tả" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputTenDanhMuc" class="col-sm-3 form-label">Tên Danh Mục</label>
+                                        <label for="inputMaSanPham" class="col-sm-3 form-label">Sản Phẩm</label>
                                         <div class="col-9">
-                                            <select v-model="create_san_pham.id_danh_muc" class="form-control">
-                                                <template v-for="(value, index) in list_danh_muc_sp" :key="index">
-                                                    <option v-bind:value="value.id">{{ value.ten_danh_muc }} </option>
+                                            <select v-model="create_chi_tiet.ma_san_pham" class="form-control">
+                                                <template v-for="(value, index) in list_san_pham" :key="index">
+                                                    <option v-bind:value="value.id">{{ value.ten_san_pham }} </option>
                                                 </template>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputHinhAnh" class="col-sm-3 col-form-label">Hình ảnh</label>
+                                        <label for="inputGhiChu" class="col-sm-3 col-form-label">Ghi Chú</label>
                                         <div class="col-sm-9">
-                                            <input v-model="create_san_pham.hinh_anh" type="text" class="form-control"
-                                                id="inputHinhAnh" placeholder="Link hình ảnh">
+                                            <input v-model="create_chi_tiet.ghi_chu" type="text"
+                                                class="form-control" id="inputGhiChu">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputDonGia" class="col-sm-3 col-form-label">Đơn Giá</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="create_chi_tiet.don_gia" class="form-control"
+                                                id="inputDonGia">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputSoLuong" class="col-sm-3 col-form-label">Số Lượng</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="create_chi_tiet.so_luong" type="text" class="form-control"
+                                                id="inputSoLuong">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputDVT" class="col-sm-3 col-form-label">Đơn Vị Tính</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="create_chi_tiet.don_vi_tinh" type="text" class="form-control"
+                                                id="inputDVT">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label">Tình Trạng</label>
                                         <div class="col-sm-9">
-                                            <select v-model="create_san_pham.tinh_trang" class="form-control">
+                                            <select v-model="create_chi_tiet.tinh_trang" class="form-control">
                                                 <option value="1">Hoạt Động</option>
                                                 <option value="0">Tạm Dừng</option>
                                             </select>
@@ -163,7 +164,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button v-on:click="themMoiSanPham()" type="button" class="btn btn-primary"
+                                <button v-on:click="themMoiChiTiet()" type="button" class="btn btn-primary"
                                     data-bs-dismiss="modal">Thêm
                                     mới</button>
                             </div>
@@ -177,50 +178,57 @@
                             <div class="card-body">
                                 <div class="border p-4 rounded">
                                     <div class="card-title d-flex align-items-center">
-                                        <h4 class="mb-0 text-info">Cập Nhật Thông Tin Sản Phẩm</h4>
+                                        <h4 class="mb-0 text-info">Cập Nhật Thông Tin</h4>
                                     </div>
                                     <hr>
                                     <div class="row mb-3">
-                                        <label for="inputMaSanPham" class="col-sm-3 col-form-label">Mã Sản Phẩm</label>
+                                        <label for="inputMaDonHang" class="col-sm-3 col-form-label">Mã Đơn Hàng</label>
                                         <div class="col-sm-9">
-                                            <input v-model="update_san_pham.ma_san_pham" type="text"
-                                                class="form-control" id="inputMaSanPham">
+                                            <input v-model="update_chi_tiet.ma_don_hang" type="text"
+                                                class="form-control" id="inputMaDonHang">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputTenSanPham" class="col-sm-3 col-form-label">Email</label>
-                                        <div class="col-sm-9">
-                                            <input v-model="update_san_pham.ten_san_pham" type="text"
-                                                class="form-control" id="inputTenSanPham">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputMoTa" class="col-sm-3 col-form-label">Mô Tả</label>
-                                        <div class="col-sm-9">
-                                            <input v-model="update_san_pham.mo_ta" class="form-control" id="inputMoTa">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label for="inputTenDanhMuc" class="col-sm-3 col-form-label">Địa Chỉ</label>
+                                        <label for="inputMaSanPham" class="col-sm-3 form-label">Mã Sản Phẩm</label>
                                         <div class="col-9">
-                                            <select v-model="update_san_pham.id_danh_muc" class="form-control">
-                                                <template v-for="(value, index) in list_danh_muc_sp" :key="index">
-                                                    <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
+                                            <select v-model="update_chi_tiet.ma_san_pham" class="form-control">
+                                                <template v-for="(value, index) in list_san_pham" :key="index">
+                                                    <option v-bind:value="value.id">{{ value.ten_san_pham }} </option>
                                                 </template>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="inputHinhAnh" class="col-sm-3 col-form-label">Hình ảnh</label>
+                                        <label for="inputGhiChu" class="col-sm-3 col-form-label">Ghi Chú</label>
                                         <div class="col-sm-9">
-                                            <input v-model="update_san_pham.hinh_anh" type="text" class="form-control"
-                                                id="inputHinhAnh" placeholder="Link hình ảnh">
+                                            <input v-model="update_chi_tiet.ghi_chu" class="form-control" id="inputGhiChu">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputDonGia" class="col-sm-3 col-form-label">Đơn Giá</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="update_chi_tiet.don_gia" type="text" class="form-control"
+                                                id="inputDonGia">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputSoLuong" class="col-sm-3 col-form-label">Số Lượng</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="update_chi_tiet.so_luong" type="text" class="form-control"
+                                                id="inputSoLuong">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputDVT" class="col-sm-3 col-form-label">Đơn Vị Tính</label>
+                                        <div class="col-sm-9">
+                                            <input v-model="update_chi_tiet.don_vi_tinh" type="text" class="form-control"
+                                                id="inputDVT">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label">Tình Trạng</label>
                                         <div class="col-sm-9">
-                                            <select v-model="update_san_pham.tinh_trang" class="form-control">
+                                            <select v-model="update_chi_tiet.tinh_trang" class="form-control">
                                                 <option value="1">Hoạt Động</option>
                                                 <option value="0">Tạm Dừng</option>
                                             </select>
@@ -231,7 +239,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button v-on:click="updateSanPham()" type="button" class="btn btn-primary"
+                                <button v-on:click="updateChiTiet()" type="button" class="btn btn-primary"
                                     data-bs-dismiss="modal">Cập
                                     Nhật</button>
                             </div>
@@ -250,12 +258,12 @@
                                         </div>
                                         <div class="ms-3">
                                             <h6 class="mb-0 text-danger">Thông Báo</h6>
-                                            <div>Bạn chắc chắn muốn xóa sản phẩm này?</div>
+                                            <div>Bạn chắc chắn muốn xóa mục này?</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button v-on:click="deleteSanPham()" data-bs-dismiss="modal"
+                            <button v-on:click="deleteChiTiet()" data-bs-dismiss="modal"
                                 class="btn btn-border bg-light-danger align-middle">
                                 <h5 class="text-danger mt-1">Xác Nhận</h5>
                             </button>
@@ -273,21 +281,32 @@ const toaster = createToaster({ position: "top-right" });
 export default {
     data() {
         return {
+            list_chi_tiet: [],
             list_san_pham: [],
-            list_danh_muc_sp: [],
-            create_san_pham: {},
+            create_chi_tiet: {},
             id_can_xoa: '',
-            mo_ta_sp: {},
-            update_san_pham: {},
+            ghi_chu_sp: {},
+            update_chi_tiet: {},
             key_search: {},
         }
     },
     mounted() {
+        this.loadDataChiTiet();
         this.loadDataSanPham();
-        this.loadDataDanhMucSp();
     },
     methods:
     {
+        loadDataChiTiet() {
+            baseRequest
+                .get('admin/chi-tiet-san-pham/lay-du-lieu')
+                .then((res) => {
+                    if (res.data.status) {
+                        this.list_chi_tiet = res.data.chi_tiet_san_pham;
+                    } else {
+                        toaster.error('Thông báo<br>' + res.data.message);
+                    }
+                });
+        },
         loadDataSanPham() {
             baseRequest
                 .get('admin/san-pham/lay-du-lieu')
@@ -299,26 +318,15 @@ export default {
                     }
                 });
         },
-        loadDataDanhMucSp() {
-            baseRequest
-                .get('admin/danh-muc-sp/lay-du-lieu')
-                .then((res) => {
-                    if (res.data.status) {
-                        this.list_danh_muc_sp = res.data.ma_danh_muc;
-                    } else {
-                        toaster.error('Thông báo<br>' + res.data.message);
-                    }
-                });
-        },
 
-        themMoiSanPham() {
+        themMoiChiTiet() {
             baseRequest
-                .post('admin/san-pham/them-moi-san-pham', this.create_san_pham)
+                .post('admin/chi-tiet-san-pham/them-moi-chi-tiet-san-pham', this.create_chi_tiet)
                 .then((res) => {
                     if (res.data.status == true) {
                         toaster.success('Thông báo<br>' + res.data.message);
-                        this.loadDataSanPham();
-                        this.create_san_pham = { ma_san_pham: "", ten_san_pham: "", mo_ta: "" };
+                        this.loadDataChiTiet();
+                        this.create_chi_tiet = { ma_don_hang: "", ma_san_pham: "", ghi_chu: "" };
                     }
                     else {
                         toaster.error(); ('Thông báo<br>' + res.data.message);
@@ -326,25 +334,25 @@ export default {
                 });
         },
 
-        searchSanPham() {
+        searchChiTiet() {
             baseRequest
-                .post('admin/san-pham/tim-san-pham', this.key_search)
+                .post('admin/chi-tiet-san-pham/tim-chi-tiet-san-pham', this.key_search)
                 .then((res) => {
                     if (res.data.status) {
-                        this.list_san_pham = res.data.san_pham;
+                        this.list_chi_tiet = res.data.chi_tiet_san_pham;
                     } else {
                         toaster.error('Thông báo<br>' + res.data.message);
                     }
                 });
         },
 
-        deleteSanPham() {
+        deleteChiTiet() {
             baseRequest
-                .delete('admin/san-pham/xoa-san-pham/' + this.id_can_xoa)
+                .delete('admin/chi-tiet-san-pham/xoa-chi-tiet-san-pham/' + this.id_can_xoa)
                 .then((res) => {
                     if (res.data.status == true) {
                         toaster.success('Thông báo<br>' + res.data.message);
-                        this.loadDataSanPham();
+                        this.loadDataChiTiet();
                     }
                     else {
                         toaster.error('Thông báo<br>' + res.data.message);
@@ -352,13 +360,13 @@ export default {
                 });
         },
 
-        updateSanPham() {
+        updateChiTiet() {
             baseRequest
-                .post('admin/san-pham/cap-nhat-san-pham', this.update_san_pham)
+                .post('admin/chi-tiet-san-pham/cap-nhat-chi-tiet-san-pham', this.update_chi_tiet)
                 .then((res) => {
                     if (res.data.status == true) {
                         toaster.success('Thông báo<br>' + res.data.message);
-                        this.loadDataSanPham();
+                        this.loadDataChiTiet();
                     }
                     else {
                         toaster.error('Thông báo<br>' + res.data.message);
@@ -368,11 +376,11 @@ export default {
 
         doiTinhTrang(v) {
             baseRequest
-                .post('admin/san-pham/doi-tinh-trang-san-pham', v)
+                .post('admin/chi-tiet-san-pham/doi-tinh-trang-chi-tiet-san-pham', v)
                 .then((res) => {
                     if (res.data.status == true) {
                         toaster.success('Thông báo<br>' + res.data.message);
-                        this.loadDataSanPham();
+                        this.loadDataChiTiet();
                     }
                     else {
                         toaster.error('Thông báo<br>' + res.data.message);

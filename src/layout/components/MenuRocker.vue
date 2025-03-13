@@ -18,14 +18,12 @@
           <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
             <div class="parent-icon"><i class='bx bx-home-circle'></i>
             </div>
-            <div class="menu-title">Drop Down</div>
+            <div class="menu-title">Home</div>
           </a>
           <ul class="dropdown-menu">
-            <li> <a class="dropdown-item" href="index.html"><i class="bx bx-right-arrow-alt"></i>Default</a>
+            <li> <a class="dropdown-item" href="/admin/chi-tiet-san-pham"><i class="bx bx-right-arrow-alt"></i>Chi Tiết Sản Phẩm</a>
             </li>
-            <li> <a class="dropdown-item" href="index2.html"><i class="bx bx-right-arrow-alt"></i>Alternate</a>
-            </li>
-            <li> <a class="dropdown-item" href="index3.html"><i class="bx bx-right-arrow-alt"></i>Graphical</a>
+            <li> <a class="dropdown-item" href="/admin/san-pham-nsx"><i class="bx bx-right-arrow-alt"></i>Sản Phẩm NSX</a>
             </li>
           </ul>
         </li>
@@ -110,6 +108,26 @@
             </a>
           </router-link>
         </li>
+        <!-- <li class="nav-item">
+          <router-link to="/admin/chi-tiet-san-pham">
+            <a href="/admin/chi-tiet-san-pham" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-truck-plane"></i>
+              </div>
+              <div class="menu-title">CT Sản Phẩm</div>
+            </a>
+          </router-link>
+        </li> -->
+        <!-- <li class="nav-item">
+          <router-link to="/admin/san-pham-nsx">
+            <a href="/admin/san-pham-nsx" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-truck-plane"></i>
+              </div>
+              <div class="menu-title">Sản Phẩm NSX</div>
+            </a>
+          </router-link>
+        </li> -->
       </ul>
     </nav>
   </div>
