@@ -8,7 +8,7 @@ const routes = [
     beforeEnter: checkLogin,
   },
   {
-    path: '/admin/ql-nhan-vien',
+    path: '/admin/nhan-vien',
     component: () => import('../components/Admin/NhanVien/index.vue'),
     beforeEnter: checkLogin,
   },
@@ -83,4 +83,3 @@ const router = createRouter({
 })
 
 export default router
-

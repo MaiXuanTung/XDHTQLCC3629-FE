@@ -2,7 +2,16 @@
   <div class="wrapper">
     <div class="header-wrapper">
       <TopRocker></TopRocker>
-      <MenuRocker></MenuRocker>
+      <template v-if="is_nguoi_dung == 0">
+        <MenuRocker></MenuRocker>
+      </template>
+      <template v-else-if="is_nguoi_dung == 1">
+        <MenuNSX></MenuNSX>
+      </template>
+      <template v-else-if="is_nguoi_dung == 2">
+        <MenuDaiLy></MenuDaiLy>
+      </template>
+
     </div>
     <div class="page-wrapper">
       <div class="page-content">
@@ -29,11 +38,35 @@ import "../../assets/plugins/metismenu/js/metisMenu.min.js";
 import "../../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js";
 import "../../assets/js/index.js";
 import "../../assets/js/app.js";
+import axios from "axios";
+import MenuDaiLy from "../components/MenuDaiLy.vue";
+import MenuNSX from "../components/MenuNSX.vue";
 export default {
   name: "app",
+  data() {
+    return {
+      is_nguoi_dung: 0
+    }
+  },
   components: {
-    TopRocker, MenuRocker, BotRocker
-  }
+    TopRocker, MenuRocker, BotRocker, MenuDaiLy, MenuNSX
+  },
+  mounted() {
+    this.checkNguoiDung();
+  },
+  methods: {
+    checkNguoiDung() {
+      axios
+        .get('http://127.0.0.1:8000/api/check-nguoi-dung', {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        })
+        .then((res) => {
+          this.is_nguoi_dung = res.data.data; // chỗ ni trên API trả về 0 , 1, 2
+        })
+    }
+  },
 }
 </script>
 <style>

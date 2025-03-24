@@ -83,7 +83,7 @@
                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <div class="user-info ps-3">
                     <p class="user-name mb-0"><b>{{ ten_hien_thi }}</b></p>
-                    <p class="designattion mb-0 text-dark">Nhân Viên</p>
+                    <p class="designattion mb-0 text-dark">{{ loai_tai_khoan }}</p>
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -112,6 +112,7 @@ export default {
     return {
       ten_hien_thi: 'Chưa đăng nhập',
       is_check: false,
+      loai_tai_khoan: 'null',
     }
   },
   mounted() {
@@ -153,6 +154,7 @@ export default {
           if (res.data.status) {
             this.is_check = true;
             this.ten_hien_thi = localStorage.getItem('ho_ten');
+            this.loai_tai_khoan = localStorage.getItem('loai_tai_khoan');
           }
         });
     },
