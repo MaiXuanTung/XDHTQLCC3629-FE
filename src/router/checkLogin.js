@@ -14,6 +14,7 @@ export default function (to, from, next) {
     )
     .then((res) => {
       localStorage.setItem('ho_ten', res.data.ho_ten)
+      localStorage.setItem('loai_tai_khoan', res.data.loai_tai_khoan)
       if (res.status === 200) {
         next()
       } else {

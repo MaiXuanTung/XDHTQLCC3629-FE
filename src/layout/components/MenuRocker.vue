@@ -6,11 +6,6 @@
           <img src="../../assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
         </router-link>
       </div>
-      <div>
-        <h4 class="logo-text">Rukada</h4>
-      </div>
-      <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
-      </div>
     </div>
     <nav class="navbar navbar-expand-xl w-100">
       <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
@@ -21,92 +16,66 @@
             <div class="menu-title">Home</div>
           </a>
           <ul class="dropdown-menu">
-            <li> <a class="dropdown-item" href="/admin/chi-tiet-san-pham"><i class="bx bx-right-arrow-alt"></i>Chi Tiết Sản Phẩm</a>
+            <li> <a class="dropdown-item" href="/admin/chi-tiet-san-pham"><i class="bx bx-right-arrow-alt"></i>Chi Tiết
+                Sản Phẩm</a>
             </li>
-            <li> <a class="dropdown-item" href="/admin/san-pham-nsx"><i class="bx bx-right-arrow-alt"></i>Sản Phẩm NSX</a>
+            <li> <a class="dropdown-item" href="/admin/san-pham-nsx"><i class="bx bx-right-arrow-alt"></i>Sản Phẩm
+                NSX</a>
             </li>
           </ul>
         </li>
-
-        <li class="nav-item">
-          <router-link to="/admin/danh-muc-sp">
-            <a href="/admin/danh-muc-sp" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-layer-group"></i>
-              </div>
-              <div class="menu-title">Danh Mục SP</div>
-            </a>
-          </router-link>
+        <li class="nav-item dropdown">
+          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+            <div class="parent-icon"><i class="fa-solid fa-boxes-packing"></i>
+            </div>
+            <div class="menu-title">Hàng Hóa</div>
+          </a>
+          <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/danh-muc-sp"><i class="bx bx-right-arrow-alt"></i>Danh Mục Sản
+                Phẩm</a>
+            </li>
+            <li> <a class="dropdown-item" href="/admin/san-pham"><i class="bx bx-right-arrow-alt"></i>Sản
+                Phẩm</a>
+            </li>
+            <li> <a class="dropdown-item" href="/admin/nguyen-lieu"><i class="bx bx-right-arrow-alt"></i>Nguyên Liệu</a>
+            </li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <router-link to="/admin/nha-san-xuat">
-            <a href="/admin/nha-san-xuat" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-truck-field"></i>
-              </div>
-              <div class="menu-title">Nhà Sản Xuất</div>
-            </a>
-          </router-link>
+        <li class="nav-item dropdown">
+          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+            <div class="parent-icon"><i class="fa-solid fa-user-group"></i>
+            </div>
+            <div class="menu-title">Đối Tác</div>
+          </a>
+          <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/nha-san-xuat"><i class="bx bx-right-arrow-alt"></i>Nhà Sản
+                Xuất</a>
+            </li>
+            <li> <a class="dropdown-item" href="/admin/dai-ly"><i class="bx bx-right-arrow-alt"></i>Đại Lý</a>
+            </li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <router-link to="/admin/ql-nhan-vien">
-            <a href="/admin/ql-nhan-vien" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-person-through-window"></i>
-              </div>
-              <div class="menu-title">QL Nhân Viên</div>
-            </a>
-          </router-link>
+        <li class="nav-item dropdown">
+          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+            <div class="parent-icon"><i class="fa-solid fa-address-card"></i>
+            </div>
+            <div class="menu-title">Quản Lý Nhân Sự</div>
+          </a>
+          <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/nhan-vien"><i class="bx bx-right-arrow-alt"></i>Nhân Viên</a>
+            </li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <router-link to="/admin/dai-ly">
-            <a href="/admin/dai-ly" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-store"></i>
-              </div>
-              <div class="menu-title">Đại Lý</div>
-            </a>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/admin/san-pham">
-            <a href="/admin/san-pham" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-cart-shopping"></i>
-              </div>
-              <div class="menu-title">Sản Phẩm</div>
-            </a>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/admin/nguyen-lieu">
-            <a href="/admin/nguyen-lieu" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-bullseye"></i>
-              </div>
-              <div class="menu-title">Nguyên Liệu</div>
-            </a>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/admin/nguyen-lieu-san-pham">
-            <a href="/admin/nguyen-lieu-san-pham" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-regular fa-building"></i>
-              </div>
-              <div class="menu-title">Nguyên Liệu Sản Phẩm </div>
-              </a>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/admin/phuong-tien">
-            <a href="/admin/phuong-tien" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-truck-plane"></i>
-              </div>
-              <div class="menu-title">Phương Tiện</div>
-            </a>
-          </router-link>
+        <li class="nav-item dropdown">
+          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+            <div class="parent-icon"><i class="fa-solid fa-truck-plane"></i>
+            </div>
+            <div class="menu-title">Vận Chuyển</div>
+          </a>
+          <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/phuong-tien"><i class="bx bx-right-arrow-alt"></i>Phương Tiện</a>
+            </li>
+          </ul>
         </li>
         <!-- <li class="nav-item">
           <router-link to="/admin/chi-tiet-san-pham">
