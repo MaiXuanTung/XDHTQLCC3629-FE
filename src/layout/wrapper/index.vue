@@ -63,7 +63,7 @@ export default {
           },
         })
         .then((res) => {
-          this.is_nguoi_dung = res.data.data; // chỗ ni trên API trả về 0 , 1, 2
+          this.is_nguoi_dung = res.data.data;
         })
     }
   },

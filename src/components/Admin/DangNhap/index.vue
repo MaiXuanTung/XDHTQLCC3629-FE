@@ -78,7 +78,7 @@ export default {
             var arr = res.data.token.split("|");
             localStorage.setItem('token', arr[1]);
             this.checkToken();
-            this.$router.push('/admin/trang-chu');
+            this.$router.push('/home-page');
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -96,7 +96,7 @@ export default {
           localStorage.setItem('loai_tai_khoan', res.data.loai_tai_khoan);
           if (res.status === 200) {
             this.list_token = res.data.list;
-            this.$router.push('/admin/trang-chu');
+            this.$router.push('/home-page');
           } if (res.status === 401) {
             toaster.error('Thông báo<br>' + res.message);
           }

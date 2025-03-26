@@ -56,6 +56,11 @@ const routes = [
     component: () => import('../components/Admin/SanPhamNSX/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/home-page',
+    component: () => import('../components/Admin/TrangChu/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {
