@@ -61,6 +61,12 @@ const routes = [
     component: () => import('../components/Admin/TrangChu/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/chi-tiet-san-pham/:id',
+    component: () =>
+      import('../components/Admin/ChiTietSanPhamDaiLy/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {

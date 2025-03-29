@@ -19,6 +19,18 @@
             </a>
           </router-link>
         </li>
+        <li class="nav-item dropdown">
+          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+            <div class="parent-icon"><i class='bx bx-home-circle'></i>
+            </div>
+            <div class="menu-title">Home</div>
+          </a>
+          <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/san-pham"><i class="bx bx-right-arrow-alt"></i>
+                Sản Phẩm</a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>
