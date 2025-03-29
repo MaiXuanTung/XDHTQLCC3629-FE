@@ -38,7 +38,7 @@
             <tbody>
               <template v-for="(v, k) in list_dai_ly" :key="k">
                 <tr>
-                  <td>{{ k+1 }}</td>
+                  <td>{{ k + 1 }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
                   <td>{{ v.email }}</td>
                   <td>{{ v.mat_khau }}</td>
