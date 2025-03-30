@@ -69,41 +69,54 @@ export default {
     this.checkToken();
   },
   methods: {
-    dangNhap() {
-      axios
-        .post('http://127.0.0.1:8000/api/auth-admin/login', this.dang_nhap)
-        .then((res) => {
-          if (res.data.status) {
-            toaster.success('Thông báo<br>' + res.data.message);
-            var arr = res.data.token.split("|");
-            localStorage.setItem('token', arr[1]);
-            this.checkToken();
-            this.$router.push('/home-page');
-          } else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
+    async dangNhap() {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/auth-admin/login', this.dang_nhap);
+
+        if (res.data.status) {
+          toaster.success('Thông báo<br>' + res.data.message);
+          const arr = res.data.token.split("|");
+          localStorage.setItem('token', arr[1]);
+          await this.checkToken(); // Đợi checkToken hoàn tất trước khi chuyển trang
+        } else {
+          toaster.error('Thông báo<br>' + res.data.message);
+        }
+      } catch (error) {
+        console.error("Lỗi khi đăng nhập:", error);
+      }
     },
-    checkToken() {
-      axios
-        .post('http://127.0.0.1:8000/api/auth-admin/check', {}, {
+
+    async checkToken() {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/auth-admin/check', {}, {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
           }
-        })
-        .then((res) => {
+        });
+
+        if (res.status === 200) {
           localStorage.setItem('ho_ten', res.data.ho_ten);
           localStorage.setItem('loai_tai_khoan', res.data.loai_tai_khoan);
-          if (res.status === 200) {
-            this.list_token = res.data.list;
-            this.$router.push('/home-page');
-          } if (res.status === 401) {
-            toaster.error('Thông báo<br>' + res.message);
+          switch (res.data.loai_tai_khoan) {
+            case 'Nhân Viên':
+              this.$router.push('/admin/nhan-vien');
+              break;
+            case 'Đại Lý':
+              this.$router.push('/home-page');
+              break;
+            case 'Nhà Sản Xuất':
+              this.$router.push('/admin/san-pham');
+              break;
+            default:
+              toaster.error('Loại tài khoản không hợp lệ!');
           }
-        })
-        .catch(() => {
-        });
-    },
+        } else if (res.status === 401) {
+          toaster.error('Thông báo<br>' + res.data.message);
+        }
+      } catch (error) {
+        console.error("Lỗi khi kiểm tra token:", error);
+      }
+    }
   },
 }
 </script>

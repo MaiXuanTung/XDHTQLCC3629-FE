@@ -67,6 +67,11 @@ const routes = [
       import('../components/Admin/ChiTietSanPhamDaiLy/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/gio-hang',
+    component: () => import('../components/Admin/GioHang/index.vue'),
+    beforeEnter: checkLogin,
+  },
 
   //client
   {

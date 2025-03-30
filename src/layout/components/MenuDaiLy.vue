@@ -19,6 +19,16 @@
             </a>
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/gio-hang">
+            <a href="/gio-hang" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </div>
+              <div class="menu-title">Giỏ Hàng</div>
+            </a>
+          </router-link>
+        </li>
       </ul>
     </nav>
   </div>
