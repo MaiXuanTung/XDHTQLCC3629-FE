@@ -7,7 +7,7 @@
         <div class="ps-3">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 p-0">
-              <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+              <li class="breadcrumb-item"><a href="javascript:;"></a>
               </li>
               <li class="breadcrumb-item active" aria-current="page">Chi Tiết Sản Phẩm</li>
             </ol>
@@ -46,20 +46,21 @@
                 <dd class="col-sm-9">{{ san_pham.so_luong_ton_kho }}</dd>
               </dl>
               <hr>
-              <div class="row row-cols-auto row-cols-1 row-cols-md-3 align-items-center">
-                <div class="col">
-                  <label class="form-label">Số lượng</label>
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <label class="form-label mb-0 me-2">Số lượng:</label>
+                </div>
+                <div class="col-auto">
                   <div class="input-group input-spinner">
-                    <button class="btn btn-white" type="button" id="button-plus"> - </button>
-                    <input type="text" class="form-control" value="1">
-                    <button class="btn btn-white" type="button" id="button-minus"> + </button>
+                    <input type="number" class="form-control text-center" v-model.number="so_luong"
+                      @input="validateQuantity">
                   </div>
                 </div>
               </div>
               <div class="d-flex gap-3 mt-3">
                 <a href="#" class="btn btn-primary">Mua ngay</a>
-                <a href="#" class="btn btn-outline-primary"><span class="text">Thêm vào giỏ hàng</span> <i
-                    class="bx bxs-cart-alt"></i></a>
+                <a href="#" v-on:click="createSanPhamVaoGioHang()" class="btn btn-outline-primary"><span
+                    class="text">Thêm vào giỏ hàng</span> <i class="bx bxs-cart-alt"></i></a>
               </div>
             </div>
           </div>
@@ -111,34 +112,35 @@
           </div>
         </div>
       </div>
-      <h6 class="text-uppercase mb-0">SẢN PHẨM LIÊN QUAN</h6>
+      <h5 class="text-uppercase mb-0">SẢN PHẨM LIÊN QUAN</h5>
       <hr>
       <div class="row row-cols-1 row-cols-lg-3">
         <div class="col" v-for="(v, k) in relatedProducts" :key="k">
           <div class="card">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img :src="v.hinh_anh" class="img-fluid" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body-detail">
-                  <h6 class="card-title">{{ v.ten_san_pham }}</h6>
-                  <div class="cursor-pointer my-2">
-                    <i class="bx bxs-star text-warning"></i>
-                    <i class="bx bxs-star text-warning"></i>
-                    <i class="bx bxs-star text-warning"></i>
-                    <i class="bx bxs-star text-warning"></i>
-                    <i class="bx bxs-star text-secondary"></i>
-                  </div>
-                  <div class="clearfix">
-                    <p class="mb-0 float-start fw-bold">
-                      <span class="me-2 text-decoration-line-through text-secondary">${{ v.gia_cu }}</span>
-                      <span>${{ v.gia_ban }}</span>
-                    </p>
+            <a v-bind:href="'/chi-tiet-san-pham/' + v.id" style="color: black;">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img :src="v.hinh_anh" class="img-fluid" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body-detail">
+                    <h6 class="card-title">{{ v.ten_san_pham }}</h6>
+                    <div class="cursor-pointer my-2">
+                      <i class="bx bxs-star text-warning"></i>
+                      <i class="bx bxs-star text-warning"></i>
+                      <i class="bx bxs-star text-warning"></i>
+                      <i class="bx bxs-star text-warning"></i>
+                      <i class="bx bxs-star text-secondary"></i>
+                    </div>
+                    <div class="clearfix">
+                      <p class="mb-0 float-start fw-bold">
+                        <span>{{ v.gia_ban }} đ</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -153,13 +155,17 @@ export default {
   data() {
     return {
       san_pham: {},
-      list_san_pham: []
+      list_san_pham: [],
+      so_luong: 1,
+      create_san_pham: {},
     }
   },
+
   mounted() {
     this.loadDataChiTietSanPham();
     this.loadDataSanPham();
   },
+
   computed: {
     relatedProducts() {
       return this.list_san_pham
@@ -168,6 +174,7 @@ export default {
         .slice(0, 3); // Chỉ lấy 3 sản phẩm
     }
   },
+
   methods: {
     loadDataChiTietSanPham() {
       var url = window.location.href;
@@ -180,50 +187,91 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.san_pham = res.data.chi_tiet_san_pham;
-            console.log(this.san_pham);
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });
     },
+
     loadDataSanPham() {
       baseRequest
         .get('admin/san-pham/lay-du-lieu')
         .then((res) => {
           if (res.data.status) {
             this.list_san_pham = res.data.san_pham;
-            console.log(this.list_san_pham)
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });
     },
+
+    validateQuantity() {
+      // Nếu người dùng nhập số nhỏ hơn 1, đặt lại là 1
+      if (this.so_luong < 1 || isNaN(this.so_luong)) {
+        this.so_luong = 1;
+        toaster.warning("Số lượng tối thiểu là " + this.so_luong);
+      }
+      // Nếu nhập số lớn hơn tồn kho, đặt lại số lượng tối đa
+      if (this.so_luong > this.san_pham.so_luong_ton_kho) {
+        this.so_luong = this.san_pham.so_luong_ton_kho;
+        toaster.warning("Trong kho chỉ còn " + this.san_pham.so_luong_ton_kho + " sản phẩm");
+      }
+    },
+
+    createSanPhamVaoGioHang() {
+      const payload = {
+        id_san_pham: this.san_pham.id,
+        so_luong: this.so_luong,
+        don_gia: this.san_pham.gia_ban,
+      };
+      baseRequest
+        .post("admin/gio-hang/them-vao-gio-hang", payload)
+        .then((res) => {
+          if (res.data.status) {
+            toaster.success("Đã thêm vào giỏ hàng!");
+          } else {
+            // Kiểm tra lỗi "Số lượng sản phẩm vượt quá tồn kho" từ server
+            if (res.data.message === "Không thể thêm vào giỏ hàng! Số lượng sản phẩm vượt quá tồn kho.") {
+              toaster.error(res.data.message);
+            } else {
+              toaster.error("Lỗi: " + res.data.message);
+            }
+          }
+        })
+        .catch((error) => {
+          // Kiểm tra nếu lỗi từ server có response.data.message
+          if (error.response && error.response.data && error.response.data.message) {
+            toaster.error(error.response.data.message);
+          } else {
+            toaster.error("Lỗi kết nối! Vui lòng thử lại.");
+          }
+          console.error(error);
+        })
+        .finally(() => {
+          this.so_luong = 1;
+        });
+    }
   },
 }
 </script>
 <style>
 .card {
   height: 100%;
-  /* Đảm bảo tất cả card có chiều cao bằng nhau */
   display: flex;
   flex-direction: column;
 }
 
 .card-detail img {
   width: 100%;
-  /* Đảm bảo ảnh full chiều ngang */
   height: 150px;
-  /* Giữ ảnh đồng nhất */
   object-fit: cover;
-  /* Cắt ảnh để vừa khung mà không méo */
 }
 
 .card-body-detail {
   flex-grow: 1;
-  /* Đảm bảo nội dung card mở rộng để các card đều nhau */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Dàn đều nội dung */
+
 }
 </style>

@@ -2,16 +2,12 @@
   <div class="wrapper">
     <div class="header-wrapper">
       <TopRocker></TopRocker>
-      <template v-if="is_nguoi_dung == 0">
-        <MenuRocker></MenuRocker>
+      <div v-if="isLoading">Đang tải...</div>
+      <template v-else>
+        <MenuRocker v-if="is_nguoi_dung === 0"></MenuRocker>
+        <MenuNSX v-else-if="is_nguoi_dung === 1"></MenuNSX>
+        <MenuDaiLy v-else-if="is_nguoi_dung === 2"></MenuDaiLy>
       </template>
-      <template v-else-if="is_nguoi_dung == 1">
-        <MenuNSX></MenuNSX>
-      </template>
-      <template v-else-if="is_nguoi_dung == 2">
-        <MenuDaiLy></MenuDaiLy>
-      </template>
-
     </div>
     <div class="page-wrapper">
       <div class="page-content">
@@ -45,7 +41,8 @@ export default {
   name: "app",
   data() {
     return {
-      is_nguoi_dung: 0
+      is_nguoi_dung: 0,
+      isLoading: true,
     }
   },
   components: {
@@ -64,7 +61,9 @@ export default {
         })
         .then((res) => {
           this.is_nguoi_dung = res.data.data;
-        })
+        }).finally(() => {
+          this.isLoading = false; // Tắt trạng thái loading khi API hoàn thành
+        });
     }
   },
 }

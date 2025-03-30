@@ -22,23 +22,23 @@
           <h3 class="mt-3">Sản Phẩm Của <b>{{ ten_cong_ty }}</b></h3>
           <div class="row row-cols-1 row-cols-md-2 g-3">
             <div class="col" v-for="sp in san_phams" :key="sp.id">
-              <div class="card h-100">
-                <div class="row g-0 h-100">
-                  <div class="col-md-4">
-                    <a v-bind:href="'/chi-tiet-san-pham/' + sp.id">
+              <div class="card card-home-page h-100">
+                <a v-bind:href="'/chi-tiet-san-pham/' + sp.id" style="color: black;">
+                  <div class="row g-0 h-100">
+                    <div class="col-md-4">
                       <img :src="sp.hinh_anh" alt="Hình ảnh sản phẩm" class="card-img">
-                    </a>
-                  </div>
-                  <div class="col-md-8 d-flex flex-column">
-                    <div class="card-body flex-grow-1">
-                      <h5 class="card-title">{{ sp.ten_san_pham }}</h5>
-                      <p class="card-text">Sản phẩm của <b>{{ ten_cong_ty }}</b></p>
-                      <p class="card-text">Số lượng còn: <b>{{ sp.so_luong_ton_kho }}</b></p>
-                      <p class="card-text">Đơn giá: <b>{{ sp.gia_ban }} đ</b></p>
-                      <p class="card-text">Đơn vị tính: <b>{{ sp.don_vi_tinh }}</b></p>
+                    </div>
+                    <div class="col-md-8 d-flex flex-column">
+                      <div class="card-body flex-grow-1">
+                        <h5 class="card-title">{{ sp.ten_san_pham }}</h5>
+                        <p class="card-text">Sản phẩm của <b>{{ ten_cong_ty }}</b></p>
+                        <p class="card-text">Số lượng còn: <b>{{ sp.so_luong_ton_kho }}</b></p>
+                        <p class="card-text">Đơn giá: <b>{{ sp.gia_ban }} đ</b></p>
+                        <p class="card-text">Đơn vị tính: <b>{{ sp.don_vi_tinh }}</b></p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
@@ -114,11 +114,11 @@ export default {
 </script>
 <style>
 /* Card có hiệu ứng nổi khi hover */
-.card {
+.card-home-page {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
+.card-home-page:hover {
   transform: translateY(-10px);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
 }
