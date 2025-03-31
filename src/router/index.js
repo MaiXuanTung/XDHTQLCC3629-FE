@@ -72,7 +72,11 @@ const routes = [
     component: () => import('../components/Admin/GioHang/index.vue'),
     beforeEnter: checkLogin,
   },
-
+  {
+    path: '/thanh-toan',
+    component: () => import('../components/Admin/ThanhToan/index.vue'),
+    beforeEnter: checkLogin,
+  },
   //client
   {
     path: '/test',
