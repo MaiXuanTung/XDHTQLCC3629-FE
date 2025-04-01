@@ -6,8 +6,13 @@
         <div class="breadcrumb-title pe-3"><a href="/home-page">Trang Chủ</a></div>
         <div class="ps-3">
           <nav aria-label="breadcrumb">
+            <a class="breadcrumb-title pe-3" href="/gio-hang">Giỏ Hàng</a>
+          </nav>
+        </div>
+        <div class="ps-3">
+          <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 p-0">
-              <li class="breadcrumb-item"><a href="javascript:;"></a></li>
+              <li class="breadcrumb-item"><a href="/thanh-toan"></a></li>
               <li class="breadcrumb-item active" aria-current="page">Thanh Toán</li>
             </ol>
           </nav>
@@ -15,24 +20,29 @@
       </div>
       <div class="card mb-3">
         <div class="card-body">
-          <h3 style="color: #e74c3c;"><i class="fa-solid fa-location-dot"></i> Địa chỉ nhận hàng</h3>
+          <h3 style="color: #e74c3c;">
+            Thông tin nhận hàng</h3>
           <div class="row">
             <div class="col-sm-3">
-              <h5>tên</h5>
+              <strong>
+                <p style="font-size: large;"><i class="fa-solid fa-store"></i> {{ ten_nguoi_nhan }}</p>
+              </strong>
             </div>
             <div class="col-sm-3">
-              <h5>số điện thoại</h5>
+              <strong>
+                <p style="font-size: large;"><i class="fa-solid fa-phone"></i> {{ so_dien_thoai }}</p>
+              </strong>
             </div>
             <div class="col-sm-3">
-              <p>địa chỉ</p>
+              <p style="font-size: medium;"><i class="fa-solid fa-location-dot"></i> {{ dia_chi }}</p>
             </div>
           </div>
         </div>
       </div>
       <template v-for="(shop, k) in groupedSanPham" :key="k">
-        <div class="shop-card">
+        <div class="shop-card mb-4">
           <div class="shop-header">
-            <h5>{{ shop.ten_cong_ty }}</h5>
+            <span class="shop-name"><i class="fas fa-store"></i> {{ shop.ten_cong_ty }}</span>
           </div>
           <div class="shop-body">
             <div class="product-card-custom">
@@ -62,23 +72,24 @@
                 <div class="total-price">{{ formatToVND(v.so_luong * v.don_gia) }}</div>
               </div>
             </template>
-            <div class="row">
+            <div class="row mb-3 ms-2 me-3">
               <div class="col-sm-6">
                 <div class="col-sm-12">
-                  Phương thức vận chuyển: tên đơn vị
+                  <strong>Phương thức vận chuyển</strong>: tên đơn vị
                 </div>
                 <hr>
                 <div class="col-sm-12">
-                  Ngày nhận hàng: tính bằng cách lấy ngày đặt hàng cộng thêm 4
+                  <strong>Ngày nhận hàng (dự kiến)</strong>: {{ calculateDeliveryDate(shop.products[0].ngay_dat_hang) }}
                 </div>
                 <hr>
                 <div class="col-sm-12">
-                  Được đồng kiểm
+                  <strong>Được đồng kiểm</strong>
                 </div>
               </div>
               <div class="col-sm-2"></div>
-              <div class="col-sm-4 text-center">
-                Tổng tiền(2 sản phẩm):
+              <div class="col-sm-4 text-end">
+                <h5>Tổng tiền: <strong style="color: red;">{{ formatToVND(getTotalByShop(shop.products)) }}</strong>
+                </h5>
               </div>
             </div>
           </div>
@@ -86,10 +97,10 @@
       </template>
       <div class="cart-footer">
         <div class="total-amount">
-          <span>Tổng số tiền({{ list_san_pham.length }} sản phẩm): </span>
+          <span>Tổng tiền cần thanh toán: </span>
           <span class="amount">{{ formatToVND(tongTien) }}</span>
         </div>
-        <button class="btn-buy">Đặt hàng</button>
+        <button class="btn-buy" @click="datHang">Đặt hàng</button>
       </div>
     </div>
   </div>
@@ -102,7 +113,10 @@ const toaster = createToaster({ position: "top-right" });
 export default {
   data() {
     return {
-      list_san_pham: []
+      list_san_pham: [],
+      ten_nguoi_nhan: "",
+      so_dien_thoai: "",
+      dia_chi: "",
     }
   },
   computed: {
@@ -117,7 +131,6 @@ export default {
         if (!grouped[sp.ten_cong_ty]) {
           grouped[sp.ten_cong_ty] = {
             ten_cong_ty: sp.ten_cong_ty,
-            selected: false,
             products: [],
           };
         }
@@ -131,14 +144,84 @@ export default {
   },
   mounted() {
     const list_san_pham = localStorage.getItem("donHangData");
+    console.log(list_san_pham)
     if (list_san_pham) {
       this.list_san_pham = JSON.parse(list_san_pham);
     }
+    this.ten_nguoi_nhan = localStorage.getItem("ho_ten");
+    this.so_dien_thoai = localStorage.getItem("so_dien_thoai");
+    this.dia_chi = localStorage.getItem("dia_chi");
   },
   methods: {
     formatToVND(amount) {
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount * 1000);
     },
+
+    getTotalByShop(products) {
+      return products.reduce((sum, v) => sum + (v.don_gia * v.so_luong), 0);
+    },
+
+    async datHang() {
+      if (!this.list_san_pham.length) {
+        toaster.error("Không có sản phẩm để đặt hàng!");
+        return;
+      }
+      try {
+        // Chuẩn bị dữ liệu đơn hàng
+        let orderData = {
+          user_id: localStorage.getItem("user_id"), // ID người dùng
+          ten_nguoi_nhan: this.ten_nguoi_nhan,
+          so_dien_thoai: this.so_dien_thoai,
+          dia_chi: this.dia_chi,
+          san_pham: this.list_san_pham.map(sp => ({
+            id_san_pham: sp.id_san_pham,
+            id_nha_san_xuat: sp.id_nha_san_xuat,
+            so_luong: sp.so_luong,
+            don_gia: sp.don_gia
+          }))
+        };
+        let response = await baseRequest.post("admin/gio-hang/dat-hang", orderData);
+        if (response.data.success) {
+          toaster.success("Đặt hàng thành công!");
+          localStorage.removeItem("donHangData");
+          this.list_san_pham = [];
+          this.$router.push("/don-hang");
+        } else {
+          toaster.error("Đặt hàng thất bại, vui lòng thử lại!");
+        }
+      } catch (error) {
+        console.error("Lỗi khi đặt hàng:", error);
+        toaster.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+      }
+    },
+
+    isWeekend(date) {
+      const d = new Date(date);
+      const day = d.getDay(); // Thứ trong tuần (0 - Chủ nhật, 6 - Thứ 7)
+      return day === 0 || day === 6; // Nếu là Chủ nhật hoặc Thứ 7
+    },
+
+    // Hàm tính ngày nhận hàng dựa trên ngày làm việc
+    calculateDeliveryDate(orderDate) {
+      const orderDateObj = new Date(orderDate);
+      let deliveryDate = new Date(orderDateObj);
+
+      let addedDays = 0; // Số ngày làm việc cần thêm vào
+      while (addedDays < 4) {
+        deliveryDate.setDate(deliveryDate.getDate() + 1);
+        if (!this.isWeekend(deliveryDate)) { // Kiểm tra nếu không phải cuối tuần
+          addedDays++;
+        }
+      }
+
+      return this.formatDate(deliveryDate);
+    },
+
+    // Hàm format ngày theo định dạng dd/mm/yyyy
+    formatDate(date) {
+      const d = new Date(date);
+      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+    }
   },
 }
 </script>
@@ -252,5 +335,12 @@ export default {
 .btn-buy:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.col-sm-4.text-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 </style>
