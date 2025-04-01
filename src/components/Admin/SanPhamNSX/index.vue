@@ -12,10 +12,10 @@
               Mới</button>
           </div>
         </div>
-        <div class="input-group mb-3 ">
-          <input v-on:keyup.enter="searchSanPham()" v-model="key_search.abc" type="text"
+        <div class="input-group mb-3">
+          <input v-on:keyup.enter="searchSanPhamNSX()" v-model="key_search.abc" type="text"
             class="form-control search-control" placeholder="Nhập thông tin cần tìm">
-          <button v-on:click="searchSanPham()" class="btn btn-primary ">
+          <button v-on:click="searchSanPhamNSX()" class="btn btn-primary">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
@@ -240,16 +240,16 @@ export default {
   mounted() {
     this.loadDataSanPhamNSX();
     this.loadDataSanPham();
-    this.loadDataNhaSanXuat();
+    // this.loadDataNhaSanXuat();S
   },
   methods:
   {
     loadDataSanPhamNSX() {
       baseRequest
-        .get('admin/san-pham-nsx/lay-du-lieu')
+        .get('admin/san-pham/get-data-by-user')
         .then((res) => {
           if (res.data.status) {
-            this.list_san_pham_nsx = res.data.san_pham_nsx;
+            this.list_san_pham_nsx = res.data.data;
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -296,10 +296,10 @@ export default {
 
     searchSanPhamNSX() {
       baseRequest
-        .post('admin/san-pham-nsx/tim-san-pham-nsx', this.key_search)
+        .post('admin/san-pham-nha-san-xuat/tim-san-pham-nha-san-xuat', this.key_search)
         .then((res) => {
           if (res.data.status) {
-            this.list_chi_tiet = res.data.san_pham_nsx;
+            this.list_san_pham_nsx = res.data.san_pham; // Cập nhật dữ liệu tìm kiếm
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -335,18 +335,26 @@ export default {
     },
 
     doiTinhTrang(v) {
+      const updatedStatus = {
+        id: v.id,
+        tinh_trang: v.tinh_trang === 1 ? 0 : 1 // Đảo ngược tình trạng
+      };
+
       baseRequest
-        .post('admin/san-pham-nsx/doi-tinh-trang-san-pham-nsx', v)
+        .post('admin/san-pham-nsx/doi-tinh-trang-san-pham-nsx', updatedStatus)
         .then((res) => {
-          if (res.data.status == true) {
+          if (res.data.status) {
             toaster.success('Thông báo<br>' + res.data.message);
-            this.loadDataSanPhamNSX();
-          }
-          else {
+            this.loadDataSanPhamNSX(); // Tải lại danh sách sản phẩm
+          } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
+        })
+        .catch((error) => {
+          console.error(error); // Log lỗi nếu có
+          toaster.error('Có lỗi xảy ra');
         });
-    },
+    }
   },
 }
 </script>
