@@ -55,7 +55,7 @@
       </template>
       <div class="cart-footer">
         <div class="total-amount">
-          <span>Tổng cộng ({{ list_san_pham.length }} Sản phẩm):</span>
+          <span>Tổng cộng: </span>
           <span class="amount">{{ formatToVND(tongTien) }}</span>
         </div>
         <button class="btn-buy" :disabled="tongTien === 0" @click="muaHang">Mua Hàng</button>
@@ -177,15 +177,25 @@ export default {
       }
     },
     muaHang() {
-      const sanPhamDaChon = this.list_san_pham.filter(sp => sp.selected);
-
+      const sanPhamDaChon = this.list_san_pham
+        .filter(sp => sp.selected)
+        .map(sp => ({
+          id_san_pham: sp.id_san_pham, // Đảm bảo key id_san_pham có mặt
+          ten_san_pham: sp.ten_san_pham,
+          so_luong: sp.so_luong,
+          don_gia: sp.don_gia,
+          hinh_anh: sp.hinh_anh,
+          ten_cong_ty: sp.ten_cong_ty,
+          id_nha_san_xuat: sp.id_nha_san_xuat,
+          ngay_dat_hang: new Date().toISOString(),
+        }));
       if (sanPhamDaChon.length === 0) {
         toaster.warning("Vui lòng chọn ít nhất một sản phẩm để mua.");
         return;
       }
       localStorage.setItem("donHangData", JSON.stringify(sanPhamDaChon));
       this.$router.push("/thanh-toan");
-      console.log(localStorage.setItem("donHangData", JSON.stringify(sanPhamDaChon)))
+      console.log(this.list_san_pham)
     }
   },
 }

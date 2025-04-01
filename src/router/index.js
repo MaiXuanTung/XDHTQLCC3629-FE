@@ -77,6 +77,11 @@ const routes = [
     component: () => import('../components/Admin/ThanhToan/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/don-hang',
+    component: () => import('../components/Admin/DonHang/index.vue'),
+    beforeEnter: checkLogin,
+  },
   //client
   {
     path: '/test',
