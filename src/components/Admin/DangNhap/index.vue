@@ -97,6 +97,9 @@ export default {
         if (res.status === 200) {
           localStorage.setItem('ho_ten', res.data.ho_ten);
           localStorage.setItem('loai_tai_khoan', res.data.loai_tai_khoan);
+          localStorage.setItem('so_dien_thoai', res.data.so_dien_thoai);
+          localStorage.setItem('dia_chi', res.data.dia_chi);
+          localStorage.setItem('user_id', res.data.user_id);
           switch (res.data.loai_tai_khoan) {
             case 'Nhân Viên':
               this.$router.push('/admin/nhan-vien');
