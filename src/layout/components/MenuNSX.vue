@@ -26,7 +26,7 @@
             <div class="menu-title">Home</div>
           </a>
           <ul class="dropdown-menu">
-            <li> <a class="dropdown-item" href="/admin/san-pham"><i class="bx bx-right-arrow-alt"></i>
+            <li> <a class="dropdown-item" href="/admin/san-pham-nsx"><i class="bx bx-right-arrow-alt"></i>
                 Sản Phẩm</a>
             </li>
           </ul>
