@@ -56,11 +56,13 @@ const routes = [
     component: () => import('../components/Admin/SanPhamNSX/index.vue'),
     beforeEnter: checkLogin,
   },
+  //dùng chung
   {
     path: '/home-page',
-    component: () => import('../components/Admin/TrangChu/index.vue'),
+    component: () => import('../components/DungChung/TrangChu/index.vue'),
     beforeEnter: checkLogin,
   },
+  //đại lý
   {
     path: '/chi-tiet-san-pham/:id',
     component: () =>
@@ -69,35 +71,23 @@ const routes = [
   },
   {
     path: '/gio-hang',
-    component: () => import('../components/Admin/GioHang/index.vue'),
+    component: () => import('../components/DaiLy/GioHang/index.vue'),
     beforeEnter: checkLogin,
   },
   {
     path: '/thanh-toan',
-    component: () => import('../components/Admin/ThanhToan/index.vue'),
+    component: () => import('../components/DaiLy/ThanhToan/index.vue'),
     beforeEnter: checkLogin,
   },
   {
     path: '/don-hang',
-    component: () => import('../components/Admin/DonHang/index.vue'),
+    component: () => import('../components/DaiLy/DonHangDaiLy/index.vue'),
     beforeEnter: checkLogin,
   },
-  //client
+  //auth user
   {
-    path: '/test',
-    component: () => import('../components/Client/Test/index.vue'),
-    meta: { layout: 'client' },
-  },
-
-  //auth admin
-  {
-    path: '/admin/dang-nhap',
-    component: () => import('../components/Admin/DangNhap/index.vue'),
-    meta: { layout: 'auth' },
-  },
-  {
-    path: '/admin/dang-ky',
-    component: () => import('../components/Admin/DangKy/index.vue'),
+    path: '/dang-nhap',
+    component: () => import('../components/DungChung/DangNhap/index.vue'),
     meta: { layout: 'auth' },
   },
 ]
