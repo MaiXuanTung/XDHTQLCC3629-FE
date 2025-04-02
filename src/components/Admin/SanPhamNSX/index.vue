@@ -246,7 +246,7 @@ export default {
   {
     loadDataSanPhamNSX() {
       baseRequest
-        .get('admin/san-pham/get-data-by-user')
+        .get('dai-ly/san-pham/get-data-by-user')
         .then((res) => {
           if (res.data.status) {
             this.list_san_pham_nsx = res.data.data;

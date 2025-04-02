@@ -4,7 +4,7 @@ const toaster = createToaster({ position: 'top-right' })
 export default function (to, from, next) {
   axios
     .post(
-      'http://127.0.0.1:8000/api/auth-admin/check',
+      'http://127.0.0.1:8000/api/auth/check',
       {},
       {
         headers: {
@@ -19,11 +19,11 @@ export default function (to, from, next) {
         next()
       } else {
         toaster.warning('Thông báo<br>Bạn cần đăng nhập hệ thống trước!')
-        next('/admin/dang-nhap')
+        next('/dang-nhap')
       }
     })
     .catch(() => {
       toaster.warning('Thông báo<br>Bạn cần đăng nhập hệ thống trước!')
-      next('/admin/dang-nhap')
+      next('/dang-nhap')
     })
 }

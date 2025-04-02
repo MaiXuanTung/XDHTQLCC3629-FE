@@ -71,7 +71,7 @@
           <div class="col">
             <!-- <template v-if="is_check == false">
               <form class="d-flex">
-                <router-link to="/admin/dang-nhap">
+                <router-link to="/dang-nhap">
                   <button class="btn btn-dark me-3 radius-30 px-4" type="button"><i class="bx bx-lock"></i>
                     Login</button>
                 </router-link>
@@ -121,11 +121,11 @@ export default {
   methods: {
     dangXuat() {
       baseRequest
-        .get('auth-admin/dang-xuat')
+        .get('auth/dang-xuat')
         .then((res) => {
           if (res.data.status) {
             toaster.success('Thông báo<br>' + res.data.message);
-            this.$router.push('/admin/dang-nhap');
+            this.$router.push('/dang-nhap');
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -133,11 +133,11 @@ export default {
     },
     dangXuatAll() {
       baseRequest
-        .get('auth-admin/dang-xuat-tat-ca')
+        .get('auth/dang-xuat-tat-ca')
         .then((res) => {
           if (res.data.status) {
             toaster.success('Thông báo<br>' + res.data.message);
-            this.$router.push('/admin/dang-nhap');
+            this.$router.push('/dang-nhap');
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -145,7 +145,7 @@ export default {
     },
     checkLogin() {
       axios
-        .get('http://127.0.0.1:8000/api/auth-admin/kiem-tra-token', {
+        .get('http://127.0.0.1:8000/api/auth/kiem-tra-token', {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem("token")
           }

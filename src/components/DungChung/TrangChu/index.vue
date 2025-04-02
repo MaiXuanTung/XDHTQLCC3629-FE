@@ -33,7 +33,7 @@
                         <h5 class="card-title">{{ sp.ten_san_pham }}</h5>
                         <p class="card-text">Sản phẩm của <b>{{ ten_cong_ty }}</b></p>
                         <p class="card-text">Số lượng còn: <b>{{ sp.so_luong_ton_kho }}</b></p>
-                        <p class="card-text">Đơn giá: <b>{{ sp.gia_ban }} đ</b></p>
+                        <p class="card-text">Đơn giá: <b>{{ formatToVND(sp.gia_ban) }}</b></p>
                         <p class="card-text">Đơn vị tính: <b>{{ sp.don_vi_tinh }}</b></p>
                       </div>
                     </div>
@@ -70,7 +70,7 @@ export default {
 
   methods: {
     loadDataSanPham() {
-      baseRequest.get('admin/san-pham/get-data-by-user').then((res) => {
+      baseRequest.get('dai-ly/san-pham/get-data-by-user').then((res) => {
         if (res.data.status) {
           this.list_san_pham = res.data.data;
           this.filtered_san_pham = res.data.data;
@@ -108,6 +108,10 @@ export default {
     handleEnterKey() {
       this.searchProduct();
       this.closePopup();
+    },
+
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount * 1000);
     },
   }
 }
