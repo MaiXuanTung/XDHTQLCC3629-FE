@@ -101,7 +101,7 @@ export default {
   methods: {
     loadDataSanPham() {
       baseRequest
-        .get('dai-ly/gio-hang/lay-du-lieu')
+        .get('user/gio-hang/lay-du-lieu')
         .then((res) => {
           if (res.data.status) {
             this.list_san_pham = res.data.data;
@@ -113,7 +113,7 @@ export default {
 
     async capNhatSoLuong(id, so_luong) {
       await baseRequest
-        .post('dai-ly/gio-hang/cap-nhat-so-luong', { id, so_luong })
+        .post('user/gio-hang/cap-nhat-so-luong', { id, so_luong })
         .then((res) => {
           toaster.success(res.data.message);
         })
@@ -163,7 +163,7 @@ export default {
 
     async xoaSanPham(id) {
       try {
-        const res = await baseRequest.post('dai-ly/gio-hang/xoa-san-pham', { id });
+        const res = await baseRequest.post('user/gio-hang/xoa-san-pham', { id });
         if (res.data.status) {
           // Xóa trên frontend sau khi API xử lý xong
           this.list_san_pham = this.list_san_pham.filter(sp => sp.id !== id);

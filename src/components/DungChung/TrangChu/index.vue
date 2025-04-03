@@ -70,7 +70,7 @@ export default {
 
   methods: {
     loadDataSanPham() {
-      baseRequest.get('dai-ly/san-pham/get-data-by-user').then((res) => {
+      baseRequest.get('user/san-pham/get-data-by-user').then((res) => {
         if (res.data.status) {
           this.list_san_pham = res.data.data;
           this.filtered_san_pham = res.data.data;
