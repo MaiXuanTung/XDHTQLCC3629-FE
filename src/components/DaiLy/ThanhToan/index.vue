@@ -180,7 +180,7 @@ export default {
             don_gia: sp.don_gia
           }))
         };
-        let response = await baseRequest.post("admin/gio-hang/dat-hang", orderData);
+        let response = await baseRequest.post("dai-ly/gio-hang/dat-hang", orderData);
         if (response.data.success) {
           toaster.success("Đặt hàng thành công!");
           localStorage.removeItem("donHangData");

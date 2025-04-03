@@ -71,7 +71,7 @@ export default {
   methods: {
     async dangNhap() {
       try {
-        const res = await axios.post('http://127.0.0.1:8000/api/auth-admin/login', this.dang_nhap);
+        const res = await axios.post('http://127.0.0.1:8000/api/auth/login', this.dang_nhap);
 
         if (res.data.status) {
           toaster.success('Thông báo<br>' + res.data.message);
@@ -88,7 +88,7 @@ export default {
 
     async checkToken() {
       try {
-        const res = await axios.post('http://127.0.0.1:8000/api/auth-admin/check', {}, {
+        const res = await axios.post('http://127.0.0.1:8000/api/auth/check', {}, {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
           }
