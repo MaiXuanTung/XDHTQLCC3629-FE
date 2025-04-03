@@ -91,7 +91,11 @@ const routes = [
   },
   //client
 
+
+  //auth admin
+
   //auth user
+
   {
     path: '/dang-nhap',
     component: () => import('../components/DungChung/DangNhap/index.vue'),

@@ -108,7 +108,7 @@ export default {
               this.$router.push('/home-page');
               break;
             case 'Nhà Sản Xuất':
-              this.$router.push('/admin/san-pham');
+              this.$router.push('/admin/san-pham-nsx');
               break;
             case 'Đơn vị vận chuyển':
               this.$router.push('/');
