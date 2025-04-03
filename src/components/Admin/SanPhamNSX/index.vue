@@ -262,7 +262,7 @@ export default {
             update_san_pham_nsx: {},
             key_search: {},
         }
-    },
+  },
     mounted() {
         this.loadDataSanPhamNSX();
         this.loadDataSanPham();
