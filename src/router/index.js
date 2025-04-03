@@ -90,6 +90,7 @@ const routes = [
   },
 
   //auth admin
+  //sds
   {
     path: '/admin/dang-nhap',
     component: () => import('../components/Admin/DangNhap/index.vue'),
