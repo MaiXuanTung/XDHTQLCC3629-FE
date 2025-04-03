@@ -56,6 +56,11 @@ const routes = [
     component: () => import('../components/Admin/SanPhamNSX/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/admin/don-vi-van-chuyen',
+    component: () => import('../components/Admin/DonViVanChuyen/index.vue'),
+    beforeEnter: checkLogin,
+  },
   //dùng chung
   {
     path: '/home-page',
@@ -84,6 +89,8 @@ const routes = [
     component: () => import('../components/DaiLy/DonHangDaiLy/index.vue'),
     beforeEnter: checkLogin,
   },
+  //client
+
   //auth user
   {
     path: '/dang-nhap',

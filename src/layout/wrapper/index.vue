@@ -7,6 +7,7 @@
         <MenuRocker v-if="is_nguoi_dung === 0"></MenuRocker>
         <MenuNSX v-else-if="is_nguoi_dung === 1"></MenuNSX>
         <MenuDaiLy v-else-if="is_nguoi_dung === 2"></MenuDaiLy>
+        <MenuDonViVanChuyen v-else-if="is_nguoi_dung === 3"></MenuDonViVanChuyen>
       </template>
     </div>
     <div class="page-wrapper">
@@ -37,6 +38,7 @@ import "../../assets/js/app.js";
 import axios from "axios";
 import MenuDaiLy from "../components/MenuDaiLy.vue";
 import MenuNSX from "../components/MenuNSX.vue";
+import MenuDonViVanChuyen from "../components/MenuDonViVanChuyen.vue";
 export default {
   name: "app",
   data() {
@@ -46,7 +48,7 @@ export default {
     }
   },
   components: {
-    TopRocker, MenuRocker, BotRocker, MenuDaiLy, MenuNSX
+    TopRocker, MenuRocker, BotRocker, MenuDaiLy, MenuNSX, MenuDonViVanChuyen
   },
   mounted() {
     this.checkNguoiDung();

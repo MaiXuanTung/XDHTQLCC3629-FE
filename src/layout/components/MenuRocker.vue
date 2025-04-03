@@ -73,6 +73,8 @@
             <div class="menu-title">Vận Chuyển</div>
           </a>
           <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/don-vi-van-chuyen"><i class="bx bx-right-arrow-alt"></i>Đơn vị vận chuyển</a>
+            </li>
             <li> <a class="dropdown-item" href="/admin/phuong-tien"><i class="bx bx-right-arrow-alt"></i>Phương Tiện</a>
             </li>
           </ul>
