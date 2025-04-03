@@ -110,6 +110,9 @@ export default {
             case 'Nhà Sản Xuất':
               this.$router.push('/admin/san-pham');
               break;
+            case 'Đơn vị vận chuyển':
+              this.$router.push('/');
+              break;
             default:
               toaster.error('Loại tài khoản không hợp lệ!');
           }

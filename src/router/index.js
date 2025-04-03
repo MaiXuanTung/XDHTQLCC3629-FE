@@ -82,6 +82,12 @@ const routes = [
     component: () => import('../components/Admin/DonHang/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/admin/don-vi-van-chuyen',
+    component: () => import('../components/Admin/DonViVanChuyen/index.vue'),
+    beforeEnter: checkLogin,
+  },
+
   //client
   {
     path: '/test',
