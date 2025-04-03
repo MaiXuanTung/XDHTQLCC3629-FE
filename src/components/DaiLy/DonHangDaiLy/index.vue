@@ -109,7 +109,7 @@ export default {
 
     loadDataDonHang() {
       baseRequest
-        .get('dai-ly/don-hang/lay-du-lieu')
+        .get('user/don-hang/lay-du-lieu')
         .then((res) => {
           if (res.data.status) {
             this.list_don_hang = res.data.data;

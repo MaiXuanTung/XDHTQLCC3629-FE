@@ -52,11 +52,6 @@ const routes = [
     beforeEnter: checkLogin,
   },
   {
-    path: '/admin/san-pham-nsx',
-    component: () => import('../components/Admin/SanPhamNSX/index.vue'),
-    beforeEnter: checkLogin,
-  },
-  {
     path: '/admin/don-vi-van-chuyen',
     component: () => import('../components/Admin/DonViVanChuyen/index.vue'),
     beforeEnter: checkLogin,
@@ -89,17 +84,17 @@ const routes = [
     component: () => import('../components/DaiLy/DonHangDaiLy/index.vue'),
     beforeEnter: checkLogin,
   },
-  //client
-
-
-  //auth admin
-
   //auth user
-
   {
     path: '/dang-nhap',
     component: () => import('../components/DungChung/DangNhap/index.vue'),
     meta: { layout: 'auth' },
+  },
+  //nhà sản xuất
+  {
+    path: '/danh-sach-san-pham',
+    component: () => import('../components/NhaSanXuat/SanPhamNSX/index.vue'),
+    beforeEnter: checkLogin,
   },
 ]
 

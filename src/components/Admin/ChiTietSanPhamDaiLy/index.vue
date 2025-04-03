@@ -183,7 +183,7 @@ export default {
         id: arr[arr.length - 1]
       }
       baseRequest
-        .post('dai-ly/san-pham/lay-du-lieu-san-pham/data', id)
+        .post('user/san-pham/lay-du-lieu-san-pham/data', id)
         .then((res) => {
           if (res.data.status) {
             this.san_pham = res.data.chi_tiet_san_pham;
@@ -225,7 +225,7 @@ export default {
         don_gia: this.san_pham.gia_ban,
       };
       baseRequest
-        .post("dai-ly/gio-hang/them-vao-gio-hang", payload)
+        .post("user/gio-hang/them-vao-gio-hang", payload)
         .then((res) => {
           if (res.data.status) {
             toaster.success("Đã thêm vào giỏ hàng!");
