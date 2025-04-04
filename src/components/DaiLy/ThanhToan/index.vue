@@ -187,7 +187,12 @@ export default {
             so_luong: sp.so_luong,
             don_gia: sp.don_gia
           })),
+          don_vi_van_chuyen: this.groupedSanPham.map(shop => ({
+            id_nha_san_xuat: shop.id_nha_san_xuat,
+            id_don_vi_van_chuyen: shop.selectedDVVC.id
+          }))
         };
+        console.log(orderData)
         let response = await baseRequest.post("user/gio-hang/dat-hang", orderData);
         if (response.data.success) {
           toaster.success("Đặt hàng thành công!");
@@ -253,12 +258,25 @@ export default {
             products: [],
             selectedDVVC: null,
             cuoc_van_chuyen: 0,
+            id_nha_san_xuat: sp.id_nha_san_xuat,
           };
         }
         grouped[sp.ten_cong_ty].products.push(sp);
       });
       this.groupedSanPham = Object.values(grouped);
     },
+
+    getSelectedDVVCForProduct(sp) {
+      // Tìm đơn vị vận chuyển đã được chọn cho sản phẩm này
+      let selectedShop = this.groupedSanPham.find(shop =>
+        shop.products.some(product => product.id_san_pham === sp.id_san_pham)
+      );
+      if (selectedShop && selectedShop.selectedDVVC) {
+        return selectedShop.selectedDVVC.id;
+      }
+      return null;
+    },
+
   }
 };
 </script>

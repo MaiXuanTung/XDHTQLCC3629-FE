@@ -39,11 +39,14 @@
                         class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
                     <div v-else-if="v.tinh_trang == 1"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                        class="bx bxs-circle align-middle me-1"></i>Đang chuẩn bị hàng</div>
                     <div v-else-if="v.tinh_trang == 2"
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                    <div v-else-if="v.tinh_trang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle me-1"></i>Hoàn thành</div>
-                    <div v-else-if="v.tinh_trang == 3"
+                    <div v-else-if="v.tinh_trang == 4"
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                   </td>
@@ -63,19 +66,63 @@
                   </td>
                   <td>
                     <div class="d-flex order-actions">
-                      <a href="javascript:;" class="ms-3 text-info"><i type="button"
+                      <a title="Xem chi tiết đơn hàng" @click="xemChiTietDonHang(v.id)" class="ms-3 text-info"><i
+                          type="button" data-bs-toggle="modal" data-bs-target="#chiTietDonHangModal"
                           class="fa-solid fa-circle-info"></i></a>
                     </div>
                   </td>
                   <td>
                     <div class="d-flex order-actions">
-                      <a href="javascript:;" class="ms-3" style="color: red;"><i class="bx bxs-trash"></i></a>
+                      <a title="Hủy đơn hàng" class="ms-3" style="color: red;"><i class="bx bxs-trash"></i></a>
                     </div>
                   </td>
                 </tr>
               </template>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+    <!-- modal -->
+    <div class="modal fade" id="chiTietDonHangModal" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h4>Chi tiết của đơn hàng {{ this.id_don_hang_dang_xem }}</h4>
+            <hr>
+            <table class="table mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Sản Phẩm</th>
+                  <th>Hình Ảnh</th>
+                  <th>Đơn Giá</th>
+                  <th>Số Lượng</th>
+                  <th>Thành Tiền</th>
+                  <th>Nhà Sản Xuất</th>
+                  <th>Đơn Vị Vận Chuyển</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for="(v, k) in list_chi_tiet_don_hang">
+                  <tr>
+                    <td>{{ k + 1 }}</td>
+                    <td>{{ v.ten_san_pham }}</td>
+                    <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
+                    </td>
+                    <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
+                    <td>{{ v.so_luong }} sản phẩm</td>
+                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
+                    <td>{{ v.ten_nha_san_xuat }}</td>
+                    <td>{{ v.ten_dvvc }}</td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          </div>
         </div>
       </div>
     </div>
@@ -89,6 +136,8 @@ export default {
   data() {
     return {
       list_don_hang: [],
+      list_chi_tiet_don_hang: [],
+      id_don_hang_dang_xem: null,
     }
   },
   mounted() {
@@ -115,6 +164,20 @@ export default {
             this.list_don_hang = res.data.data;
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+
+    xemChiTietDonHang(id) {
+      this.id_don_hang_dang_xem = id;
+      console.log(this.id_don_hang_dang_xem)
+      baseRequest
+        .post(`user/don-hang/chi-tiet`, { id_don_hang: id })
+        .then((res) => {
+          if (res.data.status) {
+            this.list_chi_tiet_don_hang = res.data.data;
+          } else {
+            toaster.error("Không thể tải chi tiết đơn hàng.");
           }
         });
     },
