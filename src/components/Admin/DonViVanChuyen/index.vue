@@ -23,9 +23,9 @@
             </div>
           </div>
           <div class="col-lg-3">
-            <div> 
+            <div>
               <select class="form-control border-primary" v-model="LocTheoTrangThai">
-                <option value="" >Tình Trạng - Tất Cả</option>
+                <option value="">Tình Trạng - Tất Cả</option>
                 <option value="1">Hoạt Động</option>
                 <option value="0">Tạm Dừng</option>
               </select>
@@ -231,7 +231,7 @@ export default {
   mounted() {
     this.loadDataDVVC();
   },
-  computed:{
+  computed: {
     locDataTheoTrangThai() {
       if (this.LocTheoTrangThai === "") {
         return this.list_don_vi_van_chuyen; // Hiển thị tất cả nếu chưa chọn gì
@@ -241,7 +241,7 @@ export default {
   },
   methods: {
     formatToVND(amount) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount * 1000);
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     },
     loadDataDVVC() {
       baseRequest

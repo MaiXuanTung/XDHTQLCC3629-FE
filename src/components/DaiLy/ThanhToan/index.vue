@@ -20,8 +20,7 @@
       </div>
       <div class="card mb-3">
         <div class="card-body">
-          <h3 style="color: #e74c3c;">
-            Thông tin nhận hàng</h3>
+          <h3 style="color: #e74c3c;">Thông tin nhận hàng</h3>
           <div class="row">
             <div class="col-sm-3">
               <strong>
@@ -49,46 +48,49 @@
               <div class="product-info">
                 <p>Sản Phẩm</p>
               </div>
-              <div class="price">
-                <span class="current-price">Đơn giá</span>
-              </div>
-              <div class="quantity">
-                <span class="current-price">Số lượng</span>
-              </div>
+              <div class="price"><span class="current-price">Đơn giá</span></div>
+              <div class="quantity"><span class="current-price">Số lượng</span></div>
               <div class="total-price">Thành tiền</div>
             </div>
-            <template v-for="(v, k) in shop.products" :key="k">
+            <template v-for="(v, k2) in shop.products" :key="k2">
               <div class="product-card">
                 <img :src="v.hinh_anh" alt="Hình ảnh sản phẩm">
                 <div class="product-info">
                   <div class="product-name">{{ v.ten_san_pham }}</div>
                 </div>
-                <div class="price">
-                  <span class="current-price">{{ formatToVND(v.don_gia) }}</span>
-                </div>
-                <div class="quantity">
-                  <span class="current-price">{{ v.so_luong }}</span>
-                </div>
+                <div class="price"><span class="current-price">{{ formatToVND(v.don_gia) }}</span></div>
+                <div class="quantity"><span class="current-price">{{ v.so_luong }}</span></div>
                 <div class="total-price">{{ formatToVND(v.so_luong * v.don_gia) }}</div>
               </div>
             </template>
             <div class="row mb-3 ms-2 me-3">
               <div class="col-sm-6">
                 <div class="col-sm-12">
-                  <strong>Phương thức vận chuyển</strong>: tên đơn vị
+                  <strong>Phương thức vận chuyển:</strong>
+                  <select v-model="shop.selectedDVVC" @change="handleChonDVVC(shop)">
+                    <option disabled value="">-- Chọn đơn vị vận chuyển --</option>
+                    <option v-for="dv in list_don_vi_van_chuyen" :key="dv.id" :value="dv">
+                      {{ dv.ten_cong_ty }} ({{ formatToVND(dv.cuoc_van_chuyen) }})
+                    </option>
+                  </select>
+                </div>
+                <hr>
+                <div class="col-sm-12" v-if="shop.selectedDVVC">
+                  <strong>Phí vận chuyển</strong>: {{ formatToVND(shop.selectedDVVC.cuoc_van_chuyen) }}
                 </div>
                 <hr>
                 <div class="col-sm-12">
                   <strong>Ngày nhận hàng (dự kiến)</strong>: {{ calculateDeliveryDate(shop.products[0].ngay_dat_hang) }}
                 </div>
                 <hr>
-                <div class="col-sm-12">
-                  <strong>Được đồng kiểm</strong>
-                </div>
+                <div class="col-sm-12"><strong>Được đồng kiểm</strong></div>
               </div>
               <div class="col-sm-2"></div>
               <div class="col-sm-4 text-end">
-                <h5>Tổng tiền: <strong style="color: red;">{{ formatToVND(getTotalByShop(shop.products)) }}</strong>
+                <h5>Tổng tiền:
+                  <strong style="color: red;">
+                    {{ formatToVND(getTotalByShop(shop.products) + (shop.cuoc_van_chuyen || 0)) }}
+                  </strong>
                 </h5>
               </div>
             </div>
@@ -110,6 +112,7 @@
 import { createToaster } from "@meforma/vue-toaster";
 import baseRequest from "../../../core/baseRequest";
 const toaster = createToaster({ position: "top-right" });
+
 export default {
   data() {
     return {
@@ -117,68 +120,73 @@ export default {
       ten_nguoi_nhan: "",
       so_dien_thoai: "",
       dia_chi: "",
-    }
+      list_don_vi_van_chuyen: [],
+      groupedSanPham: [],
+    };
   },
   computed: {
     tongTien() {
-      return this.list_san_pham
-        .filter(v => v.selected)
-        .reduce((sum, v) => sum + v.don_gia * v.so_luong, 0);
-    },
-    groupedSanPham() {
-      let grouped = {};
-      this.list_san_pham.forEach((sp) => {
-        if (!grouped[sp.ten_cong_ty]) {
-          grouped[sp.ten_cong_ty] = {
-            ten_cong_ty: sp.ten_cong_ty,
-            products: [],
-          };
-        }
-        grouped[sp.ten_cong_ty].products.push(sp);
-      });
-      return Object.values(grouped);
-    },
-    tongTien() {
-      return this.list_san_pham.reduce((sum, v) => sum + (v.don_gia * v.so_luong), 0);
+      let productTotal = this.list_san_pham.reduce((sum, v) => {
+        return sum + (Number(v.don_gia) * Number(v.so_luong));
+      }, 0);
+      let shippingTotal = this.groupedSanPham.reduce((sum, shop) => {
+        return sum + (Number(shop.cuoc_van_chuyen) || 0);
+      }, 0);
+      return productTotal + shippingTotal;
     }
   },
   mounted() {
     const list_san_pham = localStorage.getItem("donHangData");
-    console.log(list_san_pham)
     if (list_san_pham) {
       this.list_san_pham = JSON.parse(list_san_pham);
+      this.groupSanPhamByShop();
     }
     this.ten_nguoi_nhan = localStorage.getItem("ho_ten");
     this.so_dien_thoai = localStorage.getItem("so_dien_thoai");
     this.dia_chi = localStorage.getItem("dia_chi");
+    this.loadDataDVVC();
   },
   methods: {
     formatToVND(amount) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount * 1000);
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     },
 
     getTotalByShop(products) {
-      return products.reduce((sum, v) => sum + (v.don_gia * v.so_luong), 0);
+      return products.reduce((sum, v) => sum + (Number(v.don_gia) * Number(v.so_luong)), 0);
     },
 
     async datHang() {
-      if (!this.list_san_pham.length) {
+      if (!Array.isArray(this.list_san_pham) || this.list_san_pham.length === 0) {
         toaster.error("Không có sản phẩm để đặt hàng!");
         return;
       }
+      for (let shop of this.groupedSanPham) {
+        if (!shop.selectedDVVC) {
+          toaster.error(`Vui lòng chọn đơn vị vận chuyển cho nhà sản xuất: ${shop.ten_cong_ty}`);
+          return;
+        }
+      }
       try {
-        // Chuẩn bị dữ liệu đơn hàng
+        let tongTienSanPham = this.list_san_pham.reduce((sum, sp) => {
+          return sum + sp.don_gia * sp.so_luong;
+        }, 0);
+        let cuocVanChuyen = this.groupedSanPham.reduce((sum, shop) => {
+          return sum + (shop.cuoc_van_chuyen || 0);
+        }, 0);
+        let tongTien = tongTienSanPham + cuocVanChuyen;
         let orderData = {
-          user_id: localStorage.getItem("user_id"), // ID người dùng
+          user_id: localStorage.getItem("user_id"),
           ten_nguoi_nhan: this.ten_nguoi_nhan,
           so_dien_thoai: this.so_dien_thoai,
           dia_chi: this.dia_chi,
+          tong_tien: tongTien,
+          cuoc_van_chuyen: cuocVanChuyen,
           san_pham: this.list_san_pham.map(sp => ({
             id_san_pham: sp.id_san_pham,
             id_nha_san_xuat: sp.id_nha_san_xuat,
             so_luong: sp.so_luong,
             don_gia: sp.don_gia
-          }))
+          })),
         };
         let response = await baseRequest.post("user/gio-hang/dat-hang", orderData);
         if (response.data.success) {
@@ -197,33 +205,62 @@ export default {
 
     isWeekend(date) {
       const d = new Date(date);
-      const day = d.getDay(); // Thứ trong tuần (0 - Chủ nhật, 6 - Thứ 7)
-      return day === 0 || day === 6; // Nếu là Chủ nhật hoặc Thứ 7
+      return d.getDay() === 0 || d.getDay() === 6;
     },
 
-    // Hàm tính ngày nhận hàng dựa trên ngày làm việc
     calculateDeliveryDate(orderDate) {
-      const orderDateObj = new Date(orderDate);
-      let deliveryDate = new Date(orderDateObj);
-
-      let addedDays = 0; // Số ngày làm việc cần thêm vào
+      let deliveryDate = new Date(orderDate);
+      let addedDays = 0;
       while (addedDays < 4) {
         deliveryDate.setDate(deliveryDate.getDate() + 1);
-        if (!this.isWeekend(deliveryDate)) { // Kiểm tra nếu không phải cuối tuần
+        if (!this.isWeekend(deliveryDate)) {
           addedDays++;
         }
       }
-
       return this.formatDate(deliveryDate);
     },
 
-    // Hàm format ngày theo định dạng dd/mm/yyyy
     formatDate(date) {
       const d = new Date(date);
       return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
-    }
-  },
-}
+    },
+
+    loadDataDVVC() {
+      baseRequest.get("user/don-vi-van-chuyen/lay-du-lieu").then(res => {
+        if (res.data.status) {
+          this.list_don_vi_van_chuyen = res.data.data;
+        } else {
+          toaster.error("Thông báo<br>" + res.data.message);
+        }
+      });
+    },
+
+    handleChonDVVC(shop) {
+      if (shop.selectedDVVC) {
+        shop.cuoc_van_chuyen = Number(shop.selectedDVVC.cuoc_van_chuyen);
+      } else {
+        shop.cuoc_van_chuyen = 0;
+      }
+      this.groupedSanPham = [...this.groupedSanPham]; // Trigger reactivity
+    },
+
+    groupSanPhamByShop() {
+      let grouped = {};
+      this.list_san_pham.forEach(sp => {
+        if (!grouped[sp.ten_cong_ty]) {
+          grouped[sp.ten_cong_ty] = {
+            ten_cong_ty: sp.ten_cong_ty,
+            products: [],
+            selectedDVVC: null,
+            cuoc_van_chuyen: 0,
+          };
+        }
+        grouped[sp.ten_cong_ty].products.push(sp);
+      });
+      this.groupedSanPham = Object.values(grouped);
+    },
+  }
+};
 </script>
 
 <style>

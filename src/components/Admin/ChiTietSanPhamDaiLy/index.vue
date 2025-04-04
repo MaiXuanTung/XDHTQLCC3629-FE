@@ -35,7 +35,7 @@
                 <div class="text-success"><i class="bx bxs-cart-alt align-middle"></i> 134 orders</div>
               </div>
               <div class="mb-3">
-                <span class="price h4">{{ san_pham.gia_ban }} đ</span>
+                <span class="price h4">{{ formatToVND(san_pham.gia_ban) }}</span>
               </div>
               <p class="card-text fs-6">{{ san_pham.mo_ta }}</p>
               <dl class="row">
@@ -134,7 +134,7 @@
                     </div>
                     <div class="clearfix">
                       <p class="mb-0 float-start fw-bold">
-                        <span>{{ v.gia_ban }} đ</span>
+                        <span>{{ formatToVND(v.gia_ban) }}</span>
                       </p>
                     </div>
                   </div>
@@ -250,7 +250,11 @@ export default {
         .finally(() => {
           this.so_luong = 1;
         });
-    }
+    },
+
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    },
   },
 }
 </script>
