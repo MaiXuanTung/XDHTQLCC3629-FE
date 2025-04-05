@@ -28,7 +28,6 @@
                 <th>#</th>
                 <th>Tên Công Ty</th>
                 <th>Email</th>
-                <th>Mật Khẩu</th>
                 <th>Địa Chỉ</th>
                 <th>Số Điện Thoại</th>
                 <th>Tình Trạng</th>
@@ -41,7 +40,6 @@
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
                   <td>{{ v.email }}</td>
-                  <td>{{ v.mat_khau }}</td>
                   <td>{{ v.dia_chi }}</td>
                   <td>{{ v.so_dien_thoai }}</td>
                   <td>
