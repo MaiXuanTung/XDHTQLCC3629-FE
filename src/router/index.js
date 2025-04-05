@@ -14,7 +14,7 @@ const routes = [
   },
 
   {
-    path: '/admin/dai-ly',
+    path: '/admin/danh-sach-dai-ly',
     component: () => import('../components/Admin/DaiLy/index.vue'),
     beforeEnter: checkLogin,
   },
@@ -54,6 +54,11 @@ const routes = [
   {
     path: '/admin/don-vi-van-chuyen',
     component: () => import('../components/Admin/DonViVanChuyen/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  {
+    path: '/admin/danh-sach-don-hang',
+    component: () => import('../components/Admin/DonHang/index.vue'),
     beforeEnter: checkLogin,
   },
   //dùng chung

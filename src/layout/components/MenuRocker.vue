@@ -51,7 +51,7 @@
             <li> <a class="dropdown-item" href="/admin/nha-san-xuat"><i class="bx bx-right-arrow-alt"></i>Nhà Sản
                 Xuất</a>
             </li>
-            <li> <a class="dropdown-item" href="/admin/dai-ly"><i class="bx bx-right-arrow-alt"></i>Đại Lý</a>
+            <li> <a class="dropdown-item" href="/admin/danh-sach-dai-ly"><i class="bx bx-right-arrow-alt"></i>Đại Lý</a>
             </li>
           </ul>
         </li>
@@ -73,32 +73,25 @@
             <div class="menu-title">Vận Chuyển</div>
           </a>
           <ul class="dropdown-menu">
-            <li> <a class="dropdown-item" href="/admin/don-vi-van-chuyen"><i class="bx bx-right-arrow-alt"></i>Đơn vị vận chuyển</a>
+            <li> <a class="dropdown-item" href="/admin/don-vi-van-chuyen"><i class="bx bx-right-arrow-alt"></i>Đơn vị
+                vận chuyển</a>
             </li>
             <li> <a class="dropdown-item" href="/admin/phuong-tien"><i class="bx bx-right-arrow-alt"></i>Phương Tiện</a>
             </li>
           </ul>
         </li>
-        <!-- <li class="nav-item">
-          <router-link to="/admin/chi-tiet-san-pham">
-            <a href="/admin/chi-tiet-san-pham" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-truck-plane"></i>
-              </div>
-              <div class="menu-title">CT Sản Phẩm</div>
-            </a>
-          </router-link>
-        </li> -->
-        <!-- <li class="nav-item">
-          <router-link to="/admin/san-pham-nsx">
-            <a href="/admin/san-pham-nsx" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-truck-plane"></i>
-              </div>
-              <div class="menu-title">Sản Phẩm NSX</div>
-            </a>
-          </router-link>
-        </li> -->
+        <li class="nav-item dropdown">
+          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+            <div class="parent-icon"><i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+            <div class="menu-title">Chứng Từ</div>
+          </a>
+          <ul class="dropdown-menu">
+            <li> <a class="dropdown-item" href="/admin/danh-sach-don-hang"><i class="bx bx-right-arrow-alt"></i>Đơn
+                Hàng</a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>
