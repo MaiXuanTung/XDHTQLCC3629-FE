@@ -19,6 +19,16 @@
             </a>
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/danh-sach-don-hang">
+            <a href="/danh-sach-don-hang" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-list-ul"></i>
+              </div>
+              <div class="menu-title">Đơn Hàng</div>
+            </a>
+          </router-link>
+        </li>
       </ul>
     </nav>
   </div>

@@ -167,7 +167,7 @@ export default {
 
     loadDataDonHang() {
       baseRequest
-        .get('user/don-hang/lay-du-lieu')
+        .get('user/don-hang/dai-ly/lay-du-lieu')
         .then((res) => {
           if (res.data.status) {
             this.list_don_hang = res.data.data;
@@ -180,7 +180,7 @@ export default {
     xemChiTietDonHang(id) {
       this.id_don_hang_dang_xem = id;
       baseRequest
-        .post(`user/don-hang/chi-tiet`, { id_don_hang: id })
+        .post(`user/don-hang/dai-ly/chi-tiet`, { id_don_hang: id })
         .then((res) => {
           if (res.data.status) {
             this.list_chi_tiet_don_hang = res.data.data;
@@ -192,7 +192,7 @@ export default {
 
     huyDonHang(v) {
       baseRequest
-        .post('user/don-hang/huy-don-hang', v)
+        .post('user/don-hang/dai-ly/huy-don-hang', v)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);

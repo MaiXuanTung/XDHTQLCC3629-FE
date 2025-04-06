@@ -101,6 +101,11 @@ const routes = [
     component: () => import('../components/NhaSanXuat/SanPhamNSX/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/danh-sach-don-hang',
+    component: () => import('../components/NhaSanXuat/DonHangNSX/index.vue'),
+    beforeEnter: checkLogin,
+  },
 ]
 
 const router = createRouter({
