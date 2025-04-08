@@ -83,30 +83,62 @@
                   </div>
                   <hr>
                   <div class="row mb-3">
+                    <label for="inputidSanPham" class="col-sm-3 col-form-label">Mã Sản Phẩm</label>
+                    <div class="col-9">
+                      <input v-model="create_san_pham_nsx.ma_san_pham" type="text" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
                     <label for="inputidSanPham" class="col-sm-3 col-form-label">Sản Phẩm</label>
                     <div class="col-9">
-                      <select v-model="create_san_pham_nsx.id_san_pham" class="form-control">
-                        <template v-for="(value, index) in list_san_pham" :key="index">
-                          <option v-bind:value="value.id">{{ value.ten_san_pham }} </option>
-                        </template>
-                      </select>
+                      <input v-model="create_san_pham_nsx.ten_san_pham" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputidNhaSX" class="col-sm-3 form-label">Tên Công Ty</label>
+                    <label for="inputidSanPham" class="col-sm-3 col-form-label">Mô Tả</label>
                     <div class="col-9">
-                      <select v-model="create_san_pham_nsx.id_nha_san_xuat" class="form-control">
-                        <template v-for="(value, index) in list_nha_san_xuat" :key="index">
-                          <option v-bind:value="value.id">{{ value.ten_cong_ty }} </option>
-                        </template>
-                      </select>
+                      <input v-model="create_san_pham_nsx.mo_ta" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputMaLoHang" class="col-sm-3 col-form-label">Mã Lô Hàng</label>
+                    <label class="col-sm-3 col-form-label">Tên Công Ty</label>
+                    <div class="col-9">
+                      <input v-model="create_san_pham_nsx.ten_cong_ty" type="text" class="form-control" readonly>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputMaLoHang" class="col-sm-3 col-form-label">Hình Ảnh</label>
                     <div class="col-sm-9">
-                      <input v-model="create_san_pham_nsx.ma_lo_hang" type="text" class="form-control"
-                        id="inputMaLoHang">
+                      <input v-model="create_san_pham_nsx.hinh_anh" class="form-control" id="inputMaLoHang">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNSX" class="col-sm-3 col-form-label">Số Lượng Tồn Kho</label>
+                    <div class="col-sm-9">
+                      <input v-model="create_san_pham_nsx.so_luong_ton_kho" type="text" class="form-control"
+                        id="inputNSX">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNSX" class="col-sm-3 col-form-label">Giá Bán </label>
+                    <div class="col-sm-9">
+                      <input v-model="create_san_pham_nsx.gia_ban" type="text" class="form-control" id="inputNSX">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNSX" class="col-sm-3 col-form-label">Đơn Vị Tính</label>
+                    <div class="col-sm-9">
+                      <input v-model="create_san_pham_nsx.don_vi_tinh" type="text" class="form-control" id="inputNSX">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputMaLoHang" class="col-sm-3 col-form-label">Danh Mục</label>
+                    <div class="col-sm-9">
+                      <select v-model="create_san_pham_nsx.id_danh_muc" class="form-control">
+                        <template v-for="(value, index) in list_danh_muc_sp" :key="index">
+                          <option v-bind:value="value.id">{{ value.ten_danh_muc }}</option>
+                        </template>
+                      </select>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -259,9 +291,22 @@ export default {
     this.loadDataSanPham();
     // this.loadDataNhaSanXuat();S
     this.loadDataDanhMucSp();
+    this.loadUserInfo();
   },
   methods:
   {
+    loadUserInfo() {
+      baseRequest
+        .get('admin/san-pham-nsx/user/info') // Thay đổi endpoint nếu cần
+        .then((res) => {
+          if (res.data.status) {
+            this.create_san_pham_nsx.id_nha_san_xuat = res.data.user.id_nha_san_xuat; // Lưu ID công ty
+            this.create_san_pham_nsx.ten_cong_ty = res.data.user.ten_cong_ty; // Lưu tên công ty
+          } else {
+            toaster.error('Không thể tải thông tin người dùng');
+          }
+        });
+    },
     loadDataSanPhamNSX() {
       baseRequest
         .get('user/san-pham/get-data-by-user')
@@ -310,7 +355,7 @@ export default {
 
     themMoiSanPhamNSX() {
       baseRequest
-        .post('admin/san-pham-nsx/them-moi-san-pham-nsx', this.create_san_pham_nsx)
+        .post('admin/san-pham-nha-san-xuat/create-san-pham-nha-san-xuat', this.create_san_pham_nsx)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
