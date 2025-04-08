@@ -42,11 +42,6 @@ const routes = [
     beforeEnter: checkLogin,
   },
   {
-    path: '/admin/phuong-tien',
-    component: () => import('../components/Admin/PhuongTien/index.vue'),
-    beforeEnter: checkLogin,
-  },
-  {
     path: '/admin/chi-tiet-san-pham',
     component: () => import('../components/Admin/ChiTietSanPham/index.vue'),
     beforeEnter: checkLogin,
@@ -97,13 +92,26 @@ const routes = [
   },
   //nhà sản xuất
   {
-    path: '/danh-sach-san-pham',
+    path: '/nsx/danh-sach-san-pham',
     component: () => import('../components/NhaSanXuat/SanPhamNSX/index.vue'),
     beforeEnter: checkLogin,
   },
   {
-    path: '/danh-sach-don-hang',
+    path: '/nsx/danh-sach-don-hang',
     component: () => import('../components/NhaSanXuat/DonHangNSX/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  //đon vị vận chuyển
+  {
+    path: '/dvvc/danh-sach-phuong-tien',
+    component: () =>
+      import('../components/DonViVanChuyen/PhuongTien/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  {
+    path: '/dvvc/danh-sach-don-hang',
+    component: () =>
+      import('../components/DonViVanChuyen/DonHangDVVC/index.vue'),
     beforeEnter: checkLogin,
   },
 ]

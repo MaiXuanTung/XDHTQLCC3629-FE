@@ -61,13 +61,16 @@
                         class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
                     <div v-else-if="v.tinh_trang == 2"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                        class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
                     <div v-else-if="v.tinh_trang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle me-1"></i>Hoàn thành</div>
                     <div v-else-if="v.tinh_trang == 4"
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                    <div v-else-if="v.tinh_trang == 5"
+                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -301,7 +304,7 @@ export default {
         this.xacNhanDonHang(this.donHangXacNhan);
         this.donHangXacNhan = null;
       }
-      const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
+      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
       modal.hide();
     },
 

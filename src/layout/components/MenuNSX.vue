@@ -10,8 +10,8 @@
     <nav class="navbar navbar-expand-xl w-100">
       <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
         <li class="nav-item">
-          <router-link to="/danh-sach-san-pham">
-            <a href="/danh-sach-san-pham" class="nav-link">
+          <router-link to="/nsx/danh-sach-san-pham">
+            <a href="/nsx/danh-sach-san-pham" class="nav-link">
               <div class="parent-icon">
                 <i class="fa-solid fa-list-ul"></i>
               </div>
@@ -20,8 +20,8 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/danh-sach-don-hang">
-            <a href="/danh-sach-don-hang" class="nav-link">
+          <router-link to="/nsx/danh-sach-don-hang">
+            <a href="/nsx/danh-sach-don-hang" class="nav-link">
               <div class="parent-icon">
                 <i class="fa-solid fa-list-ul"></i>
               </div>
