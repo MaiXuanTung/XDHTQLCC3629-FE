@@ -39,6 +39,7 @@
                 <th class="text-center">Actions</th>
                 <th>Tình Trạng</th>
                 <th>Người Đặt</th>
+                <th>Nhà Sản Xuất</th>
                 <th>Sản Phẩm</th>
                 <th>Hình Ảnh</th>
                 <th>Đơn Giá</th>
@@ -46,7 +47,6 @@
                 <th>Thành Tiền</th>
                 <th>Ngày Đặt</th>
                 <th>Tình Trạng TT</th>
-                <th>Đơn Vị VC</th>
               </tr>
             </thead>
             <tbody>
@@ -55,21 +55,18 @@
                   <td><strong>{{ k + 1 }}</strong></td>
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
                   <td>
-                    <div v-if="v.tinh_trang == 1" class="d-flex order-actions">
+                    <div v-if="v.tinh_trang == 2" class="d-flex order-actions">
                       <a type="button" @click="moXacNhan(v)" class="ms-3 text-success" data-bs-toggle="modal"
                         data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
                     </div>
-                    <div v-else-if="v.tinh_trang == 4 || v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 5"
-                      :disabled="v.tinh_trang == 4 || v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 5"
+                    <div v-else-if="v.tinh_trang == 5 || v.tinh_trang == 3 || v.tinh_trang == 4"
+                      :disabled="v.tinh_trang == 5 || v.tinh_trang == 3 || v.tinh_trang == 4"
                       class="d-flex order-actions">
                       <a type="button" class="ms-3"><i class="fa-solid fa-check" style="color: gray;"></i></a>
                     </div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang == 1"
-                      class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đang chuẩn bị hàng</div>
-                    <div v-else-if="v.tinh_trang == 2"
+                    <div v-if="v.tinh_trang == 2"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
                     <div v-else-if="v.tinh_trang == 3"
@@ -80,9 +77,10 @@
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                     <div v-else-if="v.tinh_trang == 5"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đang giao hàng</div>
+                        class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                   </td>
                   <td>{{ v.ten_khach_hang }}</td>
+                  <td>{{ v.ten_nsx }}</td>
                   <td>{{ v.ten_san_pham }}</td>
                   <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
                   </td>
@@ -101,7 +99,6 @@
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                   </td>
-                  <td>{{ v.ten_dvvc }}</td>
                 </tr>
               </template>
             </tbody>
@@ -165,7 +162,7 @@ export default {
 
     loadDataDonHang() {
       baseRequest
-        .get('user/don-hang/nha-san-xuat/lay-du-lieu-cho-nsx')
+        .get('user/don-hang/don-vi-van-chuyen/lay-du-lieu-cho-dvvc')
         .then((res) => {
           if (res.data.status) {
             this.list_don_hang = res.data.data;
@@ -190,7 +187,7 @@ export default {
 
     xacNhanDonHang(v) {
       baseRequest
-        .post('user/don-hang/nha-san-xuat/xac-nhan-don-hang', v)
+        .post('user/don-hang/don-vi-van-chuyen/xac-nhan-don-hang', v)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);

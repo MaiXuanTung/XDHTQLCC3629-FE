@@ -38,10 +38,13 @@
                       class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
                     <div v-else-if="v.tinh_trang == 1"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                      class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
                     <div v-else-if="v.tinh_trang == 2"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                    <div v-else-if="v.tinh_trang == 5"
+                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                     <div v-else-if="v.tinh_trang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
@@ -76,8 +79,8 @@
                       <a type="button" title="Hủy đơn hàng" @click="huyDonHang(v)" class="ms-3" style="color: red;"><i
                           class="bx bxs-trash"></i></a>
                     </div>
-                    <div v-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4"
-                      :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4"
+                    <div v-else-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4 || v.tinh_trang == 5"
+                      :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4 || v.tinh_trang == 5"
                       class="d-flex order-actions">
                       <a type="button" title="Hủy đơn hàng" class="ms-3" style="color: gray;"><i
                           class="bx bxs-trash"></i></a>
@@ -91,6 +94,7 @@
       </div>
     </div>
     <!-- modal -->
+    <!-- modal chi tiết -->
     <div class="modal fade" id="chiTietDonHangModal" tabindex="-1" aria-hidden="true" style="display: none;">
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -104,10 +108,11 @@
                   <th>Sản Phẩm</th>
                   <th>Hình Ảnh</th>
                   <th>Đơn Giá</th>
-                  <th>Số Lượng</th>
+                  <th>SL</th>
                   <th>Thành Tiền</th>
                   <th>Nhà Sản Xuất</th>
                   <th>Đơn Vị Vận Chuyển</th>
+                  <th>Tình Trạng</th>
                   <th>Cước VC</th>
                 </tr>
               </thead>
@@ -123,6 +128,26 @@
                     <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
                     <td>{{ v.ten_nha_san_xuat }}</td>
                     <td>{{ v.ten_dvvc }}</td>
+                    <td>
+                      <div v-if="v.tinh_trang == 0"
+                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                      <div v-else-if="v.tinh_trang == 1"
+                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                      <div v-else-if="v.tinh_trang == 2"
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                      <div v-else-if="v.tinh_trang == 3"
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle me-1"></i>Hoàn thành</div>
+                      <div v-else-if="v.tinh_trang == 4"
+                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                      <div v-else-if="v.tinh_trang == 5"
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                    </td>
                     <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
                   </tr>
                 </template>

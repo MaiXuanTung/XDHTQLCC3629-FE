@@ -108,10 +108,10 @@ export default {
               this.$router.push('/home-page');
               break;
             case 'Nhà Sản Xuất':
-              this.$router.push('/danh-sach-san-pham');
+              this.$router.push('/nsx/danh-sach-san-pham');
               break;
             case 'Đơn vị vận chuyển':
-              this.$router.push('/');
+              this.$router.push('/dvvc/danh-sach-don-hang');
               break;
             default:
               toaster.error('Loại tài khoản không hợp lệ!');
