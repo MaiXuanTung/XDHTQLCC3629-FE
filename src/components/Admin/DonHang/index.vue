@@ -12,8 +12,9 @@
         <div class="row">
           <div class="col-lg-9">
             <div class="input-group mb-3 ">
-              <input type="text" class="form-control search-control" placeholder="Nhập thông tin cần tìm">
-              <button class="btn btn-primary ">
+              <input v-on:keyup.enter="searchDonHang()" v-model="key_search.abc" type="text"
+                class="form-control search-control" placeholder="Nhập khách hàng cần tìm">
+              <button v-on:click="searchDonHang()" class="btn btn-primary">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
@@ -231,6 +232,7 @@ export default {
       list_dai_ly: [],
       list_chi_tiet_don_hang: [],
       id_don_hang_dang_xem: null,
+      key_search: {},
       id_can_huy: '',
       LocTheoTenCongTy : "",
     }
@@ -347,6 +349,17 @@ export default {
             this.loadDataDonHang();
           }
           else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    searchDonHang() {
+      baseRequest
+        .post('admin/don-hang/tim-don-hang', this.key_search)
+        .then((res) => {
+          if (res.data.status) {
+            this.list_don_hang = res.data.data;
+          } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });

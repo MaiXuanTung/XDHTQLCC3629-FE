@@ -12,18 +12,20 @@
         <div class="row">
           <div class="col-lg-9">
             <div class="input-group mb-3 ">
-              <input type="text" class="form-control search-control" placeholder="Nhập thông tin cần tìm">
-              <button class="btn btn-primary ">
+              <input v-on:keyup.enter="searchDonHang()" v-model="key_search.abc" type="text"
+                class="form-control search-control" placeholder="Nhập tên sản phẩm cần tìm">
+              <button v-on:click="searchDonHang()" class="btn btn-primary">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
           </div>
           <div class="col-lg-3">
             <div>
-              <select class="form-control border-primary">
+              <select class="form-control" v-model="LocTheoTenCongTy">
                 <option value="">Tên chủ đơn hàng - Tất Cả</option>
-                <option value="1">Hoạt Động</option>
-                <option value="0">Tạm Dừng</option>
+                <template v-for="(value, index) in list_dai_ly" :key="index">
+                  <option v-bind:value="value.id">{{ value.ten_cong_ty }} </option>
+                </template>
               </select>
             </div>
           </div>
@@ -50,7 +52,7 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for="(v, k) in list_don_hang">
+              <template v-for="(v, k) in locDataTheoTenCongTy" :key="k">
                 <tr>
                   <td><strong>{{ k + 1 }}</strong></td>
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
@@ -142,13 +144,25 @@ export default {
   data() {
     return {
       list_don_hang: [],
+      list_dai_ly: [],
       list_chi_tiet_don_hang: [],
       id_don_hang_dang_xem: null,
       id_can_huy: '',
+      key_search: {},
+      LocTheoTenCongTy : "",
     }
   },
   mounted() {
     this.loadDataDonHang();
+    this.loadDataDaiLy();
+  },
+  computed: {
+    locDataTheoTenCongTy() {
+      if (this.LocTheoTenCongTy === "") {
+        return this.list_don_hang; // Hiển thị tất cả nếu chưa chọn gì
+      }
+      return this.list_don_hang.filter(item => String(item.user_id) === String(this.LocTheoTenCongTy));
+    },
   },
   methods: {
     formatToVND(amount) {
@@ -163,12 +177,24 @@ export default {
       return `${day}/${month}/${year}`;
     },
 
+    
     loadDataDonHang() {
       baseRequest
         .get('user/don-hang/nha-san-xuat/lay-du-lieu-cho-nsx')
         .then((res) => {
           if (res.data.status) {
             this.list_don_hang = res.data.data;
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    loadDataDaiLy() {
+      baseRequest
+        .get('admin/dai-ly/lay-du-lieu')
+        .then((res) => {
+          if (res.data.status) {
+            this.list_dai_ly = res.data.dai_ly;
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -197,6 +223,17 @@ export default {
             this.loadDataDonHang();
           }
           else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    searchDonHang() {
+      baseRequest
+        .post('user/don-hang/nha-san-xuat/tim-don-hang-nsx', this.key_search)
+        .then((res) => {
+          if (res.data.status) {
+            this.list_don_hang = res.data.data;
+          } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });

@@ -16,7 +16,7 @@
           <div class="col-lg-9">
             <div class="input-group mb-3">
               <input v-on:keyup.enter="searchSanPhamNSX()" v-model="key_search.abc" type="text"
-                class="form-control search-control" placeholder="Nhập thông tin cần tìm">
+                class="form-control search-control" placeholder="Nhập tên sản phẩm cần tìm">
               <button v-on:click="searchSanPhamNSX()" class="btn btn-primary">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
