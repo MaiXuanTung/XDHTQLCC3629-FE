@@ -12,12 +12,25 @@
               Mới</button>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input v-on:keyup.enter="searchSanPhamNSX()" v-model="key_search.abc" type="text"
-            class="form-control search-control" placeholder="Nhập thông tin cần tìm">
-          <button v-on:click="searchSanPhamNSX()" class="btn btn-primary">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
+        <div class="row">
+          <div class="col-lg-9">
+            <div class="input-group mb-3">
+              <input v-on:keyup.enter="searchSanPhamNSX()" v-model="key_search.abc" type="text"
+                class="form-control search-control" placeholder="Nhập thông tin cần tìm">
+              <button v-on:click="searchSanPhamNSX()" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div>
+              <select class="form-control border-primary" v-model="LocTheoTrangThai">
+                <option value="">Tình Trạng - Tất Cả</option>
+                <option value="1">Đã đăng bán</option>
+                <option value="0">Dừng đăng bán</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-body">
@@ -27,6 +40,7 @@
               <tr>
                 <th>#</th>
                 <th>Sản Phẩm</th>
+                <th>Mô Tả</th>
                 <th class="text-center">Danh Mục</th>
                 <th>Hình Ảnh</th>
                 <th>Số Lượng Tồn Kho</th>
@@ -37,10 +51,14 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for="(v, k) in list_san_pham_nsx" :key="k">
+              <template v-for="(v, k) in locDataTheoTrangThai" :key="k">
                 <tr class="">
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ten_san_pham }}</td>
+                  <td>
+                    <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp, v)"
+                      class="fa-solid fa-circle-info ms-2" data-bs-toggle="modal" data-bs-target="#MotaModal"></i>
+                  </td>
                   <td>{{ v.ten_danh_muc }}</td>
                   <td><img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80"></td>
                   <td class="text-center">{{ v.so_luong_ton_kho }}</td>
@@ -73,6 +91,24 @@
             </tbody>
           </table>
         </div>
+        <div class="modal fade" id="MotaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+          aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Mô tả sản phẩm</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                {{ mo_ta_sp.mo_ta }}
+                <!-- {{ mo_ta_sp.mo_ta }} -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="modal fade" id="themMoiModal" tabindex="-1" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -83,48 +119,68 @@
                   </div>
                   <hr>
                   <div class="row mb-3">
-                    <label for="inputidSanPham" class="col-sm-3 col-form-label">Sản Phẩm</label>
-                    <div class="col-9">
-                      <select v-model="create_san_pham_nsx.id_san_pham" class="form-control">
-                        <template v-for="(value, index) in list_san_pham" :key="index">
-                          <option v-bind:value="value.id">{{ value.ten_san_pham }} </option>
-                        </template>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputidNhaSX" class="col-sm-3 form-label">Tên Công Ty</label>
-                    <div class="col-9">
-                      <select v-model="create_san_pham_nsx.id_nha_san_xuat" class="form-control">
-                        <template v-for="(value, index) in list_nha_san_xuat" :key="index">
-                          <option v-bind:value="value.id">{{ value.ten_cong_ty }} </option>
-                        </template>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputMaLoHang" class="col-sm-3 col-form-label">Mã Lô Hàng</label>
+                    <label for="inputtenSanPham" class="col-sm-3 col-form-label">Tên Sản Phẩm</label>
                     <div class="col-sm-9">
-                      <input v-model="create_san_pham_nsx.ma_lo_hang" type="text" class="form-control"
+                      <input v-model="create_san_pham_nsx.ten_san_pham" type="text" class="form-control"
+                        placeholder="Nhập tên sản phẩm" id="inputtenSanPham">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputMoTa" class="col-sm-3 col-form-label">Mô Tả</label>
+                    <div class="col-sm-9">
+                      <textarea v-model="create_san_pham_nsx.mo_ta" class="form-control" id="inputMoTa"
+                        placeholder="Nhập mô tả" rows="3"></textarea>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputDanhMuc" class="col-sm-3 col-form-label">Danh Mục</label>
+                    <div class="col-9">
+                      <select class="form-control" v-model="create_san_pham_nsx.id_danh_muc">
+                        <option disabled value="">Chọn danh mục</option>
+                        <template v-for="(value, index) in list_danh_muc_sp" :key="index">
+                          <option v-bind:value="value.id">{{ value.ten_danh_muc }} </option>
+                        </template>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputMaLoHang" class="col-sm-3 col-form-label">Hình Ảnh</label>
+                    <div class="col-sm-9">
+                      <input v-model="create_san_pham_nsx.hinh_anh" class="form-control" placeholder="Link ảnh"
                         id="inputMaLoHang">
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputNSX" class="col-sm-3 col-form-label">Ngày Sản Xuất</label>
+                    <label for="inputNSX" class="col-sm-3 col-form-label">Số Lượng Tồn Kho</label>
                     <div class="col-sm-9">
-                      <input v-model="create_san_pham_nsx.ngay_san_xuat" type="date" class="form-control" id="inputNSX">
+                      <input v-model="create_san_pham_nsx.so_luong_ton_kho" type="text" class="form-control"
+                        placeholder="Nhập số lượng tồn kho" id="inputNSX">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNSX" class="col-sm-3 col-form-label">Giá Bán </label>
+                    <div class="col-sm-9">
+                      <input v-model="create_san_pham_nsx.gia_ban" type="text" class="form-control"
+                        placeholder="Nhập giá bán" id="inputNSX">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNSX" class="col-sm-3 col-form-label">Đơn Vị Tính</label>
+                    <div class="col-sm-9">
+                      <input v-model="create_san_pham_nsx.don_vi_tinh" type="text" class="form-control"
+                        placeholder="Nhập đơn vị tính" id="inputNSX">
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Tình Trạng</label>
                     <div class="col-sm-9">
                       <select v-model="create_san_pham_nsx.tinh_trang" class="form-control">
-                        <option value="1">Hoạt Động</option>
-                        <option value="0">Tạm Dừng</option>
+                        <option disabled value="">Chọn tình trạng</option>
+                        <option value="1">Đã đăng bán</option>
+                        <option value="0">Dừng đăng bán</option>
                       </select>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div class="modal-footer">
@@ -148,10 +204,13 @@
                   <div class="row mb-3">
                     <label for="inputMaDonHang" class="col-sm-3 col-form-label">Sản Phẩm</label>
                     <div class="col-9">
-                      <div class="col-sm-9">
-                        <input v-model="update_san_pham_nsx.ten_san_pham" type="text" class="form-control"
-                          id="inputNSX">
-                      </div>
+                      <input v-model="update_san_pham_nsx.ten_san_pham" type="text" class="form-control" id="inputNSX">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputMaDonHang" class="col-sm-3 col-form-label">Mô Tả</label>
+                    <div class="col-9">
+                      <input v-model="update_san_pham_nsx.mo_ta" type="text" class="form-control" id="inputNSX">
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -243,22 +302,36 @@ const toaster = createToaster({ position: "top-right" });
 export default {
   data() {
     return {
+      LocTheoTrangThai: "",
       list_san_pham_nsx: [],
-      list_san_pham: [],
       list_danh_muc_sp: [],
-      list_nha_san_xuat: [],
-      create_san_pham_nsx: {},
+      // list_san_pham: [],
+      // list_nha_san_xuat: [],
+      // create_san_pham_nsx: {},
       id_can_xoa: '',
-      ghi_chu_sp: {},
+      // ghi_chu_sp: {},
       update_san_pham_nsx: {},
       key_search: {},
+      mo_ta_sp: {},
+      create_san_pham_nsx: {
+        id_danh_muc: '',
+        tinh_trang: '',
+      },
     }
   },
   mounted() {
     this.loadDataSanPhamNSX();
-    this.loadDataSanPham();
+    // this.loadDataSanPham();
     // this.loadDataNhaSanXuat();S
     this.loadDataDanhMucSp();
+  },
+  computed: {
+    locDataTheoTrangThai() {
+      if (this.LocTheoTrangThai === "") {
+        return this.list_san_pham_nsx; // Hiển thị tất cả nếu chưa chọn gì
+      }
+      return this.list_san_pham_nsx.filter(item => String(item.tinh_trang) === String(this.LocTheoTrangThai));
+    },
   },
   methods:
   {
@@ -284,38 +357,38 @@ export default {
           }
         });
     },
-    loadDataSanPham() {
-      baseRequest
-        .get('admin/san-pham/lay-du-lieu')
-        .then((res) => {
-          if (res.data.status) {
-            this.list_san_pham = res.data.san_pham;
-          } else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
-    },
+    // loadDataSanPham() {
+    //   baseRequest
+    //     .get('admin/san-pham/lay-du-lieu')
+    //     .then((res) => {
+    //       if (res.data.status) {
+    //         this.list_san_pham = res.data.san_pham;
+    //       } else {
+    //         toaster.error('Thông báo<br>' + res.data.message);
+    //       }
+    //     });
+    // },
 
-    loadDataNhaSanXuat() {
-      baseRequest
-        .get('admin/nha-san-xuat/lay-du-lieu')
-        .then((res) => {
-          if (res.data.status) {
-            this.list_nha_san_xuat = res.data.nha_san_xuat;
-          } else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
-    },
+    // loadDataNhaSanXuat() {
+    //   baseRequest
+    //     .get('admin/nha-san-xuat/lay-du-lieu')
+    //     .then((res) => {
+    //       if (res.data.status) {
+    //         this.list_nha_san_xuat = res.data.nha_san_xuat;
+    //       } else {
+    //         toaster.error('Thông báo<br>' + res.data.message);
+    //       }
+    //     });
+    // },
 
     themMoiSanPhamNSX() {
       baseRequest
-        .post('admin/san-pham-nsx/them-moi-san-pham-nsx', this.create_san_pham_nsx)
+        .post('user/san-pham/them-moi-san-pham-cua-nsx', this.create_san_pham_nsx)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataSanPhamNSX();
-            this.create_san_pham_nsx = { id_san_pham: "", id_nha_san_xuat: "", ma_lo_hang: "" };
+            this.create_san_pham_nsx = { ten_san_pham: "" };
           }
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);
@@ -325,10 +398,10 @@ export default {
 
     searchSanPhamNSX() {
       baseRequest
-        .post('admin/san-pham-nha-san-xuat/tim-san-pham-nha-san-xuat', this.key_search)
+        .post('user/san-pham/tim-san-pham-nha-san-xuat', this.key_search)
         .then((res) => {
           if (res.data.status) {
-            this.list_san_pham_nsx = res.data.san_pham; // Cập nhật dữ liệu tìm kiếm
+            this.list_san_pham_nsx = res.data.san_pham;
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -337,7 +410,7 @@ export default {
 
     deleteSanPhamNSX() {
       baseRequest
-        .delete('admin/san-pham-nsx/xoa-san-pham-nsx/' + this.id_can_xoa)
+        .delete('user/san-pham/xoa-san-pham-cua-nsx/' + this.id_can_xoa)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
@@ -351,7 +424,7 @@ export default {
 
     updateSanPhamNSX() {
       baseRequest
-        .post('admin/san-pham-nha-san-xuat/update-san-pham-nha-san-xuat', this.update_san_pham_nsx)
+        .post('user/san-pham/update-san-pham-cua-nsx', this.update_san_pham_nsx)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);

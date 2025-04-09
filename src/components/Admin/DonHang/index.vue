@@ -20,11 +20,17 @@
           </div>
           <div class="col-lg-3">
             <div>
-              <select class="form-control border-primary">
+              <select class="form-control" v-model="LocTheoTenCongTy">
+                <option value="">Tên chủ đơn hàng - Tất Cả</option>
+                <template v-for="(value, index) in list_dai_ly" :key="index">
+                  <option v-bind:value="value.id">{{ value.ten_cong_ty }} </option>
+                </template>
+              </select>
+              <!-- <select class="form-control border-primary">
                 <option value="">Tên chủ đơn hàng - Tất Cả</option>
                 <option value="1">Hoạt Động</option>
                 <option value="0">Tạm Dừng</option>
-              </select>
+              </select> -->
             </div>
           </div>
         </div>
@@ -46,7 +52,7 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for="(v, k) in list_don_hang">
+              <template v-for="(v, k) in locDataTheoTenCongTy" :key="k">
                 <tr>
                   <td>
                     {{ k + 1 }}
@@ -145,7 +151,7 @@
                 </tr>
               </thead>
               <tbody>
-                <template v-for="(v, k) in list_chi_tiet_don_hang">
+                <template v-for="(v, k) in list_chi_tiet_don_hang" :key="k">
                   <tr>
                     <td>{{ k + 1 }}</td>
                     <td>{{ v.ten_san_pham }}</td>
@@ -222,15 +228,27 @@ export default {
   data() {
     return {
       list_don_hang: [],
+      list_dai_ly: [],
       list_chi_tiet_don_hang: [],
       id_don_hang_dang_xem: null,
       id_can_huy: '',
+      LocTheoTenCongTy : "",
     }
   },
   mounted() {
     this.loadDataDonHang();
+    this.loadDataDaiLy();
+  },
+  computed: {
+    locDataTheoTenCongTy() {
+      if (this.LocTheoTenCongTy === "") {
+        return this.list_don_hang; // Hiển thị tất cả nếu chưa chọn gì
+      }
+      return this.list_don_hang.filter(item => String(item.user_id) === String(this.LocTheoTenCongTy));
+    },
   },
   methods: {
+
     formatToVND(amount) {
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     },
@@ -241,6 +259,18 @@ export default {
       const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
+    },
+
+    loadDataDaiLy() {
+      baseRequest
+        .get('admin/dai-ly/lay-du-lieu')
+        .then((res) => {
+          if (res.data.status) {
+            this.list_dai_ly = res.data.dai_ly;
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
     },
 
     loadDataDonHang() {
