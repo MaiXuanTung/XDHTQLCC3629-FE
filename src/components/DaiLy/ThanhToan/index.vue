@@ -167,6 +167,11 @@ export default {
         }
       }
       try {
+        let dsCuocVanChuyen = this.groupedSanPham.map(shop => ({
+          id_nha_san_xuat: shop.id_nha_san_xuat,
+          id_don_vi_van_chuyen: shop.selectedDVVC.id,
+          cuoc_van_chuyen: shop.cuoc_van_chuyen
+        }));
         let tongTienSanPham = this.list_san_pham.reduce((sum, sp) => {
           return sum + sp.don_gia * sp.so_luong;
         }, 0);
@@ -190,7 +195,8 @@ export default {
           don_vi_van_chuyen: this.groupedSanPham.map(shop => ({
             id_nha_san_xuat: shop.id_nha_san_xuat,
             id_don_vi_van_chuyen: shop.selectedDVVC.id
-          }))
+          })),
+          chi_tiet_cuoc_vc: dsCuocVanChuyen
         };
         console.log(orderData)
         let response = await baseRequest.post("user/gio-hang/dat-hang", orderData);

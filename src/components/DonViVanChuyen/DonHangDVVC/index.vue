@@ -39,12 +39,8 @@
                 <th class="text-center">Actions</th>
                 <th>Tình Trạng</th>
                 <th>Người Đặt</th>
-                <th>Nhà Sản Xuất</th>
-                <th>Sản Phẩm</th>
-                <th>Hình Ảnh</th>
-                <th>Đơn Giá</th>
-                <th>SL</th>
-                <th>Thành Tiền</th>
+                <th>Tổng Tiền</th>
+                <th>Chi Tiết</th>
                 <th>Ngày Đặt</th>
                 <th>Tình Trạng TT</th>
               </tr>
@@ -55,38 +51,40 @@
                   <td><strong>{{ k + 1 }}</strong></td>
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
                   <td>
-                    <div v-if="v.tinh_trang == 2" class="d-flex order-actions">
+                    <div v-if="v.tinh_trang_don_hang == 2" class="d-flex order-actions">
                       <a type="button" @click="moXacNhan(v)" class="ms-3 text-success" data-bs-toggle="modal"
                         data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
                     </div>
-                    <div v-else-if="v.tinh_trang == 5 || v.tinh_trang == 3 || v.tinh_trang == 4"
-                      :disabled="v.tinh_trang == 5 || v.tinh_trang == 3 || v.tinh_trang == 4"
+                    <div
+                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4"
+                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4"
                       class="d-flex order-actions">
                       <a type="button" class="ms-3"><i class="fa-solid fa-check" style="color: gray;"></i></a>
                     </div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang == 2"
+                    <div v-if="v.tinh_trang_don_hang == 2"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
-                    <div v-else-if="v.tinh_trang == 3"
+                    <div v-else-if="v.tinh_trang_don_hang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle me-1"></i>Hoàn thành</div>
-                    <div v-else-if="v.tinh_trang == 4"
+                    <div v-else-if="v.tinh_trang_don_hang == 4"
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
-                    <div v-else-if="v.tinh_trang == 5"
+                    <div v-else-if="v.tinh_trang_don_hang == 5"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                   </td>
                   <td>{{ v.ten_khach_hang }}</td>
-                  <td>{{ v.ten_nsx }}</td>
-                  <td>{{ v.ten_san_pham }}</td>
-                  <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
+                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong></td>
+                  <td>
+                    <div class="d-flex order-actions">
+                      <a title="Xem chi tiết đơn hàng" @click="xemChiTietDonHang(v.id_don_hang)"
+                        class="ms-3 text-info"><i type="button" data-bs-toggle="modal"
+                          data-bs-target="#chiTietDonHangModal" class="fa-solid fa-circle-info"></i></a>
+                    </div>
                   </td>
-                  <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
-                  <td class="text-center">{{ v.so_luong }}</td>
-                  <td class="text-danger"><strong>{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
                   <td>
                     <div v-if="v.tinh_trang_thanh_toan == 0"
@@ -129,6 +127,70 @@
         </div>
       </div>
     </div>
+    <!-- modal chi tiết -->
+    <div class="modal fade" id="chiTietDonHangModal" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h4>Chi tiết của đơn hàng {{ this.id_don_hang_dang_xem }}</h4>
+            <hr>
+            <table class="table mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Sản Phẩm</th>
+                  <th>Hình Ảnh</th>
+                  <th>Đơn Giá</th>
+                  <th>SL</th>
+                  <th>Thành Tiền</th>
+                  <th>Nhà Sản Xuất</th>
+                  <th>Đơn Vị Vận Chuyển</th>
+                  <th>Tình Trạng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for="(v, k) in list_chi_tiet_don_hang">
+                  <tr>
+                    <td>{{ k + 1 }}</td>
+                    <td>{{ v.ten_san_pham }}</td>
+                    <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
+                    </td>
+                    <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
+                    <td>{{ v.so_luong }} sản phẩm</td>
+                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
+                    <td>{{ v.ten_nha_san_xuat }}</td>
+                    <td>{{ v.ten_dvvc }}</td>
+                    <td>
+                      <div v-if="v.tinh_trang == 0"
+                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                      <div v-else-if="v.tinh_trang == 1"
+                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                      <div v-else-if="v.tinh_trang == 2"
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                      <div v-else-if="v.tinh_trang == 3"
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle me-1"></i>Hoàn thành</div>
+                      <div v-else-if="v.tinh_trang == 4"
+                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                      <div v-else-if="v.tinh_trang == 5"
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -141,7 +203,6 @@ export default {
       list_don_hang: [],
       list_chi_tiet_don_hang: [],
       id_don_hang_dang_xem: null,
-      id_can_huy: '',
     }
   },
   mounted() {
@@ -166,6 +227,7 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.list_don_hang = res.data.data;
+            console.log(this.list_don_hang)
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -181,7 +243,7 @@ export default {
         this.xacNhanDonHang(this.donHangXacNhan);
         this.donHangXacNhan = null;
       }
-      const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
+      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
       modal.hide();
     },
 
@@ -195,6 +257,19 @@ export default {
           }
           else {
             toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+
+    xemChiTietDonHang(id) {
+      this.id_don_hang_dang_xem = id;
+      baseRequest
+        .post(`user/don-hang/don-vi-van-chuyen/chi-tiet`, { id_don_hang: id })
+        .then((res) => {
+          if (res.data.status) {
+            this.list_chi_tiet_don_hang = res.data.data;
+          } else {
+            toaster.error("Không thể tải chi tiết đơn hàng.");
           }
         });
     },

@@ -76,8 +76,8 @@
                   </td>
                   <td>
                     <div v-if="v.tinh_trang == 0 || v.tinh_trang == 1" class="d-flex order-actions">
-                      <a type="button" title="Hủy đơn hàng" @click="huyDonHang(v)" class="ms-3" style="color: red;"><i
-                          class="bx bxs-trash"></i></a>
+                      <a type="button" @click="moXacNhanHuy(v)" title="Hủy đơn hàng" class="ms-3" style="color: red;"
+                        data-bs-toggle="modal" data-bs-target="#huyModal"><i class="bx bxs-trash"></i></a>
                     </div>
                     <div v-else-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4 || v.tinh_trang == 5"
                       :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4 || v.tinh_trang == 5"
@@ -100,6 +100,7 @@
         <div class="modal-content">
           <div class="modal-body">
             <h4>Chi tiết của đơn hàng {{ this.id_don_hang_dang_xem }}</h4>
+            <i class="text-danger">*Cước vận chuyển được tính 1 lần cho mỗi đơn vị vận chuyển</i>
             <hr>
             <table class="table mb-0">
               <thead class="table-light">
@@ -157,6 +158,28 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal hủy -->
+    <div class="modal fade" id="huyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body d-flex">
+            <div class="alert border-0 border-start border-5 border-danger alert-dismissible fade show py-2">
+              <div class="d-flex align-items-center">
+                <div class="font-35 text-danger"><i class="bx bxs-message-square-x"></i>
+                </div>
+                <div class="ms-3">
+                  <h6 class="mb-0 text-danger">Thông Báo</h6>
+                  <div>Bạn chắc chắn muốn xóa mục này?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button @click="xacNhanHuy()" data-bs-dismiss="modal" class="btn btn-border bg-light-danger align-middle">
+            <h5 class="text-danger mt-1">Xác Nhận</h5>
+          </button>
         </div>
       </div>
     </div>
@@ -227,6 +250,20 @@ export default {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });
+    },
+
+    //hủy đơn hàng
+    moXacNhanHuy(donHang) {
+      this.donHangHuy = donHang;
+    },
+
+    xacNhanHuy() {
+      if (this.donHangHuy) {
+        this.huyDonHang(this.donHangHuy);
+        this.donHangHuy = null;
+      }
+      const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
+      modal.hide();
     },
   },
 }
