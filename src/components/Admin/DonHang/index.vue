@@ -106,8 +106,8 @@
                       <a type="button" title="Hủy đơn hàng" class="ms-3" style="color: gray;"><i
                           class="bx bxs-trash"></i></a>
                     </div>
-                    <div v-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1"
-                      :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1"
+                    <div v-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1 || v.tinh_trang == 5"
+                      :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1 || v.tinh_trang == 5"
                       class="d-flex order-actions">
                       <a type="button" title="Xác nhận đơn hàng" class="ms-3"><i class="fa-solid fa-check"
                           style="color: gray;"></i></a>
