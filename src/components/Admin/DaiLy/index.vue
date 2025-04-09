@@ -87,7 +87,7 @@
                         placeholder="Nhập tên công ty">
                     </div>
                     <div class="col-md-6">
-                      <label for="selectLoaiDoiTac" class="form-label">Loại Đối Tác</label>
+                      <label for="selectLoaiDoiTac" class="form-label">Email</label>
                       <input v-model="create_dai_ly.email" type="email" class="form-control" id="inputEmail"
                         placeholder="Nhập email">
                     </div>
