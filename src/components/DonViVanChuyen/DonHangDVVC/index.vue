@@ -42,6 +42,8 @@
                 <th>Tình Trạng</th>
                 <th>Người Đặt</th>
                 <th>Tổng Tiền</th>
+                <th>Cước Vận Chuyển</th>
+                <th>Cần Thanh Toán</th>
                 <th>Chi Tiết</th>
                 <th>Ngày Đặt</th>
                 <th>Tình Trạng TT</th>
@@ -79,6 +81,8 @@
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                   </td>
                   <td>{{ v.ten_khach_hang }}</td>
+                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong></td>
+                  <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen) }}</strong></td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong></td>
                   <td>
                     <div class="d-flex order-actions">
