@@ -114,6 +114,11 @@ const routes = [
       import('../components/DonViVanChuyen/DonHangDVVC/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/dvvc/lich-tring-don-hang',
+    component: () => import('../components/DonViVanChuyen/LichTrinh/index.vue'),
+    beforeEnter: checkLogin,
+  },
 ]
 
 const router = createRouter({
