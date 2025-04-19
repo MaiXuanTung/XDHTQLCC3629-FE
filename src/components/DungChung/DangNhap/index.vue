@@ -102,13 +102,13 @@ export default {
           localStorage.setItem('user_id', res.data.user_id);
           switch (res.data.loai_tai_khoan) {
             case 'Nhân Viên':
-              this.$router.push('/admin/nhan-vien');
+              this.$router.push('/admin/danh-sach-don-hang');
               break;
             case 'Đại Lý':
               this.$router.push('/home-page');
               break;
             case 'Nhà Sản Xuất':
-              this.$router.push('/nsx/danh-sach-san-pham');
+              this.$router.push('/nsx/danh-sach-don-hang');
               break;
             case 'Đơn vị vận chuyển':
               this.$router.push('/dvvc/danh-sach-don-hang');
