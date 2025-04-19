@@ -176,7 +176,7 @@
                           class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
                       <div v-else-if="v.tinh_trang == 2"
                         class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                          class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
                       <div v-else-if="v.tinh_trang == 3"
                         class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                           class="bx bxs-circle me-1"></i>Hoàn thành</div>

@@ -175,7 +175,7 @@
                           class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
                       <div v-else-if="v.tinh_trang == 2"
                         class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                          class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
                       <div v-else-if="v.tinh_trang == 3"
                         class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                           class="bx bxs-circle me-1"></i>Hoàn thành</div>
@@ -212,6 +212,7 @@ export default {
       id_don_hang_dang_xem: null,
       key_search: {},
       LocTheoTenCongTy: "",
+      tuyen_duong_de_xuat: null,
     }
   },
   mounted() {
@@ -245,7 +246,6 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.list_don_hang = res.data.data;
-            console.log(this.list_don_hang)
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
@@ -263,8 +263,20 @@ export default {
         });
     },
     //xác nhận đơn hàng
-    moXacNhan(donHang) {
+    async moXacNhan(donHang) {
       this.donHangXacNhan = donHang;
+      try {
+        const res = await baseRequest.post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
+          id_nha_san_xuat: donHang.id_nsx,
+          id_dai_ly: donHang.user_id,
+        });
+        console.log("Tuyến đường:", res.data.path);
+        console.log("Khoảng cách:", res.data.distance);
+        // this.tuyen_duong_de_xuat = res.data;
+      } catch (error) {
+        console.error('Lỗi khi tìm đường:', error);
+        this.$toast?.error?.("Không thể tạo tuyến đường, vui lòng thử lại.");
+      }
     },
 
     xacNhan() {
