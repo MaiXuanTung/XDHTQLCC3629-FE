@@ -265,33 +265,45 @@
                     <td>{{ v.mo_ta_trang_thai }}</td>
                     <td>
                       <div class="d-flex order-actions">
-                        <!-- Nếu tình trạng là 0 và chưa có thời gian đi, hiển thị nút xác nhận đã đến -->
-                        <div v-if="v.tinh_trang == 0 && !v.thoi_gian_di" class="d-flex order-actions">
-                          <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến" class="ms-3 text-success">
-                            <i class="fa-solid fa-check"></i>
-                          </a>
-                        </div>
-
-                        <!-- Nếu đã có thời gian đến nhưng chưa đi, hiển thị nút xác nhận đã đi -->
-                        <div v-else-if="v.thoi_gian_den && !v.thoi_gian_di" class="d-flex order-actions">
-                          <a @click="xacNhanDi(v.id)" type="button" title="Xác nhận đã đi" class="ms-3 text-success">
-                            <i class="fa-solid fa-arrow-right"></i>
-                          </a>
-                        </div>
-
-                        <!-- <div v-else-if="v.thoi_gian_den && v.tinh_trang == 1 && !v.id_kho_hang"
-                          class="d-flex order-actions">
-                          <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                          </a>
-                        </div> -->
-
-                        <!-- Nếu đã hoàn thành (tình trạng != 0), hiển thị nút "Đã đi đến kho tiếp theo" -->
-                        <div v-else class="d-flex order-actions">
-                          <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                          </a>
-                        </div>
+                        <!-- Nếu là chặng cuối -->
+                        <template v-if="isLastStep(v)">
+                          <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
+                            <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
+                              class="ms-3 text-success">
+                              <i class="fa-solid fa-check"></i>
+                            </a>
+                          </div>
+                          <div v-else-if="v.tinh_trang == 1" class="d-flex order-actions">
+                            <a type="button" title="Đã đến điểm giao hàng. Chờ đại lý xác nhận"
+                              class="ms-3 text-warning">
+                              <i class="fa-solid fa-clock"></i>
+                            </a>
+                          </div>
+                          <div v-else-if="v.tinh_trang == 2" class="d-flex order-actions">
+                            <a type="button" title="Hoàn thành giao hàng" class="ms-3 text-primary">
+                              <i class="fa-solid fa-flag-checkered"></i>
+                            </a>
+                          </div>
+                        </template>
+                        <!-- Nếu không phải chặng cuối -->
+                        <template v-else>
+                          <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
+                            <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
+                              class="ms-3 text-success">
+                              <i class="fa-solid fa-check"></i>
+                            </a>
+                          </div>
+                          <div v-else-if="v.tinh_trang == 1" class="d-flex order-actions">
+                            <a @click="xacNhanDi(v.id)" type="button" title="Xác nhận đã đi" class="ms-3 text-success">
+                              <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                          </div>
+                          <div v-else-if="v.tinh_trang == 2" class="d-flex order-actions">
+                            <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
+                              <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            </a>
+                          </div>
+                        </template>
                       </div>
                     </td>
                   </tr>
@@ -426,6 +438,10 @@ export default {
 
     formatTime(datetime) {
       return dayjs(datetime).format('DD/MM/YYYY [lúc] HH:mm');
+    },
+
+    isLastStep(step) {
+      return this.list_lich_trinh_don_hang[this.list_lich_trinh_don_hang.length - 1].id === step.id;
     },
 
     loadDataDonHang() {
