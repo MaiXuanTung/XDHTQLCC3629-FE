@@ -279,6 +279,13 @@
                           </a>
                         </div>
 
+                        <!-- <div v-else-if="v.thoi_gian_den && v.tinh_trang == 1 && !v.id_kho_hang"
+                          class="d-flex order-actions">
+                          <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                          </a>
+                        </div> -->
+
                         <!-- Nếu đã hoàn thành (tình trạng != 0), hiển thị nút "Đã đi đến kho tiếp theo" -->
                         <div v-else class="d-flex order-actions">
                           <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
@@ -331,49 +338,76 @@ export default {
       return this.list_don_hang.filter(item => String(item.user_id) === String(this.LocTheoTenCongTy));
     },
     visibleSteps() {
-      const steps = this.list_lich_trinh_don_hang;
+      const steps = this.list_lich_trinh_don_hang || [];
       const visible = [];
-      let daRoiGanNhat = -1;
-      const vi_tri_dau = steps[0]?.ten_kho || steps[0]?.dia_chi_nsx || 'Nơi gửi';
-      for (let i = 0; i < steps.length; i++) {
+
+      if (steps.length === 0) return visible;
+
+      // Luôn hiển thị chặng đầu tiên
+      const firstStep = steps[0];
+      const nextStep = steps[1];
+      const vi_tri_first = firstStep.ten_kho || firstStep.dia_chi_nsx || firstStep.dia_chi_dai_ly || 'Vị trí không xác định';
+      const vi_tri_tiep_theo_first = nextStep?.ten_kho || nextStep?.dia_chi_kho || nextStep?.dia_chi_dai_ly || 'Điểm đến tiếp theo';
+
+      let mo_ta_trang_thai = '';
+      if (firstStep.tinh_trang === 2) {
+        mo_ta_trang_thai = `Rời ${vi_tri_first} để đến ${vi_tri_tiep_theo_first}`;
+      } else if (firstStep.tinh_trang === 1) {
+        mo_ta_trang_thai = `Đã đến ${vi_tri_first}`;
+      } else {
+        mo_ta_trang_thai = `Đang chuẩn bị rời ${vi_tri_first}`;
+      }
+
+      visible.push({
+        ...firstStep,
+        vi_tri_hien_tai: vi_tri_first,
+        vi_tri_tiep_theo: vi_tri_tiep_theo_first,
+        mo_ta_trang_thai
+      });
+
+      // Hiển thị các chặng tiếp theo nếu chặng trước đã đi
+      for (let i = 1; i < steps.length; i++) {
+        const prevStep = steps[i - 1];
         const step = steps[i];
         const isLast = i === steps.length - 1;
-        const vi_tri = step.ten_kho || step.dia_chi_nsx || step.dia_chi_dai_ly || 'Nơi gửi';
+        const nextStep = steps[i + 1];
+
+        // Điều kiện hiển thị: chặng trước phải có tinh_trang === 2
+        if (prevStep.tinh_trang !== 2) break;
+
+        const vi_tri = step.ten_kho || step.dia_chi_dai_ly || step.dia_chi_nsx || 'Vị trí không xác định';
         const vi_tri_tiep_theo = isLast
           ? 'Kết thúc'
-          : steps[i + 1]?.ten_kho || steps[i + 1]?.dia_chi_dai_ly || 'Điểm đến cuối';
-        // Nếu chặng cuối mà lại trùng nơi bắt đầu → bỏ qua
-        if (isLast && vi_tri === vi_tri_dau) {
-          break;
-        }
-        // Mô tả trạng thái động
-        let mo_ta_trang_thai = '';
-        if (step.thoi_gian_di) {
-          mo_ta_trang_thai = `Rời ${vi_tri} để đến ${vi_tri_tiep_theo}`;
-        } else if (step.thoi_gian_den) {
-          mo_ta_trang_thai = `Đã đến ${vi_tri}`;
-        } else if (i === 0) {
-          mo_ta_trang_thai = `Đang chuẩn bị rời ${vi_tri}`;
+          : nextStep?.ten_kho || nextStep?.dia_chi_kho || nextStep?.dia_chi_dai_ly || 'Điểm đến tiếp theo';
+
+        // Xử lý riêng chặng cuối nếu là địa chỉ đại lý
+        if (isLast && step.dia_chi_dai_ly && !step.ten_kho) {
+          if (step.tinh_trang === 1) {
+            mo_ta_trang_thai = `Đã đến ${vi_tri}. Và đợi chủ đơn hàng xác nhận đã nhận được hàng.`;
+          } else if (step.tinh_trang === 2) {
+            mo_ta_trang_thai = `Chủ đơn hàng đã nhận được hàng.`;
+          } else {
+            mo_ta_trang_thai = `Đang di chuyển đến ${vi_tri}`;
+          }
         } else {
-          mo_ta_trang_thai = `Đang di chuyển đến ${vi_tri}`;
+          // Các chặng bình thường
+          if (step.tinh_trang === 2) {
+            mo_ta_trang_thai = `Rời ${vi_tri} để đến ${vi_tri_tiep_theo}`;
+          } else if (step.tinh_trang === 1) {
+            mo_ta_trang_thai = `Đã đến ${vi_tri}`;
+          } else {
+            mo_ta_trang_thai = `Đang di chuyển đến ${vi_tri}`;
+          }
         }
-        // Điều kiện hiển thị
-        if (i === 0) {
-          visible.push({ ...step, vi_tri_hien_tai: vi_tri, vi_tri_tiep_theo, mo_ta_trang_thai });
-          if (step.tinh_trang === 2) daRoiGanNhat = i;
-          continue;
-        }
-        if (step.tinh_trang === 2) {
-          visible.push({ ...step, vi_tri_hien_tai: vi_tri, vi_tri_tiep_theo, mo_ta_trang_thai });
-          daRoiGanNhat = i;
-          continue;
-        }
-        if (i === daRoiGanNhat + 1) {
-          visible.push({ ...step, vi_tri_hien_tai: vi_tri, vi_tri_tiep_theo, mo_ta_trang_thai });
-          break;
-        }
-        break;
+
+        visible.push({
+          ...step,
+          vi_tri_hien_tai: vi_tri,
+          vi_tri_tiep_theo,
+          mo_ta_trang_thai
+        });
       }
+
       return visible;
     }
   },
