@@ -334,10 +334,18 @@ export default {
       const steps = this.list_lich_trinh_don_hang;
       const visible = [];
       let daRoiGanNhat = -1;
+      const vi_tri_dau = steps[0]?.ten_kho || steps[0]?.dia_chi_nsx || 'Nơi gửi';
       for (let i = 0; i < steps.length; i++) {
         const step = steps[i];
-        const vi_tri = step.ten_kho || step.dia_chi_nsx || 'Nơi gửi';
-        const vi_tri_tiep_theo = steps[i + 1]?.ten_kho || steps[i + 1]?.dia_chi_dai_ly || 'Điểm đến cuối';
+        const isLast = i === steps.length - 1;
+        const vi_tri = step.ten_kho || step.dia_chi_nsx || step.dia_chi_dai_ly || 'Nơi gửi';
+        const vi_tri_tiep_theo = isLast
+          ? 'Kết thúc'
+          : steps[i + 1]?.ten_kho || steps[i + 1]?.dia_chi_dai_ly || 'Điểm đến cuối';
+        // Nếu chặng cuối mà lại trùng nơi bắt đầu → bỏ qua
+        if (isLast && vi_tri === vi_tri_dau) {
+          break;
+        }
         // Mô tả trạng thái động
         let mo_ta_trang_thai = '';
         if (step.thoi_gian_di) {
@@ -351,40 +359,23 @@ export default {
         }
         // Điều kiện hiển thị
         if (i === 0) {
-          // Luôn hiển thị chặng đầu tiên bất kể trạng thái
           visible.push({ ...step, vi_tri_hien_tai: vi_tri, vi_tri_tiep_theo, mo_ta_trang_thai });
-          if (step.tinh_trang === 2) daRoiGanNhat = i; // Đã rời thì cập nhật daRoiGanNhat
+          if (step.tinh_trang === 2) daRoiGanNhat = i;
           continue;
         }
         if (step.tinh_trang === 2) {
-          // Chặng đã rời đi → hiển thị
           visible.push({ ...step, vi_tri_hien_tai: vi_tri, vi_tri_tiep_theo, mo_ta_trang_thai });
-          daRoiGanNhat = i; // Cập nhật daRoiGanNhat
+          daRoiGanNhat = i;
           continue;
         }
         if (i === daRoiGanNhat + 1) {
-          // Chặng tiếp theo sau khi đã rời gần nhất → hiển thị rồi dừng
           visible.push({ ...step, vi_tri_hien_tai: vi_tri, vi_tri_tiep_theo, mo_ta_trang_thai });
           break;
         }
-        // Các chặng sau nữa → không hiển thị
         break;
-      }
-      // Thêm điểm cuối vào nếu đã đi qua tất cả các chặng
-      const lastStep = steps[steps.length - 1];
-      const vi_tri_cuoi = lastStep.ten_kho || lastStep.dia_chi_dai_ly || 'Điểm đến cuối';
-      if (daRoiGanNhat === steps.length - 1) { // Nếu đã đi qua tất cả các chặng
-        const mo_ta_trang_thai_cuoi = lastStep.thoi_gian_den ? `Đã đến ${vi_tri_cuoi}` : `Đang di chuyển đến ${vi_tri_cuoi}`;
-        visible.push({
-          ...lastStep,
-          vi_tri_hien_tai: vi_tri_cuoi,
-          vi_tri_tiep_theo: 'Kết thúc',
-          mo_ta_trang_thai: mo_ta_trang_thai_cuoi
-        });
       }
       return visible;
     }
-
   },
   methods: {
     formatToVND(amount) {
@@ -515,6 +506,7 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.list_lich_trinh_don_hang = res.data.data;
+            console.log(this.list_lich_trinh_don_hang)
           } else {
             toaster.error("Không thể tải lịch trình đơn hàng.");
           }
