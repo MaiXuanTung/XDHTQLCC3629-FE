@@ -60,8 +60,8 @@
                         data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
                     </div>
                     <div
-                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2"
-                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2"
+                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6"
+                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6"
                       class="d-flex order-actions">
                       <a type="button" class="ms-3"><i class="fa-solid fa-check" style="color: gray;"></i></a>
                     </div>
@@ -80,8 +80,11 @@
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                     <div v-else-if="v.tinh_trang_don_hang == 5"
-                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                    <div v-else-if="v.tinh_trang_don_hang == 6"
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                   </td>
                   <td>{{ v.ten_khach_hang }}</td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong></td>
@@ -153,7 +156,6 @@
                   <th>SL</th>
                   <th>Thành Tiền</th>
                   <th>Đơn Vị Vận Chuyển</th>
-                  <th>Tình Trạng</th>
                 </tr>
               </thead>
               <tbody>
@@ -167,26 +169,6 @@
                     <td>{{ v.so_luong }} sản phẩm</td>
                     <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
                     <td>{{ v.ten_dvvc }}</td>
-                    <td>
-                      <div v-if="v.tinh_trang == 0"
-                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
-                      <div v-else-if="v.tinh_trang == 1"
-                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
-                      <div v-else-if="v.tinh_trang == 2"
-                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
-                      <div v-else-if="v.tinh_trang == 3"
-                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle me-1"></i>Hoàn thành</div>
-                      <div v-else-if="v.tinh_trang == 4"
-                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
-                      <div v-else-if="v.tinh_trang == 5"
-                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
-                    </td>
                   </tr>
                 </template>
               </tbody>
