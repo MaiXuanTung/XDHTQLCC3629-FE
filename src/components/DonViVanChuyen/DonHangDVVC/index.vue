@@ -58,14 +58,19 @@
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
                   <td>
                     <div v-if="v.tinh_trang_don_hang == 2" class="d-flex order-actions">
-                      <a type="button" @click="moXacNhan(v)" class="ms-3 text-success" data-bs-toggle="modal"
-                        data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
+                      <a title="Xác nhận vận chuyển" type="button" @click="moXacNhan(v)" class="ms-3 text-success"
+                        data-bs-toggle="modal" data-bs-target="#xacNhanModal">
+                        <i class="fa-solid fa-check"></i>
+                      </a>
                     </div>
+
                     <div
-                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4"
-                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4"
+                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 6"
+                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 6"
                       class="d-flex order-actions">
-                      <a type="button" class="ms-3"><i class="fa-solid fa-check" style="color: gray;"></i></a>
+                      <a type="button" class="ms-3">
+                        <i class="fa-solid fa-check" style="color: gray;"></i>
+                      </a>
                     </div>
                   </td>
                   <td>
@@ -79,11 +84,15 @@
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                     <div v-else-if="v.tinh_trang_don_hang == 5"
-                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                    <div v-else-if="v.tinh_trang_don_hang == 6"
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang_don_hang == 5" class="d-flex order-actions">
+                    <div v-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 6"
+                      class="d-flex order-actions">
                       <a title="Xem lịch trình vận chuyển đơn hàng" @click="handleClick(v)" class="ms-3 text-warning"><i
                           type="button" data-bs-toggle="modal" data-bs-target="#lichTrinhDonHangModal"
                           class="fa-solid fa-truck-fast"></i></a>
@@ -213,6 +222,9 @@
                       <div v-else-if="v.tinh_trang == 5"
                         class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                           class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                      <div v-else-if="v.tinh_trang == 6"
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                     </td>
                   </tr>
                 </template>

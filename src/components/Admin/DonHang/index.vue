@@ -76,8 +76,11 @@
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                     <div v-else-if="v.tinh_trang == 5"
-                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                    <div v-else-if="v.tinh_trang == 6"
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -113,8 +116,9 @@
                       <a type="button" title="Hủy đơn hàng" class="ms-3" style="color: gray;"><i
                           class="bx bxs-trash"></i></a>
                     </div>
-                    <div v-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1 || v.tinh_trang == 5"
-                      :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1 || v.tinh_trang == 5"
+                    <div
+                      v-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1 || v.tinh_trang == 5 || v.tinh_trang == 6"
+                      :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 1 || v.tinh_trang == 5 || v.tinh_trang == 6"
                       class="d-flex order-actions">
                       <a type="button" title="Xác nhận đơn hàng" class="ms-3"><i class="fa-solid fa-check"
                           style="color: gray;"></i></a>
@@ -234,7 +238,7 @@ export default {
       id_don_hang_dang_xem: null,
       key_search: {},
       id_can_huy: '',
-      LocTheoTenCongTy : "",
+      LocTheoTenCongTy: "",
     }
   },
   mounted() {

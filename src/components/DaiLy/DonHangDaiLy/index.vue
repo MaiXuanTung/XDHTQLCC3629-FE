@@ -44,7 +44,7 @@
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
                     <div v-else-if="v.tinh_trang == 5"
-                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                     <div v-else-if="v.tinh_trang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
@@ -52,6 +52,9 @@
                     <div v-else-if="v.tinh_trang == 4"
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                    <div v-else-if="v.tinh_trang == 6"
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -84,6 +87,10 @@
                       class="d-flex order-actions">
                       <a type="button" title="Hủy đơn hàng" class="ms-3" style="color: gray;"><i
                           class="bx bxs-trash"></i></a>
+                    </div>
+                    <div v-else-if="v.tinh_trang == 6" class="d-flex order-actions">
+                      <a title="Đã nhận được hàng" type="button" @click="moXacNhan(v)" class="ms-3 text-success"
+                        data-bs-toggle="modal" data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
                     </div>
                   </td>
                 </tr>
@@ -146,8 +153,11 @@
                         class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                           class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                       <div v-else-if="v.tinh_trang == 5"
-                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                           class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                      <div v-else-if="v.tinh_trang == 6"
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                     </td>
                     <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
                   </tr>
@@ -179,6 +189,28 @@
           </div>
           <button @click="xacNhanHuy()" data-bs-dismiss="modal" class="btn btn-border bg-light-danger align-middle">
             <h5 class="text-danger mt-1">Xác Nhận</h5>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- modal xác nhận -->
+    <div class="modal fade" id="xacNhanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body d-flex">
+            <div class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2">
+              <div class="d-flex align-items-center">
+                <div class="font-35 text-success"><i class="bx bxs-check-circle"></i>
+                </div>
+                <div class="ms-3">
+                  <h6 class="mb-0 text-success">Thông Báo</h6>
+                  <div>Bạn đã nhận được hàng?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button @click="xacNhan()" data-bs-dismiss="modal" class="btn btn-border bg-light-success align-middle">
+            <h5 class="text-success mt-1">Xác Nhận</h5>
           </button>
         </div>
       </div>
@@ -264,6 +296,33 @@ export default {
       }
       const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
       modal.hide();
+    },
+
+    moXacNhan(donHang) {
+      this.donHangXacNhan = donHang;
+    },
+
+    xacNhan() {
+      if (this.donHangXacNhan) {
+        this.xacNhanDonHang(this.donHangXacNhan);
+        this.donHangXacNhan = null;
+      }
+      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
+      modal.hide();
+    },
+
+    xacNhanDonHang(v) {
+      baseRequest
+        .post('user/don-hang/dai-ly/xac-nhan-don-hang', v)
+        .then((res) => {
+          if (res.data.status == true) {
+            toaster.success('Thông báo<br>' + res.data.message);
+            this.loadDataDonHang();
+          }
+          else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
     },
   },
 }
