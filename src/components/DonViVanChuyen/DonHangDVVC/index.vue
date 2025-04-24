@@ -58,8 +58,8 @@
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
                   <td>
                     <div v-if="v.tinh_trang_don_hang == 2" class="d-flex order-actions">
-                      <a title="Xác nhận vận chuyển" type="button" @click="moXacNhan(v)" class="ms-3 text-success"
-                        data-bs-toggle="modal" data-bs-target="#xacNhanModal">
+                      <a title="Xác nhận vận chuyển" type="button" @click="xemChiTietVaXacNhanDonHang(v)"
+                        class="ms-3 text-success" data-bs-toggle="modal" data-bs-target="#xacNhanModal">
                         <i class="fa-solid fa-check"></i>
                       </a>
                     </div>
@@ -479,28 +479,49 @@ export default {
         });
     },
     //xác nhận đơn hàng
-    async moXacNhan(donHang) {
-      this.donHangXacNhan = donHang;
+    async xemChiTietVaXacNhanDonHang(id) {
       try {
+        await this.xemChiTietDonHang(id);  // Lấy chi tiết đơn hàng
+        const danh_sach_nha_san_xuat = [
+          ...new Set(this.list_chi_tiet_don_hang.map(sp => sp.id_nsx))
+        ];
+        const id_dai_ly = this.list_chi_tiet_don_hang[0]?.user_id;
+        // Gọi API để lấy tuyến đường đề xuất
         const res = await baseRequest.post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
-          id_nha_san_xuat: donHang.id_nsx,
-          id_dai_ly: donHang.user_id,
+          id_dai_ly,
+          danh_sach_nha_san_xuat
         });
         this.tuyen_duong_de_xuat = res.data.tuyen_duong_ten;
         this.chieu_dai_tuyen_duong = res.data.tong_khoang_cach;
+        // Gọi hàm xác nhận đơn hàng sau khi lấy chi tiết và tuyến đường
+        this.moXacNhan({ id_don_hang: id, id_dai_ly });
       } catch (error) {
-        console.error('Lỗi khi tìm đường:', error);
-        this.$toast?.error?.("Không thể tạo tuyến đường, vui lòng thử lại.");
+        console.error("Lỗi khi thực hiện xem chi tiết và xác nhận đơn hàng:", error);
+        this.$toast?.error?.("Có lỗi xảy ra, vui lòng thử lại.");
       }
     },
 
-    xacNhan() {
-      if (this.donHangXacNhan) {
-        this.xacNhanDonHang(this.donHangXacNhan);
-        this.donHangXacNhan = null;
+    async moXacNhan(donHang) {
+      this.donHangXacNhan = donHang;
+      try {
+        console.log('Đã set donHangXacNhan:', this.donHangXacNhan);
+      } catch (error) {
+        console.error("Lỗi khi xử lý:", error);
+        this.$toast?.error?.("Không thể xử lý dữ liệu đơn hàng.");
       }
-      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
-      modal.hide();
+    },
+
+    xemChiTietDonHang(id) {
+      this.id_don_hang_dang_xem = id;
+      return baseRequest
+        .post(`user/don-hang/don-vi-van-chuyen/chi-tiet`, { id_don_hang: id })
+        .then((res) => {
+          if (res.data.status) {
+            this.list_chi_tiet_don_hang = res.data.data;
+          } else {
+            toaster.error("Không thể tải chi tiết đơn hàng.");
+          }
+        });
     },
 
     xacNhanDonHang(v) {
@@ -517,17 +538,14 @@ export default {
         });
     },
 
-    xemChiTietDonHang(id) {
-      this.id_don_hang_dang_xem = id;
-      baseRequest
-        .post(`user/don-hang/don-vi-van-chuyen/chi-tiet`, { id_don_hang: id })
-        .then((res) => {
-          if (res.data.status) {
-            this.list_chi_tiet_don_hang = res.data.data;
-          } else {
-            toaster.error("Không thể tải chi tiết đơn hàng.");
-          }
-        });
+    xacNhan() {
+      console.log(this.donHangXacNhan)
+      if (this.donHangXacNhan) {
+        this.xacNhanDonHang(this.donHangXacNhan);
+        this.donHangXacNhan = null;
+      }
+      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
+      modal.hide();
     },
 
     searchDVVC() {

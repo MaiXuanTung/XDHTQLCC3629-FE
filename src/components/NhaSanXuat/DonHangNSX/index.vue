@@ -55,34 +55,34 @@
                   <td><strong>{{ k + 1 }}</strong></td>
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
                   <td>
-                    <div v-if="v.tinh_trang_don_hang == 1" class="d-flex order-actions">
+                    <div v-if="v.tinh_trang_chi_tiet_don_hang == 1" class="d-flex order-actions">
                       <a type="button" @click="moXacNhan(v)" class="ms-3 text-success" data-bs-toggle="modal"
                         data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
                     </div>
                     <div
-                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6"
-                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6"
+                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6 || v.tinh_trang_chi_tiet_don_hang == 5 || v.tinh_trang_chi_tiet_don_hang == 3 || v.tinh_trang_chi_tiet_don_hang == 4 || v.tinh_trang_chi_tiet_don_hang == 2 || v.tinh_trang_chi_tiet_don_hang == 6"
+                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6 || v.tinh_trang_chi_tiet_don_hang == 5 || v.tinh_trang_chi_tiet_don_hang == 3 || v.tinh_trang_chi_tiet_don_hang == 4 || v.tinh_trang_chi_tiet_don_hang == 2 || v.tinh_trang_chi_tiet_don_hang == 6"
                       class="d-flex order-actions">
                       <a type="button" class="ms-3"><i class="fa-solid fa-check" style="color: gray;"></i></a>
                     </div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang_don_hang == 1"
+                    <div v-if="v.tinh_trang_chi_tiet_don_hang == 1"
                       class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
-                    <div v-else-if="v.tinh_trang_don_hang == 2"
+                    <div v-else-if="v.tinh_trang_chi_tiet_don_hang == 2"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
-                    <div v-else-if="v.tinh_trang_don_hang == 3"
+                    <div v-else-if="v.tinh_trang_chi_tiet_don_hang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle me-1"></i>Hoàn thành</div>
-                    <div v-else-if="v.tinh_trang_don_hang == 4"
+                    <div v-else-if="v.tinh_trang_chi_tiet_don_hang == 4"
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
-                    <div v-else-if="v.tinh_trang_don_hang == 5"
+                    <div v-else-if="v.tinh_trang_chi_tiet_don_hang == 5"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
-                    <div v-else-if="v.tinh_trang_don_hang == 6"
+                    <div v-else-if="v.tinh_trang_chi_tiet_don_hang == 6"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
                   </td>

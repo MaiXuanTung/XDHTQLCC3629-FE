@@ -15,14 +15,6 @@
             </div>
             <div class="menu-title">Home</div>
           </a>
-          <ul class="dropdown-menu">
-            <li> <a class="dropdown-item" href="/admin/chi-tiet-san-pham"><i class="bx bx-right-arrow-alt"></i>Chi Tiết
-                Sản Phẩm</a>
-            </li>
-            <li> <a class="dropdown-item" href="/admin/san-pham-nsx"><i class="bx bx-right-arrow-alt"></i>Sản Phẩm
-                NSX</a>
-            </li>
-          </ul>
         </li>
         <li class="nav-item dropdown">
           <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
