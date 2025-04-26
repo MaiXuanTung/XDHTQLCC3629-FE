@@ -18,7 +18,7 @@
         <div class="row g-0">
           <div class="card-body">
             <div class="row">
-              <div class="col-md-5 text-start">Sản Phẩm</div>
+              <div class="col-md-5 text-center">Sản Phẩm</div>
               <div class="col-md-2">Đơn Giá</div>
               <div class="col-md-2 text-center">Số Lượng</div>
               <div class="col-md-2">Thành Tiền</div>
@@ -31,7 +31,7 @@
         <!-- Header của Nhà Bán -->
         <div class="shop-header">
           <input type="checkbox" v-model="shop.selected" @change="toggleSelectAll(shopIndex)">
-          <span class="shop-name"><i class="fas fa-store"></i> {{ shop.ten_cong_ty }}</span>
+          <span class="shop-name"><i class="fas fa-store ms-2 me-2"></i> {{ shop.ten_cong_ty }}</span>
         </div>
         <div v-for="(v, k) in shop.products" :key="v.id" class="product-card">
           <input type="checkbox" v-model="v.selected">
@@ -40,16 +40,16 @@
             <div class="product-name">{{ v.ten_san_pham }}</div>
           </div>
           <div class="price">
-            <span class="current-price">{{ formatToVND(v.don_gia) }}</span>
+            <span class="total-price text-danger">{{ formatToVND(v.don_gia) }}</span>
           </div>
           <div class="quantity">
             <button @click="giamSoLuong(shopIndex, k, v.id)">-</button>
-            <input type="number" v-model="v.so_luong" readonly>
+            <input class="text-center" type="number" v-model="v.so_luong" readonly>
             <button @click="tangSoLuong(shopIndex, k, v.id)">+</button>
           </div>
           <div class="total-price">{{ formatToVND(v.don_gia * v.so_luong) }}</div>
           <div class="action">
-            <span class="delete" @click="xoaSanPham(v.id)">Xóa</span>
+            <span class="delete total-price" @click="xoaSanPham(v.id)">Xóa</span>
           </div>
         </div>
       </template>
@@ -264,18 +264,30 @@ export default {
 }
 
 .quantity button {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  background: rgb(228, 230, 231); /* Màu xanh nhạt */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
 
 .quantity input {
-  width: 50px;
-  height: 30px;
+  width: 45px;
+  height: 32px;
   text-align: center;
+  font-size: 18px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+ 
 }
 
+
 .total-price {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   color: red;
 }
@@ -301,21 +313,18 @@ export default {
   text-align: center;
   font-weight: bold;
 }
+.card {
+    box-shadow: none;
+    background-color: transparent;
+}
 
 .cart-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background-color: white;
-  border-top: 1px solid #ddd;
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1265px;
-  padding-bottom: 55px;
+  background: #e3f2fd; /* Màu xanh nhạt */
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .total-amount {
@@ -330,14 +339,18 @@ export default {
 }
 
 .btn-buy {
-  background-color: #e74c3c;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
+  background: #e90a0a;
+  color: #fff;
   padding: 10px 20px;
+  font-size: 18px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-buy:hover {
+  background: #0d94d3;
 }
 
 .btn-buy:disabled {
@@ -346,6 +359,15 @@ export default {
 }
 
 .page-content {
-  padding-bottom: 80px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-breadcrumb {
+  background: #e3f2fd; /* Màu xanh nhạt */
+  padding: 10px;
+  border-radius: 5px;
 }
 </style>
