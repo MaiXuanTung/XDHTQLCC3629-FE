@@ -129,119 +129,15 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 <script>
-import { createToaster } from "@meforma/vue-toaster";
-import baseRequest from "../../../core/baseRequest";
-const toaster = createToaster({ position: "top-right" });
 export default {
-  data() {
-    return {
-      san_pham: {},
-      list_san_pham: [],
-      so_luong: 1,
-      create_san_pham: {},
-    }
-  },
 
-  mounted() {
-    this.loadDataChiTietSanPham();
-    this.loadDataSanPham();
-  },
-
-  computed: {
-    relatedProducts() {
-      return this.list_san_pham
-        .filter(v => v.nsx_id === this.san_pham.nha_san_xuat_id) // Lọc theo nhà sản xuất
-        .sort(() => 0.5 - Math.random()) // Xáo trộn ngẫu nhiên danh sách
-        .slice(0, 3); // Chỉ lấy 3 sản phẩm
-    }
-  },
-
-  methods: {
-    loadDataChiTietSanPham() {
-      var url = window.location.href;
-      var arr = url.split('/');
-      var id = {
-        id: arr[arr.length - 1]
-      }
-      baseRequest
-        .post('user/san-pham/lay-du-lieu-san-pham/data', id)
-        .then((res) => {
-          if (res.data.status) {
-            this.san_pham = res.data.chi_tiet_san_pham;
-          } else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
-    },
-
-    loadDataSanPham() {
-      baseRequest
-        .get('admin/san-pham/lay-du-lieu')
-        .then((res) => {
-          if (res.data.status) {
-            this.list_san_pham = res.data.san_pham;
-          } else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
-    },
-
-    validateQuantity() {
-      // Nếu người dùng nhập số nhỏ hơn 1, đặt lại là 1
-      if (this.so_luong < 1 || isNaN(this.so_luong)) {
-        this.so_luong = 1;
-        toaster.warning("Số lượng tối thiểu là " + this.so_luong);
-      }
-      // Nếu nhập số lớn hơn tồn kho, đặt lại số lượng tối đa
-      if (this.so_luong > this.san_pham.so_luong_ton_kho) {
-        this.so_luong = this.san_pham.so_luong_ton_kho;
-        toaster.warning("Trong kho chỉ còn " + this.san_pham.so_luong_ton_kho + " sản phẩm");
-      }
-    },
-
-    createSanPhamVaoGioHang() {
-      const payload = {
-        id_san_pham: this.san_pham.id,
-        so_luong: this.so_luong,
-        don_gia: this.san_pham.gia_ban,
-      };
-      baseRequest
-        .post("user/gio-hang/them-vao-gio-hang", payload)
-        .then((res) => {
-          if (res.data.status) {
-            toaster.success("Đã thêm vào giỏ hàng!");
-          } else {
-            // Kiểm tra lỗi "Số lượng sản phẩm vượt quá tồn kho" từ server
-            if (res.data.message === "Không thể thêm vào giỏ hàng! Số lượng sản phẩm vượt quá tồn kho.") {
-              toaster.error(res.data.message);
-            } else {
-              toaster.error("Lỗi: " + res.data.message);
-            }
-          }
-        })
-        .catch((error) => {
-          // Kiểm tra nếu lỗi từ server có response.data.message
-          if (error.response && error.response.data && error.response.data.message) {
-            toaster.error(error.response.data.message);
-          } else {
-            toaster.error("Lỗi kết nối! Vui lòng thử lại.");
-          }
-          console.error(error);
-        })
-        .finally(() => {
-          this.so_luong = 1;
-        });
-    },
-
-    formatToVND(amount) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-    },
-  },
 }
 </script>
+
 <style>
 .card {
   height: 100%;
@@ -285,3 +181,4 @@ export default {
 }
 
 </style>
+

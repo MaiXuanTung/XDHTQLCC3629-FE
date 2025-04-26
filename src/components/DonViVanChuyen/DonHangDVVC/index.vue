@@ -58,8 +58,8 @@
                   <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
                   <td>
                     <div v-if="v.tinh_trang_don_hang == 2" class="d-flex order-actions">
-                      <a title="Xác nhận vận chuyển" type="button" @click="moXacNhan(v)" class="ms-3 text-success"
-                        data-bs-toggle="modal" data-bs-target="#xacNhanModal">
+                      <a title="Xác nhận vận chuyển" type="button" @click="xemChiTietVaXacNhanDonHang(v)"
+                        class="ms-3 text-success" data-bs-toggle="modal" data-bs-target="#xacNhanModal">
                         <i class="fa-solid fa-check"></i>
                       </a>
                     </div>
@@ -138,35 +138,55 @@
     <div class="modal fade" id="xacNhanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-body d-flex">
-            <div class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2">
-              <div class="d-flex align-items-center">
-                <div class="ms-3">
-
-                  <h2 class="mb-0 text-success">Thông Báo</h2>
-                  <div>
-                    <h4 class="text-lg font-semibold mb-2">Tuyến đường vận chuyển tối ưu nhất:</h4>
-                    <div class="flex flex-wrap items-center ms-4">
-                      <template v-for="(dia_diem, index) in tuyen_duong_de_xuat" :key="index">
-                        <span :class="getClass(dia_diem)" class="flex items-center space-x-1"
-                          style="font-size: large; font-style: italic;">
-                          <span>{{ getIcon(dia_diem) }}</span>
-                          <span>{{ cleanText(dia_diem) }}</span>
-                        </span>
-                        <span v-if="index < tuyen_duong_de_xuat.length - 1" class="mx-2 text-gray-500"
-                          style="font-size: large;"><i class="fa-solid fa-arrow-right"></i></span>
+          <div class="modal-body d-flex flex-column gap-3">
+            <!-- Hiển thị thông báo "Đang tải tuyến đường" khi đang tải -->
+            <div v-if="isLoading" class="d-flex justify-content-center flex-column align-items-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3">Đang tải tuyến đường...</p>
+            </div>
+            <!-- Nội dung modal khi không còn tải -->
+            <div v-else>
+              <div class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2">
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <h2 class="mb-0 text-success">Thông Báo</h2>
+                    <div>
+                      <h4 class="text-lg font-semibold mb-2">Các tuyến đường vận chuyển tối ưu:</h4>
+                      <!-- Vòng lặp hiển thị mỗi tuyến -->
+                      <template v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="indexTuyen">
+                        <div class="mb-3 ms-4">
+                          <h5 class="mb-1">Tuyến từ nhà sản xuất {{ tuyen.nha_san_xuat_name }}:</h5>
+                          <div class="flex flex-wrap items-center">
+                            <template v-for="(dia_diem, index) in tuyen.path_names" :key="index">
+                              <span :class="getClass(dia_diem)" class="flex items-center space-x-1"
+                                style="font-size: large; font-style: italic;">
+                                <span>{{ getIcon(dia_diem) }}</span>
+                                <span>{{ cleanText(dia_diem) }}</span>
+                              </span>
+                              <span v-if="index < tuyen.path_names.length - 1" class="mx-2 text-gray-500"
+                                style="font-size: large;">
+                                <i class="fa-solid fa-arrow-right"></i>
+                              </span>
+                            </template>
+                          </div>
+                          <h5 class="mb-2">Chiều dài tuyến: {{ tuyen.distance }}</h5>
+                          <hr>
+                        </div>
                       </template>
                     </div>
-                    <h5>Tổng chiều dài tuyến đường: {{ chieu_dai_tuyen_duong }}</h5>
+                    <div style="font-size: large;">Bạn chắc chắn muốn xác nhận đơn hàng này?</div>
                   </div>
-                  <div style="font-size: large;">Bạn chắc chắn muốn xác nhận đơn hàng này?</div>
                 </div>
               </div>
             </div>
+            <!-- Nút Xác Nhận chỉ hiển thị khi không còn tải -->
+            <button v-if="!isLoading" @click="xacNhan()" data-bs-dismiss="modal"
+              class="btn btn-border bg-light-success align-middle">
+              <h5 class="text-success mt-1">Xác Nhận</h5>
+            </button>
           </div>
-          <button @click="xacNhan()" data-bs-dismiss="modal" class="btn btn-border bg-light-success align-middle">
-            <h5 class="text-success mt-1">Xác Nhận</h5>
-          </button>
         </div>
       </div>
     </div>
@@ -345,9 +365,10 @@ export default {
       id_don_hang_dang_xem: null,
       key_search: {},
       LocTheoTenCongTy: "",
-      tuyen_duong_de_xuat: null,
+      tuyen_duong_de_xuat: [],
       chieu_dai_tuyen_duong: null,
       list_lich_trinh_don_hang: [],
+      isLoading: false,
     }
   },
   mounted() {
@@ -479,28 +500,85 @@ export default {
         });
     },
     //xác nhận đơn hàng
-    async moXacNhan(donHang) {
-      this.donHangXacNhan = donHang;
+    async xemChiTietVaXacNhanDonHang(id) {
       try {
-        const res = await baseRequest.post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
-          id_nha_san_xuat: donHang.id_nsx,
-          id_dai_ly: donHang.user_id,
+        this.isLoading = true;
+        // 1. Lấy chi tiết đơn hàng
+        await this.xemChiTietDonHang(id);
+        if (!this.list_chi_tiet_don_hang || !Array.isArray(this.list_chi_tiet_don_hang) || this.list_chi_tiet_don_hang.length === 0) {
+          throw new Error("Không có dữ liệu chi tiết đơn hàng.");
+        }
+        // 2. Lấy danh sách nhà sản xuất từ chi tiết đơn hàng
+        const danh_sach_nha_san_xuat = [
+          ...new Set(this.list_chi_tiet_don_hang.map(sp => sp.id_nsx))
+        ];
+        const id_dai_ly = this.list_chi_tiet_don_hang[0]?.user_id;
+        // 3. Gọi API lấy tuyến đường gợi ý cho nhiều nhà sản xuất
+        const res = await baseRequest
+          .post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
+            id_dai_ly,
+            danh_sach_nha_san_xuat
+          });
+
+        // 4. Gán dữ liệu tuyến đường vào biến
+        this.tuyen_duong_de_xuat = res.data.data.map(tuyen => {
+          const distance = tuyen.distance;
+          const nha_san_xuat_name = tuyen.nha_san_xuat_name;
+          const pathFormatted = tuyen.path_names.map(name => {
+            if (name.includes("Nhà sản xuất")) return name;
+            if (name.includes("Kho")) return name;
+            if (name.includes("Đại lý")) return name;
+
+            // Nếu không có prefix thì thêm thủ công
+            if (name.toLowerCase().includes("nsx") || name.toLowerCase().includes("nhà sản xuất")) {
+              return "Nhà sản xuất: " + name;
+            }
+            if (name.toLowerCase().includes("kho")) {
+              return "Kho: " + name;
+            }
+            if (name.toLowerCase().includes("đại lý")) {
+              return "Đại lý: " + name;
+            }
+            return name; // fallback
+          });
+
+          return {
+            nha_san_xuat_id: tuyen.nha_san_xuat_id,
+            path_names: pathFormatted,
+            distance: distance + ' km',
+            nha_san_xuat_name: nha_san_xuat_name,
+          };
         });
-        this.tuyen_duong_de_xuat = res.data.tuyen_duong_ten;
-        this.chieu_dai_tuyen_duong = res.data.tong_khoang_cach;
+        this.chieu_dai_tuyen_duong = res.data.total_distance;
+        this.moXacNhan({ id_don_hang: id, id_dai_ly });
+        this.isLoading = false;
       } catch (error) {
-        console.error('Lỗi khi tìm đường:', error);
+        console.error("Lỗi khi thực hiện xem chi tiết và xác nhận đơn hàng:", error);
         this.$toast?.error?.("Không thể tạo tuyến đường, vui lòng thử lại.");
       }
     },
 
-    xacNhan() {
-      if (this.donHangXacNhan) {
-        this.xacNhanDonHang(this.donHangXacNhan);
-        this.donHangXacNhan = null;
+    async moXacNhan(donHang) {
+      this.donHangXacNhan = donHang;
+      try {
+        console.log('Đã set donHangXacNhan:', this.donHangXacNhan);
+      } catch (error) {
+        console.error("Lỗi khi xử lý:", error);
+        this.$toast?.error?.("Không thể xử lý dữ liệu đơn hàng.");
       }
-      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
-      modal.hide();
+    },
+
+    xemChiTietDonHang(id) {
+      this.id_don_hang_dang_xem = id;
+      return baseRequest
+        .post(`user/don-hang/don-vi-van-chuyen/chi-tiet`, { id_don_hang: id })
+        .then((res) => {
+          if (res.data.status) {
+            this.list_chi_tiet_don_hang = res.data.data;
+          } else {
+            toaster.error("Không thể tải chi tiết đơn hàng.");
+          }
+        });
     },
 
     xacNhanDonHang(v) {
@@ -517,17 +595,14 @@ export default {
         });
     },
 
-    xemChiTietDonHang(id) {
-      this.id_don_hang_dang_xem = id;
-      baseRequest
-        .post(`user/don-hang/don-vi-van-chuyen/chi-tiet`, { id_don_hang: id })
-        .then((res) => {
-          if (res.data.status) {
-            this.list_chi_tiet_don_hang = res.data.data;
-          } else {
-            toaster.error("Không thể tải chi tiết đơn hàng.");
-          }
-        });
+    xacNhan() {
+      console.log(this.donHangXacNhan)
+      if (this.donHangXacNhan) {
+        this.xacNhanDonHang(this.donHangXacNhan);
+        this.donHangXacNhan = null;
+      }
+      const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
+      modal.hide();
     },
 
     searchDVVC() {
@@ -543,22 +618,28 @@ export default {
     },
 
     getIcon(text) {
+      if (typeof text !== 'string') return "📍"; // Nếu text không phải là chuỗi, trả về biểu tượng mặc định
+
       if (text.startsWith("Nhà sản xuất")) return "🏭";
       if (text.startsWith("Kho")) return "📦";
       if (text.startsWith("Đại lý")) return "🏪";
-      return "📍";
+      return "📍"; // Trường hợp mặc định
     },
 
     cleanText(text) {
+      if (typeof text !== 'string') return ''; // Nếu text không phải chuỗi, trả về chuỗi rỗng
+
       // Loại bỏ phần "Nhà sản xuất: " hay "Kho: " nếu muốn ngắn gọn
       return text.replace(/^Nhà sản xuất: |^Kho: |^Đại lý: /, "");
     },
 
     getClass(text) {
+      if (typeof text !== 'string') return "text-gray-700"; // Kiểm tra nếu text không phải là chuỗi, trả về class mặc định
+
       if (text.startsWith("Nhà sản xuất")) return "text-red-600 font-medium";
       if (text.startsWith("Kho")) return "text-blue-600";
       if (text.startsWith("Đại lý")) return "text-green-600 font-medium";
-      return "text-gray-700";
+      return "text-gray-700"; // Trường hợp mặc định
     },
 
     xemLichTrinhDonHang(id) {
@@ -578,11 +659,14 @@ export default {
     async xemTuyenDuongGoiY(donHang) {
       try {
         const res = await baseRequest.post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
-          id_nha_san_xuat: donHang.id_nsx,
+          danh_sach_nha_san_xuat: donHang.danh_sach_nha_san_xuat,
           id_dai_ly: donHang.user_id,
         });
-        this.tuyen_duong_de_xuat = res.data.tuyen_duong_ten;
-        this.chieu_dai_tuyen_duong = res.data.tong_khoang_cach;
+        console.log(res)
+        // Gán lại mảng các tuyến (n tuyến)
+        this.tuyen_duong_de_xuat = res.data.data;
+        // Tổng chiều dài tất cả các tuyến
+        this.chieu_dai_tuyen_duong = res.data.total_distance;
       } catch (error) {
         console.error('Lỗi khi tìm đường:', error);
         this.$toast?.error?.("Không thể tạo tuyến đường, vui lòng thử lại.");
