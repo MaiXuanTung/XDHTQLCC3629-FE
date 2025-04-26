@@ -28,7 +28,6 @@
                 <th>#</th>
                 <th>Họ Tên</th>
                 <th>Email</th>
-                <th>Chức vụ</th>
                 <th>Tình Trạng</th>
                 <th>Action</th>
               </tr>
@@ -39,7 +38,6 @@
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ho_ten }}</td>
                   <td>{{ v.email }}</td>
-                  <td>{{ v.id_chuc_vu }}</td>
                   <td>
                     <div>
                       <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"

@@ -26,12 +26,13 @@
             <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
               <tr>
                 <th>#</th>
-                <th>Mã Sản Phẩm</th>
-                <th>Tên Sản Phẩm</th>
+                <th>Mã SP</th>
+                <th class="ten-sp-col">Tên SP</th>
+                <th>Tên Danh Mục</th>
+                <th>Giá Bán</th>
                 <th>Nhà Sản Xuất</th>
                 <th>Mô Tả</th>
                 <th>Hình ảnh</th>
-                <th>Tên Danh Mục</th>
                 <!-- <th>Transaction hash</th> -->
                 <th>Tình Trạng</th>
                 <th>Action</th>
@@ -42,7 +43,9 @@
                 <tr class="">
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ma_san_pham }}</td>
-                  <td>{{ v.ten_san_pham }}</td>
+                  <td class="ten-sp-col">{{ v.ten_san_pham }}</td>
+                  <td>{{ v.ten_danh_muc }}</td>
+                  <td style="color: #FF0000;">{{ formatToVND(v.gia_ban) }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
                   <td>
                     <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp, v)"
@@ -52,7 +55,6 @@
                   <td>
                     <img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80">
                   </td>
-                  <td>{{ v.ten_danh_muc }}</td>
                   <!-- <td>{{ v.transaction_hash }}</td> -->
                   <td>
                     <div>
@@ -86,7 +88,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Mô tả sản phẩm</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Mô tả sản phẩm {{ mo_ta_sp.ten_san_pham }}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -280,6 +282,9 @@ export default {
   },
   methods:
   {
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    },
     loadDataSanPham() {
       baseRequest
         .get('admin/san-pham/lay-du-lieu')
@@ -374,4 +379,11 @@ export default {
   },
 }
 </script>
-<style></style>
+<style>
+.ten-sp-col {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
