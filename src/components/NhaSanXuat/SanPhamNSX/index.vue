@@ -4,11 +4,11 @@
       <div style="max-height: 110px;" class="card-header">
         <div class="row mb-2">
           <div class="col-sm-6 text-start">
-            <h4 class="text-dark">Danh Sách Sản Phẩm</h4>
+            <h4 class="text-dark mt-1">Danh Sách Sản Phẩm</h4>
           </div>
-          <div class="col-sm-6 text-end">
-            <button type="button" class="btn btn-sm btn-outline-primary px-5" data-bs-toggle="modal"
-              data-bs-target="#themMoiModal"><i class="bx bx-user mr-1"></i>Thêm
+          <div class="col-sm-6 text-end border-dark">
+            <button type="button" class="btn btn-sm btn-outline-primary border-dark px-5 text-dark" data-bs-toggle="modal"
+              data-bs-target="#themMoiModal"><i class="bx bx-user mr-1 text-dark"></i>Thêm
               Mới</button>
           </div>
         </div>
@@ -16,28 +16,29 @@
           <div class="col-lg-9">
             <div class="input-group mb-3">
               <input v-on:keyup.enter="searchSanPhamNSX()" v-model="key_search.abc" type="text"
-                class="form-control search-control" placeholder="Nhập tên sản phẩm cần tìm">
-              <button v-on:click="searchSanPhamNSX()" class="btn btn-primary">
+                class="form-control search-control border-dark" placeholder="Nhập tên sản phẩm cần tìm">
+              <button v-on:click="searchSanPhamNSX()" class="btn btn-info border-dark">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
           </div>
           <div class="col-lg-3">
             <div>
-              <select class="form-control border-primary" v-model="LocTheoTrangThai">
+              <select class="form-control border-dark" v-model="LocTheoTrangThai">
                 <option value="">Tình Trạng - Tất Cả</option>
                 <option value="1">Đã đăng bán</option>
                 <option value="0">Dừng đăng bán</option>
+                <option value="2">Chờ duyệt</option>
               </select>
             </div>
           </div>
         </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive" style="height: 400px;">
+        <div class="table-responsive" style="height: 600px;">
           <table class="table align-middle mb-0 ">
             <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
-              <tr>
+              <tr class="text-center">
                 <th>#</th>
                 <th>Sản Phẩm</th>
                 <th>Mô Tả</th>
@@ -53,7 +54,7 @@
             <tbody>
               <template v-for="(v, k) in locDataTheoTrangThai" :key="k">
                 <tr class="">
-                  <td>{{ k + 1 }}</td>
+                  <td class="text-center">{{ k + 1 }}</td>
                   <td>{{ v.ten_san_pham }}</td>
                   <td>
                     <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp, v)"
@@ -62,16 +63,19 @@
                   <td>{{ v.ten_danh_muc }}</td>
                   <td><img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80"></td>
                   <td class="text-center">{{ v.so_luong_ton_kho }}</td>
-                  <td class="text-center">{{ v.gia_ban }}</td>
+                  <td class="text-center text-danger">{{ formatToVND(v.gia_ban) }}</td>
                   <td class="text-center">{{ v.don_vi_tinh }}</td>
                   <td class="text-center">
                     <div>
                       <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
-                        class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                           class="bx bxs-circle align-middle me-1"></i>Đã đăng bán </a>
-                      <a v-on:click="doiTinhTrang(v)" v-else type="button"
+                      <a v-on:click="doiTinhTrang(v)" v-else-if="v.tinh_trang == 0" type="button"
                         class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
                           class="bx bxs-circle align-middle me-1"></i>Dừng đăng bán</a>
+                      <a v-on:click="doiTinhTrang(v)" v-else-if="v.tinh_trang == 2" type="button"
+                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Chờ duyệt </a>
                     </div>
                   </td>
                   <td>
@@ -100,7 +104,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                {{ mo_ta_sp.mo_ta }}
+                <b>Mã sản phẩm: </b>{{ mo_ta_sp.ma_san_pham }}
+                <hr>
+                <b>Thông tin sản phẩm: </b>{{ mo_ta_sp.mo_ta }}
                 <!-- {{ mo_ta_sp.mo_ta }} -->
               </div>
               <div class="modal-footer">
@@ -171,16 +177,6 @@
                         placeholder="Nhập đơn vị tính" id="inputNSX">
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Tình Trạng</label>
-                    <div class="col-sm-9">
-                      <select v-model="create_san_pham_nsx.tinh_trang" class="form-control">
-                        <option disabled value="">Chọn tình trạng</option>
-                        <option value="1">Đã đăng bán</option>
-                        <option value="0">Dừng đăng bán</option>
-                      </select>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="modal-footer">
@@ -248,16 +244,6 @@
                       <input v-model="update_san_pham_nsx.don_vi_tinh" type="text" class="form-control" id="inputNSX">
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Tình Trạng</label>
-                    <div class="col-sm-9">
-                      <select v-model="update_san_pham_nsx.tinh_trang" class="form-control">
-                        <option value="1">Đã đăng bán</option>
-                        <option value="0">Dừng đăng bán</option>
-                      </select>
-                    </div>
-                  </div>
-
                 </div>
               </div>
               <div class="modal-footer">
@@ -335,6 +321,9 @@ export default {
   },
   methods:
   {
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    },
     loadDataSanPhamNSX() {
       baseRequest
         .get('user/san-pham/get-data-by-user')
@@ -438,7 +427,7 @@ export default {
 
     doiTinhTrang(v) {
       baseRequest
-        .post('admin/san-pham/doi-tinh-trang-san-pham', v)
+        .post('user/san-pham/doi-tinh-trang-san-pham-cua-nsx', v)
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
