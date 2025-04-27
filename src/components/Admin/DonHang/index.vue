@@ -27,11 +27,6 @@
                   <option v-bind:value="value.id">{{ value.ten_cong_ty }} </option>
                 </template>
               </select>
-              <!-- <select class="form-control border-primary">
-                <option value="">Tên chủ đơn hàng - Tất Cả</option>
-                <option value="1">Hoạt Động</option>
-                <option value="0">Tạm Dừng</option>
-              </select> -->
             </div>
           </div>
         </div>

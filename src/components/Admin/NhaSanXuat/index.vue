@@ -27,7 +27,7 @@
               <tr>
                 <th>#</th>
                 <th>Tên Công Ty</th>
-                <th>Loại Đối Tác</th>
+                <!-- <th>Loại Đối Tác</th> -->
                 <th>Địa Chỉ</th>
                 <th>Số Điện Thoại</th>
                 <th>Email</th>
@@ -36,14 +36,14 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for="(v, k) in list_nha_san_xuat">
+              <template v-for="(v, k) in list_nha_san_xuat" :key="k">
                 <tr>
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
-                  <td>
+                  <!-- <td>
                   <td v-if="v.loai_doi_tac == 1">Nhà Cung Cấp</td>
                   <td v-else>Đại Lý</td>
-                  </td>
+                  </td> -->
                   <td>{{ v.dia_chi }}</td>
                   <td>{{ v.so_dien_thoai }}</td>
                   <td>{{ v.email }}</td>
@@ -91,13 +91,13 @@
                       <input v-model="create_nha_san_xuat.ten_cong_ty" type="text" class="form-control"
                         id="inputTenCongTy" placeholder="Nhập tên công ty">
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                       <label for="selectLoaiDoiTac" class="form-label">Loại Đối Tác</label>
                       <select v-model="create_nha_san_xuat.loai_doi_tac" class="form-control">
                         <option value="1">Nhà Cung Cấp</option>
                         <option value="2">Đại Lý</option>
                       </select>
-                    </div>
+                    </div> -->
                     <div class="col-md-6">
                       <label for="inputEmail" class="form-label">Email</label>
                       <input v-model="create_nha_san_xuat.email" type="email" class="form-control" id="inputEmail"
@@ -114,17 +114,18 @@
                         id="inputSoDienThoai" placeholder="Nhập số điện thoại">
                     </div>
                     <div class="col-md-6">
+                      <label for="inputAddress" class="form-label">Địa Chỉ</label>
+                      <input v-model="create_nha_san_xuat.dia_chi" class="form-control" id="inputAddress"
+                        placeholder="Nhập địa chỉ">
+                    </div>
+                    <div class="col-md-6">
                       <label for="selectTinhTrang" class="form-label">Tình Trạng</label>
                       <select v-model="create_nha_san_xuat.tinh_trang" class="form-control">
                         <option value="1">Hoạt Động</option>
                         <option value="0">Tạm Dừng</option>
                       </select>
                     </div>
-                    <div class="col-12">
-                      <label for="inputAddress" class="form-label">Địa Chỉ</label>
-                      <textarea v-model="create_nha_san_xuat.dia_chi" class="form-control" id="inputAddress"
-                        placeholder="Nhập địa chỉ" rows="3"></textarea>
-                    </div>
+                    
                   </form>
                 </div>
               </div>

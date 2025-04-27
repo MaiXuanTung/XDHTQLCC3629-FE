@@ -4,74 +4,98 @@
       <div style="max-height: 110px;" class="card-header">
         <div class="row mb-2">
           <div class="col-sm-6 text-start">
-            <h4 class="text-dark">Danh Sách Sản Phẩm</h4>
+            <h4 class="text-dark mt-1">Danh Sách Sản Phẩm</h4>
           </div>
-          <div class="col-sm-6 text-end">
+          <!-- <div class="col-sm-6 text-end">
             <button type="button" class="btn btn-sm btn-outline-primary px-5" data-bs-toggle="modal"
               data-bs-target="#themMoiModal"><i class="bx bx-user mr-1"></i>Thêm
               Mới</button>
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-lg-5">
+            <div class="input-group mb-3  ">
+              <input v-on:keyup.enter="searchSanPham()" v-model="key_search.abc" type="text"
+                class="form-control search-control border-dark" placeholder="Nhập tên sản phẩm">
+              <button v-on:click="searchSanPham()" class="btn btn-info border-dark">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <select class="form-control border-dark" v-model="LocTheoNSX">
+              <option value="">Tên nhà sản xuất - Tất Cả</option>
+              <template v-for="(value, index) in list_nsx" :key="index">
+                <option v-bind:value="value.id">{{ value.ten_cong_ty }} </option>
+              </template>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <div>
+              <select class="form-control border-dark" v-model="LocTheoTrangThai">
+                <option value="">Tình Trạng - Tất Cả</option>
+                <option value="1">Đã đăng bán</option>
+                <option value="0">Dừng đăng bán</option>
+                <option value="2">Chờ duyệt</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div class="input-group mb-3 ">
-          <input v-on:keyup.enter="searchSanPham()" v-model="key_search.abc" type="text"
-            class="form-control search-control" placeholder="Nhập thông tin cần tìm">
-          <button v-on:click="searchSanPham()" class="btn btn-primary ">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </div>
+
       </div>
       <div class="card-body">
-        <div class="table-responsive" style="height: 470px;">
+        <div class="table-responsive" style="height: 600px;">
           <table class="table align-middle mb-0 ">
             <thead class="table-light" style="position: sticky; top: 0; z-index: 1000;">
-              <tr>
+              <tr class="text-center">
                 <th>#</th>
-                <th>Mã SP</th>
-                <th class="ten-sp-col">Tên SP</th>
-                <th>Tên Danh Mục</th>
+                <th class="ten-sp-col">Tên sản phẩm</th>
+                <th>Tồn kho</th>
                 <th>Giá Bán</th>
                 <th>Nhà Sản Xuất</th>
-                <th>Mô Tả</th>
                 <th>Hình ảnh</th>
-                <!-- <th>Transaction hash</th> -->
+                <th>Mô Tả</th>
                 <th>Tình Trạng</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <template v-for="(v, k) in list_san_pham" :key="k">
-                <tr class="">
+              <template v-for="(v, k) in locDataTheoTrangThai" :key="k">
+                <tr class="text-center">
                   <td>{{ k + 1 }}</td>
-                  <td>{{ v.ma_san_pham }}</td>
                   <td class="ten-sp-col">{{ v.ten_san_pham }}</td>
-                  <td>{{ v.ten_danh_muc }}</td>
-                  <td style="color: #FF0000;">{{ formatToVND(v.gia_ban) }}</td>
+                  <td class="text-center">{{ v.so_luong_ton_kho }}</td>
+                  <td class="text-danger">{{ formatToVND(v.gia_ban) }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
+                  <td>
+                    <img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80">
+                  </td>
                   <td>
                     <i style="font-size: 25px;" v-on:click="Object.assign(mo_ta_sp, v)"
                       class="fa-solid fa-circle-info ms-2" data-bs-toggle="modal" data-bs-target="#MotaModal"></i>
                   </td>
                   <!-- <td>{{ v.mo_ta }}</td> -->
-                  <td>
-                    <img v-bind:src="v.hinh_anh" class="rounded-circle" width="80" height="80">
-                  </td>
+                 
                   <!-- <td>{{ v.transaction_hash }}</td> -->
                   <td>
                     <div>
                       <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
-                        class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã Duyệt</a>
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3 "><i
+                          class="bx bxs-circle align-middle me-1 "></i>Đã Duyệt</a>
+                      <a v-on:click="doiTinhTrang(v)" v-else-if="v.tinh_trang == 2" type="button"
+                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Chưa duyệt </a>
                       <a v-on:click="doiTinhTrang(v)" v-else type="button"
                         class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chưa Duyệt</a>
+                          class="bx bxs-circle align-middle me-1"></i>Đã dừng bán </a>
                     </div>
                   </td>
                   <td>
                     <div class="d-flex order-actions">
                       <div class="d-flex order-actions">
-                        <a v-on:click="Object.assign(update_san_pham, v)" type="button" title="Cập Nhật"
+                        <!-- <a v-on:click="Object.assign(update_san_pham, v)" type="button" title="Cập Nhật"
                           data-bs-toggle="modal" data-bs-target="#capNhatModal" class="ms-2 bg-light-info"><i
-                            class="fa-solid fa-arrows-rotate text-info"></i></a>
+                            class="fa-solid fa-arrows-rotate text-info"></i></a> -->
                         <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
                           data-bs-target="#xoaModal" class="ms-2 bg-light-danger"><i
                             class="fa-solid fa-xmark text-danger"></i></a>
@@ -88,12 +112,19 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Mô tả sản phẩm {{ mo_ta_sp.ten_san_pham }}</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Chi tiết sản phẩm</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                {{ mo_ta_sp.mo_ta }}
-                <!-- {{ mo_ta_sp.mo_ta }} -->
+                <b>Mã sản phẩm: </b>{{ mo_ta_sp.ma_san_pham }}
+                <hr>
+                <b>Tên sản phẩm: </b>{{ mo_ta_sp.ten_san_pham }}
+                <hr>
+                <b>Mô tả: </b>{{ mo_ta_sp.mo_ta }}
+                <hr>
+                <b>Danh mục:</b> {{ mo_ta_sp.ten_danh_muc }}
+                <hr>
+                <b>Đơn vị tính:</b> {{ mo_ta_sp.don_vi_tinh }}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -101,7 +132,7 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" id="themMoiModal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <!-- <div class="modal fade" id="themMoiModal" tabindex="-1" aria-hidden="true" style="display: none;">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="card-body">
@@ -168,8 +199,8 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal fade" id="capNhatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        </div> -->
+        <!-- <div class="modal fade" id="capNhatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="card-body">
@@ -214,16 +245,6 @@
                         placeholder="Link hình ảnh">
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Tình Trạng</label>
-                    <div class="col-sm-9">
-                      <select v-model="update_san_pham.tinh_trang" class="form-control">
-                        <option value="1">Hoạt Động</option>
-                        <option value="0">Tạm Dừng</option>
-                      </select>
-                    </div>
-                  </div>
-
                 </div>
               </div>
               <div class="modal-footer">
@@ -233,7 +254,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -267,8 +288,11 @@ const toaster = createToaster({ position: "top-right" });
 export default {
   data() {
     return {
+      LocTheoTrangThai: "",
+      LocTheoNSX: "",
       list_san_pham: [],
       list_danh_muc_sp: [],
+      list_nsx: [],
       create_san_pham: {},
       id_can_xoa: '',
       mo_ta_sp: {},
@@ -279,6 +303,22 @@ export default {
   mounted() {
     this.loadDataSanPham();
     this.loadDataDanhMucSp();
+    this.loadDataNhaSanXuat();
+  },
+  computed: {
+    locDataTheoTrangThai() {
+      let result = this.list_san_pham;
+      // Lọc theo trạng thái nếu có chọn
+      if (this.LocTheoTrangThai !== "") {
+        result = result.filter(item => String(item.tinh_trang) === String(this.LocTheoTrangThai));
+      }
+      // Lọc theo công ty nếu có chọn
+      if (this.LocTheoNSX !== "") {
+        result = result.filter(item => String(item.nsx_id) === String(this.LocTheoNSX));
+      }
+
+      return result;
+    },
   },
   methods:
   {
@@ -307,21 +347,32 @@ export default {
           }
         });
     },
-
-    themMoiSanPham() {
+    loadDataNhaSanXuat() {
       baseRequest
-        .post('admin/san-pham/them-moi-san-pham', this.create_san_pham)
+        .get('admin/nha-san-xuat/lay-du-lieu')
         .then((res) => {
-          if (res.data.status == true) {
-            toaster.success('Thông báo<br>' + res.data.message);
-            this.loadDataSanPham();
-            this.create_san_pham = { ma_san_pham: "", ten_san_pham: "", mo_ta: "" };
-          }
-          else {
-            toaster.error(); ('Thông báo<br>' + res.data.message);
+          if (res.data.status) {
+            this.list_nsx = res.data.nha_san_xuat;
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
           }
         });
     },
+
+    // themMoiSanPham() {
+    //   baseRequest
+    //     .post('admin/san-pham/them-moi-san-pham', this.create_san_pham)
+    //     .then((res) => {
+    //       if (res.data.status == true) {
+    //         toaster.success('Thông báo<br>' + res.data.message);
+    //         this.loadDataSanPham();
+    //         this.create_san_pham = { ma_san_pham: "", ten_san_pham: "", mo_ta: "" };
+    //       }
+    //       else {
+    //         toaster.error(); ('Thông báo<br>' + res.data.message);
+    //       }
+    //     });
+    // },
 
     searchSanPham() {
       baseRequest
