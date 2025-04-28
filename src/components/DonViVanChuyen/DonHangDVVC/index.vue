@@ -75,20 +75,25 @@
                   </td>
                   <td>
                     <div v-if="v.tinh_trang_don_hang == 2"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển
+                    </div>
                     <div v-else-if="v.tinh_trang_don_hang == 3"
-                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle me-1"></i>Hoàn thành</div>
+                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle me-1"></i>Hoàn thành
+                    </div>
                     <div v-else-if="v.tinh_trang_don_hang == 4"
-                      class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                      class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Đã hủy
+                    </div>
                     <div v-else-if="v.tinh_trang_don_hang == 5"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển
+                    </div>
                     <div v-else-if="v.tinh_trang_don_hang == 6"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
+                      class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công
+                    </div>
                   </td>
                   <td>
                     <div v-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 6"
@@ -111,20 +116,26 @@
                   </td>
                   <td>{{ v.ten_khach_hang }}</td>
                   <td>{{ v.dia_chi_dai_ly }}</td>
-                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong></td>
-                  <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen) }}</strong></td>
-                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong></td>
+                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong>
+                  </td>
+                  <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen)
+                  }}</strong></td>
+                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong>
+                  </td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
                   <td>
                     <div v-if="v.tinh_trang_thanh_toan == 0"
-                      class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Chờ thanh toán</div>
+                      class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Chờ thanh toán
+                    </div>
                     <div v-else-if="v.tinh_trang_thanh_toan == 1"
-                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle me-1"></i>Đã thanh toán</div>
+                      class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle me-1"></i>Đã thanh toán
+                    </div>
                     <div v-else-if="v.tinh_trang_thanh_toan == 3"
-                      class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                      class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Đã hủy
+                    </div>
                   </td>
                 </tr>
               </template>
@@ -153,11 +164,13 @@
                   <div class="ms-3">
                     <h2 class="mb-0 text-success">Thông Báo</h2>
                     <div>
-                      <h4 class="text-lg font-semibold mb-2">Các tuyến đường vận chuyển tối ưu:</h4>
+                      <h4 class="text-lg font-semibold mb-2">Các tuyến đường vận chuyển tối ưu:
+                      </h4>
                       <!-- Vòng lặp hiển thị mỗi tuyến -->
                       <template v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="indexTuyen">
                         <div class="mb-3 ms-4">
-                          <h5 class="mb-1">Tuyến từ nhà sản xuất {{ tuyen.nha_san_xuat_name }}:</h5>
+                          <h5 class="mb-1">Tuyến từ nhà sản xuất {{ tuyen.nha_san_xuat_name
+                          }}:</h5>
                           <div class="flex flex-wrap items-center">
                             <template v-for="(dia_diem, index) in tuyen.path_names" :key="index">
                               <span :class="getClass(dia_diem)" class="flex items-center space-x-1"
@@ -220,31 +233,39 @@
                     </td>
                     <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
                     <td>{{ v.so_luong }} sản phẩm</td>
-                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
+                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong)
+                    }}</strong></td>
                     <td>{{ v.ten_nha_san_xuat }}</td>
                     <td>{{ v.dia_chi_nsx }}</td>
                     <td>
                       <div v-if="v.tinh_trang == 0"
-                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận
+                      </div>
                       <div v-else-if="v.tinh_trang == 1"
-                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận
+                      </div>
                       <div v-else-if="v.tinh_trang == 2"
-                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển</div>
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển
+                      </div>
                       <div v-else-if="v.tinh_trang == 3"
-                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle me-1"></i>Hoàn thành</div>
+                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle me-1"></i>Hoàn thành
+                      </div>
                       <div v-else-if="v.tinh_trang == 4"
-                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle align-middle me-1"></i>Đã hủy
+                      </div>
                       <div v-else-if="v.tinh_trang == 5"
-                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển
+                      </div>
                       <div v-else-if="v.tinh_trang == 6"
-                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
+                        class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3">
+                        <i class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công
+                      </div>
                     </td>
                   </tr>
                 </template>
@@ -262,88 +283,122 @@
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <h4>Lịch trình vận chuyển của đơn hàng <b>{{ this.id_don_hang_dang_xem }}:</b></h4>
-            <template v-for="(dia_diem, index) in tuyen_duong_de_xuat" :key="index">
-              <span :class="getClass(dia_diem)" class="flex items-center space-x-1"
-                style="font-size: medium; font-style: italic;">
-                <span>{{ getIcon(dia_diem) }}</span>
-                <span>{{ cleanText(dia_diem) }}</span>
-              </span>
-              <span v-if="index < tuyen_duong_de_xuat.length - 1" class="mx-2 text-gray-500"
-                style="font-size: medium;"><i class="fa-solid fa-arrow-right"></i></span>
-            </template>
-            <p>Chiều dài tuyến đường: <b>{{ chieu_dai_tuyen_duong }}</b></p>
-            <hr>
-            <table class="table mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th>#</th>
-                  <th>Vị Trí Hiện Tại</th>
-                  <th>Vị Trí Cần Đến</th>
-                  <th>Thời Gian Đến</th>
-                  <th>Thời Gian Đi</th>
-                  <th>Mô Tả</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody v-if="list_lich_trinh_don_hang.length">
-                <template v-for="(v, k) in visibleSteps" :key="k">
-                  <tr>
-                    <td>{{ v.thu_tu }}</td>
-                    <td>{{ v.vi_tri_hien_tai }}</td>
-                    <td>{{ v.vi_tri_tiep_theo }}</td>
-                    <td>{{ formatTime(v.thoi_gian_den) }}</td>
-                    <td>{{ formatTime(v.thoi_gian_di) }}</td>
-                    <td>{{ v.mo_ta_trang_thai }}</td>
-                    <td>
-                      <div class="d-flex order-actions">
-                        <!-- Nếu là chặng cuối -->
-                        <template v-if="isLastStep(v)">
-                          <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
-                            <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
-                              class="ms-3 text-success">
-                              <i class="fa-solid fa-check"></i>
-                            </a>
-                          </div>
-                          <div v-else-if="v.tinh_trang == 1" class="d-flex order-actions">
-                            <a type="button" title="Đã đến điểm giao hàng. Chờ đại lý xác nhận"
-                              class="ms-3 text-warning">
-                              <i class="fa-solid fa-clock"></i>
-                            </a>
-                          </div>
-                          <div v-else-if="v.tinh_trang == 2" class="d-flex order-actions">
-                            <a type="button" title="Hoàn thành giao hàng" class="ms-3 text-primary">
-                              <i class="fa-solid fa-flag-checkered"></i>
-                            </a>
-                          </div>
+            <div v-if="isLoading" class="d-flex justify-content-center flex-column align-items-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-3">Đang tải tuyến đường...</p>
+            </div>
+            <div v-else>
+              <h4>Lịch trình vận chuyển của đơn hàng:</h4>
+              <!-- Tabs -->
+              <ul class="nav nav-tabs mb-3" id="tuyenTabs" role="tablist">
+                <li v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="indexTuyen" class="nav-item"
+                  role="presentation" v-on:click="tuyen_hien_tai = tuyen.tuyen_so">
+                  <button class="nav-link" :class="{ active: indexTuyen === 0 }" :id="'tab-' + indexTuyen"
+                    data-bs-toggle="tab" :data-bs-target="'#content-' + indexTuyen" type="button" role="tab">
+                    Tuyến số {{ tuyen.tuyen_so }} - NSX {{ tuyen.nha_san_xuat_name }}
+                  </button>
+                </li>
+              </ul>
+              <!-- Tab Contents -->
+              <div class="tab-content" id="tuyenTabsContent">
+                <div v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="'content-' + indexTuyen"
+                  class="tab-pane fade" :class="{ show: indexTuyen === 0, active: indexTuyen === 0 }"
+                  :id="'content-' + indexTuyen" role="tabpanel" :aria-labelledby="'tab-' + indexTuyen">
+                  <!-- Nội dung tuyến -->
+                  <h5 class="mb-1">Tuyến từ nhà sản xuất {{ tuyen.nha_san_xuat_name }}:</h5>
+                  <div class="flex flex-wrap items-center mb-3">
+                    <template v-for="(dia_diem, index) in tuyen.path_names" :key="index">
+                      <span :class="getClass(dia_diem)" class="flex items-center space-x-1"
+                        style="font-size: large; font-style: italic;">
+                        <span>{{ getIcon(dia_diem) }}</span>
+                        <span>{{ cleanText(dia_diem) }}</span>
+                      </span>
+                      <span v-if="index < tuyen.path_names.length - 1" class="mx-2 text-gray-500"
+                        style="font-size: large;">
+                        <i class="fa-solid fa-arrow-right"></i>
+                      </span>
+                    </template>
+                  </div>
+                  <h6 class="mb-3">Chiều dài tuyến: {{ tuyen.distance }}</h6>
+                  <div style="max-height: 300px; overflow-y: auto;">
+                    <table class="table mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th>#</th>
+                          <th>Vị Trí Hiện Tại</th>
+                          <th>Vị Trí Cần Đến</th>
+                          <th>Thời Gian Đến</th>
+                          <th>Thời Gian Đi</th>
+                          <th>Mô Tả</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="tuyen_hien_tai">
+                        <template v-for="(v, k) in visibleSteps" :key="k">
+                          <tr>
+                            <td>{{ k + 1 }}</td>
+                            <td>{{ v.vi_tri_hien_tai }}</td>
+                            <td>{{ v.vi_tri_tiep_theo }}</td>
+                            <td>{{ formatTime(v.thoi_gian_den) }}</td>
+                            <td>{{ formatTime(v.thoi_gian_di) }}</td>
+                            <td>{{ v.mo_ta_trang_thai }}</td>
+                            <td>
+                              <div class="d-flex order-actions">
+                                <!-- Nếu là chặng cuối -->
+                                <template v-if="isLastStep(v)">
+                                  <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
+                                    <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
+                                      class="ms-3 text-success">
+                                      <i class="fa-solid fa-check"></i>
+                                    </a>
+                                  </div>
+                                  <div v-else-if="v.tinh_trang == 1" class="d-flex order-actions">
+                                    <a type="button" title="Đã đến điểm giao hàng. Chờ đại lý xác nhận"
+                                      class="ms-3 text-warning">
+                                      <i class="fa-solid fa-clock"></i>
+                                    </a>
+                                  </div>
+                                  <div v-else-if="v.tinh_trang == 2" class="d-flex order-actions">
+                                    <a type="button" title="Hoàn thành giao hàng" class="ms-3 text-primary">
+                                      <i class="fa-solid fa-flag-checkered"></i>
+                                    </a>
+                                  </div>
+                                </template>
+
+                                <!-- Nếu không phải chặng cuối -->
+                                <template v-else>
+                                  <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
+                                    <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
+                                      class="ms-3 text-success">
+                                      <i class="fa-solid fa-check"></i>
+                                    </a>
+                                  </div>
+                                  <div v-else-if="v.tinh_trang == 1" class="d-flex order-actions">
+                                    <a @click="xacNhanDi(v.id)" type="button" title="Xác nhận đã đi"
+                                      class="ms-3 text-success">
+                                      <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                  </div>
+                                  <div v-else-if="v.tinh_trang == 2" class="d-flex order-actions">
+                                    <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
+                                      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                    </a>
+                                  </div>
+                                </template>
+                              </div>
+                            </td>
+                          </tr>
                         </template>
-                        <!-- Nếu không phải chặng cuối -->
-                        <template v-else>
-                          <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
-                            <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
-                              class="ms-3 text-success">
-                              <i class="fa-solid fa-check"></i>
-                            </a>
-                          </div>
-                          <div v-else-if="v.tinh_trang == 1" class="d-flex order-actions">
-                            <a @click="xacNhanDi(v.id)" type="button" title="Xác nhận đã đi" class="ms-3 text-success">
-                              <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                          </div>
-                          <div v-else-if="v.tinh_trang == 2" class="d-flex order-actions">
-                            <a type="button" title="Đã đi đến kho tiếp theo" class="ms-3 text-secondary">
-                              <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                            </a>
-                          </div>
-                        </template>
-                      </div>
-                    </td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="modal-footer">
+          <div v-if="!isLoading" class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
           </div>
         </div>
@@ -369,11 +424,13 @@ export default {
       chieu_dai_tuyen_duong: null,
       list_lich_trinh_don_hang: [],
       isLoading: false,
+      tuyen_hien_tai: 1
     }
   },
   mounted() {
     this.loadDataDonHang();
     this.loadDataDaiLy();
+    this.tuyen_hien_tai;
   },
   computed: {
     locDataTheoTenCongTy() {
@@ -383,7 +440,8 @@ export default {
       return this.list_don_hang.filter(item => String(item.user_id) === String(this.LocTheoTenCongTy));
     },
     visibleSteps() {
-      const steps = this.list_lich_trinh_don_hang || [];
+      const allSteps = this.list_lich_trinh_don_hang || [];
+      const steps = allSteps.filter(step => step.tuyen_so === this.tuyen_hien_tai);
       const visible = [];
 
       if (steps.length === 0) return visible;
@@ -417,7 +475,6 @@ export default {
         const isLast = i === steps.length - 1;
         const nextStep = steps[i + 1];
 
-        // Điều kiện hiển thị: chặng trước phải có tinh_trang === 2
         if (prevStep.tinh_trang !== 2) break;
 
         const vi_tri = step.ten_kho || step.dia_chi_dai_ly || step.dia_chi_nsx || 'Vị trí không xác định';
@@ -425,7 +482,6 @@ export default {
           ? 'Kết thúc'
           : nextStep?.ten_kho || nextStep?.dia_chi_kho || nextStep?.dia_chi_dai_ly || 'Điểm đến tiếp theo';
 
-        // Xử lý riêng chặng cuối nếu là địa chỉ đại lý
         if (isLast && step.dia_chi_dai_ly && !step.ten_kho) {
           if (step.tinh_trang === 1) {
             mo_ta_trang_thai = `Đã đến ${vi_tri}. Và đợi chủ đơn hàng xác nhận đã nhận được hàng.`;
@@ -435,7 +491,6 @@ export default {
             mo_ta_trang_thai = `Đang di chuyển đến ${vi_tri}`;
           }
         } else {
-          // Các chặng bình thường
           if (step.tinh_trang === 2) {
             mo_ta_trang_thai = `Rời ${vi_tri} để đến ${vi_tri_tiep_theo}`;
           } else if (step.tinh_trang === 1) {
@@ -464,7 +519,7 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+      const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
@@ -474,7 +529,11 @@ export default {
     },
 
     isLastStep(step) {
-      return this.list_lich_trinh_don_hang[this.list_lich_trinh_don_hang.length - 1].id === step.id;
+      if (!step.id_kho_hang && !step.thoi_gian_den && !step.thoi_gian_di) {
+        return true;
+      }
+      const stepsCurrentTuyen = (this.list_lich_trinh_don_hang || []).filter(s => s.tuyen_so === this.tuyen_hien_tai);
+      return stepsCurrentTuyen[stepsCurrentTuyen.length - 1]?.id === step.id;
     },
 
     loadDataDonHang() {
@@ -524,6 +583,7 @@ export default {
         this.tuyen_duong_de_xuat = res.data.data.map(tuyen => {
           const distance = tuyen.distance;
           const nha_san_xuat_name = tuyen.nha_san_xuat_name;
+          const tuyen_so = tuyen.tuyen_so;
           const pathFormatted = tuyen.path_names.map(name => {
             if (name.includes("Nhà sản xuất")) return name;
             if (name.includes("Kho")) return name;
@@ -547,6 +607,7 @@ export default {
             path_names: pathFormatted,
             distance: distance + ' km',
             nha_san_xuat_name: nha_san_xuat_name,
+            tuyen_so: tuyen_so,
           };
         });
         this.chieu_dai_tuyen_duong = res.data.total_distance;
@@ -618,7 +679,7 @@ export default {
     },
 
     getIcon(text) {
-      if (typeof text !== 'string') return "📍"; // Nếu text không phải là chuỗi, trả về biểu tượng mặc định
+      if (typeof text !== 'string') return "📍";
 
       if (text.startsWith("Nhà sản xuất")) return "🏭";
       if (text.startsWith("Kho")) return "📦";
@@ -627,19 +688,16 @@ export default {
     },
 
     cleanText(text) {
-      if (typeof text !== 'string') return ''; // Nếu text không phải chuỗi, trả về chuỗi rỗng
-
-      // Loại bỏ phần "Nhà sản xuất: " hay "Kho: " nếu muốn ngắn gọn
+      if (typeof text !== 'string') return '';
       return text.replace(/^Nhà sản xuất: |^Kho: |^Đại lý: /, "");
     },
 
     getClass(text) {
-      if (typeof text !== 'string') return "text-gray-700"; // Kiểm tra nếu text không phải là chuỗi, trả về class mặc định
-
+      if (typeof text !== 'string') return "text-gray-700";
       if (text.startsWith("Nhà sản xuất")) return "text-red-600 font-medium";
       if (text.startsWith("Kho")) return "text-blue-600";
       if (text.startsWith("Đại lý")) return "text-green-600 font-medium";
-      return "text-gray-700"; // Trường hợp mặc định
+      return "text-gray-700";
     },
 
     xemLichTrinhDonHang(id) {
@@ -649,26 +707,68 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.list_lich_trinh_don_hang = res.data.data;
-            console.log(this.list_lich_trinh_don_hang)
           } else {
             toaster.error("Không thể tải lịch trình đơn hàng.");
           }
         });
     },
 
-    async xemTuyenDuongGoiY(donHang) {
+    async xemTuyenDuongGoiY(id) {
       try {
-        const res = await baseRequest.post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
-          danh_sach_nha_san_xuat: donHang.danh_sach_nha_san_xuat,
-          id_dai_ly: donHang.user_id,
+        this.isLoading = true;
+        // 1. Lấy chi tiết đơn hàng
+        await this.xemChiTietDonHang(id);
+        if (!this.list_chi_tiet_don_hang || !Array.isArray(this.list_chi_tiet_don_hang) || this.list_chi_tiet_don_hang.length === 0) {
+          throw new Error("Không có dữ liệu chi tiết đơn hàng.");
+        }
+        // 2. Lấy danh sách nhà sản xuất từ chi tiết đơn hàng
+        const danh_sach_nha_san_xuat = [
+          ...new Set(this.list_chi_tiet_don_hang.map(sp => sp.id_nsx))
+        ];
+        const id_dai_ly = this.list_chi_tiet_don_hang[0]?.user_id;
+        // 3. Gọi API lấy tuyến đường gợi ý cho nhiều nhà sản xuất
+        const res = await baseRequest
+          .post('user/don-hang/don-vi-van-chuyen/goi-y-duong-di', {
+            id_dai_ly,
+            danh_sach_nha_san_xuat,
+          });
+
+        // 4. Gán dữ liệu tuyến đường vào biến
+        this.tuyen_duong_de_xuat = res.data.data.map(tuyen => {
+          const distance = tuyen.distance;
+          const nha_san_xuat_name = tuyen.nha_san_xuat_name;
+          const tuyen_so = tuyen.tuyen_so;
+          // const id_don_hang = tuyen.id_don_hang;
+          const pathFormatted = tuyen.path_names.map(name => {
+            if (name.includes("Nhà sản xuất")) return name;
+            if (name.includes("Kho")) return name;
+            if (name.includes("Đại lý")) return name;
+
+            // Nếu không có prefix thì thêm thủ công
+            if (name.toLowerCase().includes("nsx") || name.toLowerCase().includes("nhà sản xuất")) {
+              return "Nhà sản xuất: " + name;
+            }
+            if (name.toLowerCase().includes("kho")) {
+              return "Kho: " + name;
+            }
+            if (name.toLowerCase().includes("đại lý")) {
+              return "Đại lý: " + name;
+            }
+            return name; // fallback
+          });
+
+          return {
+            nha_san_xuat_id: tuyen.nha_san_xuat_id,
+            path_names: pathFormatted,
+            distance: distance + ' km',
+            nha_san_xuat_name: nha_san_xuat_name,
+            tuyen_so: tuyen_so,
+          };
         });
-        console.log(res)
-        // Gán lại mảng các tuyến (n tuyến)
-        this.tuyen_duong_de_xuat = res.data.data;
-        // Tổng chiều dài tất cả các tuyến
         this.chieu_dai_tuyen_duong = res.data.total_distance;
+        this.isLoading = false;
       } catch (error) {
-        console.error('Lỗi khi tìm đường:', error);
+        console.error("Lỗi khi thực hiện xem chi tiết và xác nhận đơn hàng:", error);
         this.$toast?.error?.("Không thể tạo tuyến đường, vui lòng thử lại.");
       }
     },
@@ -685,7 +785,7 @@ export default {
         .then(res => {
           if (res.data.status) {
             toaster.success("Đã xác nhận đã đến.");
-            this.xemLichTrinhDonHang(this.id_don_hang_dang_xem); // ✅ truyền id vào
+            this.xemLichTrinhDonHang(this.id_don_hang_dang_xem);
           } else {
             toaster.error("Không thể xác nhận đã đến.");
           }
@@ -700,7 +800,7 @@ export default {
         .then(res => {
           if (res.data.status) {
             toaster.success("Đã xác nhận đã đi.");
-            this.xemLichTrinhDonHang(this.id_don_hang_dang_xem); // ✅ truyền id vào
+            this.xemLichTrinhDonHang(this.id_don_hang_dang_xem);
           } else {
             toaster.error("Không thể xác nhận đã đi.");
           }

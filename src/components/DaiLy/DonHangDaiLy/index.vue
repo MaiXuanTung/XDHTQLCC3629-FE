@@ -53,8 +53,8 @@
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
                     <div v-else-if="v.tinh_trang == 6"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
+                      class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -156,8 +156,8 @@
                         class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                           class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                       <div v-else-if="v.tinh_trang == 6"
-                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
+                        class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                          class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
                     </td>
                     <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
                   </tr>
