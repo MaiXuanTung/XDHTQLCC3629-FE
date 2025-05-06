@@ -97,6 +97,11 @@ const routes = [
     beforeEnter: checkLogin,
   },
   {
+    path: '/nsx/nguyen-lieu',
+    component: () => import('../components/NhaSanXuat/NguyenLieuNSX/index.vue'),
+    beforeEnter: checkLogin,
+  },
+  {
     path: '/nsx/danh-sach-don-hang',
     component: () => import('../components/NhaSanXuat/DonHangNSX/index.vue'),
     beforeEnter: checkLogin,

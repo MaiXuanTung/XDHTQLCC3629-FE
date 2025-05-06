@@ -29,8 +29,6 @@
             <li> <a class="dropdown-item" href="/admin/san-pham"><i class="bx bx-right-arrow-alt"></i>Sản
                 Phẩm</a>
             </li>
-            <li> <a class="dropdown-item" href="/admin/nguyen-lieu"><i class="bx bx-right-arrow-alt"></i>Nguyên Liệu</a>
-            </li>
           </ul>
         </li>
         <li class="nav-item dropdown">

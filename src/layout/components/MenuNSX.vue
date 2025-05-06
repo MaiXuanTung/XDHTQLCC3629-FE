@@ -20,6 +20,16 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/nsx/nguyen-lieu">
+            <a href="/nsx/nguyen-lieu" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-list-ul"></i>
+              </div>
+              <div class="menu-title">Nguyên liệu</div>
+            </a>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/nsx/danh-sach-don-hang">
             <a href="/nsx/danh-sach-don-hang" class="nav-link">
               <div class="parent-icon">
