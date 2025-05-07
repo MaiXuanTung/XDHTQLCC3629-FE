@@ -29,16 +29,6 @@
             </a>
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link to="/dvvc/lich-tring-don-hang">
-            <a href="/dvvc/lich-tring-don-hang" class="nav-link">
-              <div class="parent-icon">
-                <i class="fa-solid fa-calendar-check"></i>
-              </div>
-              <div class="menu-title">Lịch Trình</div>
-            </a>
-          </router-link>
-        </li>
       </ul>
     </nav>
   </div>
