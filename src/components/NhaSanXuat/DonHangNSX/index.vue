@@ -83,8 +83,8 @@
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                     <div v-else-if="v.tinh_trang_chi_tiet_don_hang == 6"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
+                      class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
                   </td>
                   <td>{{ v.ten_khach_hang }}</td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong></td>

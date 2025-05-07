@@ -63,7 +63,6 @@
                         <i class="fa-solid fa-check"></i>
                       </a>
                     </div>
-
                     <div
                       v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 6"
                       :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 6"
@@ -431,6 +430,7 @@ export default {
     this.loadDataDonHang();
     this.loadDataDaiLy();
     this.tuyen_hien_tai;
+    this.xemLichTrinhDonHang();
   },
   computed: {
     locDataTheoTenCongTy() {
@@ -707,6 +707,7 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.list_lich_trinh_don_hang = res.data.data;
+            console.log(this.list_lich_trinh_don_hang)
           } else {
             toaster.error("Không thể tải lịch trình đơn hàng.");
           }
@@ -786,6 +787,7 @@ export default {
           if (res.data.status) {
             toaster.success("Đã xác nhận đã đến.");
             this.xemLichTrinhDonHang(this.id_don_hang_dang_xem);
+            this.loadDataDonHang();
           } else {
             toaster.error("Không thể xác nhận đã đến.");
           }

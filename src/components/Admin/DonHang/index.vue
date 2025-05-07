@@ -74,8 +74,8 @@
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
                     <div v-else-if="v.tinh_trang == 6"
-                      class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Đã nhận được hàng</div>
+                      class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                        class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -117,8 +117,8 @@
                       class="d-flex order-actions">
                       <a type="button" title="Xác nhận đơn hàng" class="ms-3"><i class="fa-solid fa-check"
                           style="color: gray;"></i></a>
-                      <a type="button" @click="moXacNhanHuy(v)" title="Hủy đơn hàng" class="ms-3" style="color: red;"
-                        data-bs-toggle="modal" data-bs-target="#huyModal"><i class="bx bxs-trash"></i></a>
+                      <a type="button" title="Hủy đơn hàng" class="ms-3" style="color: gray;"><i
+                          class="bx bxs-trash"></i></a>
                     </div>
                   </td>
                 </tr>
@@ -185,7 +185,7 @@
                 </div>
                 <div class="ms-3">
                   <h6 class="mb-0 text-danger">Thông Báo</h6>
-                  <div>Bạn chắc chắn muốn xóa mục này?</div>
+                  <div>Bạn chắc chắn muốn hủy đơn hàng này?</div>
                 </div>
               </div>
             </div>
