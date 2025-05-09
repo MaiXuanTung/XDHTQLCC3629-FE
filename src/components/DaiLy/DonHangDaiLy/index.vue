@@ -25,6 +25,7 @@
                 <th>Tình Trạng Thanh Toán</th>
                 <th>Chi Tiết</th>
                 <th>Actions</th>
+                <th class="text-center">Truy Xuất</th>
               </tr>
             </thead>
             <tbody>
@@ -91,6 +92,36 @@
                     <div v-else-if="v.tinh_trang == 6" class="d-flex order-actions">
                       <a title="Đã nhận được hàng" type="button" @click="moXacNhan(v)" class="ms-3 text-success"
                         data-bs-toggle="modal" data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
+                    </div>
+                  </td>
+                  <td>
+                    <div v-if="v.tinh_trang == 6 || v.tinh_trang == 3" class="d-flex order-actions">
+                      <a type="button" title="Smart contract vận chuyển" class="ms-3"><i
+                          class="fa-solid fa-truck-fast text-warning"></i></a>
+                      <a type="button" title="Chi tiết hợp đồng vận chuyển" class="ms-3"><i
+                          class="fa-solid fa-link"></i></a>
+                      <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
+                          class="fa-solid fa-cloud-arrow-up text-primary"></i></a>
+                      <a type="button" title="Chi tiết hợp đồng đơn hàng" class="ms-3"><i
+                          class="fa-solid fa-layer-group"></i></a>
+                    </div>
+                    <div
+                      v-else-if="v.tinh_trang == 2 || v.tinh_trang == 1 || v.tinh_trang == 4 || v.tinh_trang == 5 || v.tinh_trang == 0"
+                      class="d-flex order-actions">
+                      <a type="button" title="Smart contract vận chuyển" class="ms-3"
+                        :class="{ 'disabled text-secondary': true }" @click.prevent>
+                        <i class="fa-solid fa-dice-d6"></i>
+                      </a>
+                      <a type="button" title="Chi tiết hợp đồng vận chuyển" class="ms-3"
+                        :class="{ 'disabled text-secondary': true }" @click.prevent>
+                        <i class="fa-solid fa-link"></i>
+                      </a>
+                      <a type="button" title="Smart contract đơn hàng" class="ms-3">
+                        <i class="fa-solid fa-cloud-arrow-up text-primary"></i>
+                      </a>
+                      <a type="button" title="Chi tiết hợp đồng đơn hàng" class="ms-3">
+                        <i class="fa-solid fa-layer-group"></i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -269,7 +300,6 @@ export default {
           }
         });
     },
-
     huyDonHang(v) {
       baseRequest
         .post('user/don-hang/dai-ly/huy-don-hang', v)

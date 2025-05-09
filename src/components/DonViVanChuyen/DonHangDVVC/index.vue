@@ -154,7 +154,7 @@
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-              <p class="mt-3">Đang tải tuyến đường...</p>
+              <p class="mt-3">Đang tải...</p>
             </div>
             <!-- Nội dung modal khi không còn tải -->
             <div v-else>
@@ -286,7 +286,7 @@
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-              <p class="mt-3">Đang tải tuyến đường...</p>
+              <p class="mt-3">Đang tải...</p>
             </div>
             <div v-else>
               <h4>Lịch trình vận chuyển của đơn hàng:</h4>
@@ -321,6 +321,7 @@
                     </template>
                   </div>
                   <h6 class="mb-3">Chiều dài tuyến: {{ tuyen.distance }}</h6>
+                  <!-- Table Scroll -->
                   <div style="max-height: 300px; overflow-y: auto;">
                     <table class="table mb-0">
                       <thead class="table-light">
@@ -365,7 +366,6 @@
                                     </a>
                                   </div>
                                 </template>
-
                                 <!-- Nếu không phải chặng cuối -->
                                 <template v-else>
                                   <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
@@ -392,6 +392,33 @@
                         </template>
                       </tbody>
                     </table>
+                  </div>
+                  <!-- Ghim phần này bên dưới table -->
+                  <hr>
+                  <div class="mt-4 text-center">
+                    <template v-if="isLastStep(visibleSteps[visibleSteps.length - 1]) &&
+                      [1, 2].includes(visibleSteps[visibleSteps.length - 1].tinh_trang) &&
+                      !visibleSteps[0].transaction_hash">
+                      <button type="button" class="btn btn-warning" @click="addToBlockChain(visibleSteps)"
+                        :disabled="isLoading">
+                        <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
+                        <span v-if="!isLoading">Add to Blockchain</span>
+                        <span v-else class="ms-2">Đang xử lý...</span>
+                      </button>
+                    </template>
+                    <template v-if="visibleSteps[0].transaction_hash">
+                      <h6>
+                        <a :href="'https://shasta.tronscan.org/#/transaction/' + visibleSteps[0].transaction_hash"
+                          target="_blank">
+                          <i><u>Click để xem thông tin giao dịch ở blockchain</u></i>
+                        </a>
+                      </h6>
+                      <h6>
+                        <a :href="visibleSteps[0].metadata_uri" target="_blank">
+                          <i><u>Click để xem chi tiết hợp đồng</u></i>
+                        </a>
+                      </h6>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -423,7 +450,10 @@ export default {
       chieu_dai_tuyen_duong: null,
       list_lich_trinh_don_hang: [],
       isLoading: false,
-      tuyen_hien_tai: 1
+      tuyen_hien_tai: 1,
+      transaction_hash: null,
+      metadata_uri: null,
+      showHash: false,
     }
   },
   mounted() {
@@ -707,7 +737,6 @@ export default {
         .then((res) => {
           if (res.data.status) {
             this.list_lich_trinh_don_hang = res.data.data;
-            console.log(this.list_lich_trinh_don_hang)
           } else {
             toaster.error("Không thể tải lịch trình đơn hàng.");
           }
@@ -739,7 +768,6 @@ export default {
           const distance = tuyen.distance;
           const nha_san_xuat_name = tuyen.nha_san_xuat_name;
           const tuyen_so = tuyen.tuyen_so;
-          // const id_don_hang = tuyen.id_don_hang;
           const pathFormatted = tuyen.path_names.map(name => {
             if (name.includes("Nhà sản xuất")) return name;
             if (name.includes("Kho")) return name;
@@ -808,6 +836,26 @@ export default {
           }
         })
         .catch(() => toaster.error("Lỗi kết nối khi xác nhận đã đi."));
+    },
+
+    addToBlockChain(steps) {
+      this.isLoading = true
+      baseRequest
+        .post('user/don-hang/don-vi-van-chuyen/dvvc-mint', { routes: steps })
+        .then((res) => {
+          if (res.data.success) {
+            toaster.success("Mint thành công")
+            this.xemLichTrinhDonHang(this.id_don_hang_dang_xem);
+          } else {
+            toaster.error("Lỗi mint: " + res.data.error)
+          }
+        })
+        .catch((err) => {
+          toaster.error("Lỗi hệ thống khi gửi dữ liệu: " + err.message)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
   },
 }
