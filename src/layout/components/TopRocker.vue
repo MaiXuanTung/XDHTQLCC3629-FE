@@ -69,14 +69,6 @@
         </div>
         <div class="row">
           <div class="col">
-            <!-- <template v-if="is_check == false">
-              <form class="d-flex">
-                <router-link to="/dang-nhap">
-                  <button class="btn btn-dark me-3 radius-30 px-4" type="button"><i class="bx bx-lock"></i>
-                    Login</button>
-                </router-link>
-              </form>
-            </template> -->
             <template v-if="is_check == true">
               <div class="user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
@@ -84,6 +76,7 @@
                   <div class="user-info ps-3">
                     <p class="user-name mb-0"><b>{{ ten_hien_thi }}</b></p>
                     <p class="designattion mb-0 text-dark">{{ loai_tai_khoan }}</p>
+                    <p class="designattion mb-0 text-dark">{{ dia_chi_vi }}</p>
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -113,6 +106,7 @@ export default {
       ten_hien_thi: 'Chưa đăng nhập',
       is_check: false,
       loai_tai_khoan: 'null',
+      dia_chi_vi: 'null',
     }
   },
   mounted() {
@@ -155,6 +149,7 @@ export default {
             this.is_check = true;
             this.ten_hien_thi = localStorage.getItem('ho_ten');
             this.loai_tai_khoan = localStorage.getItem('loai_tai_khoan');
+            this.dia_chi_vi = localStorage.getItem('dia_chi_vi');
           }
         });
     },

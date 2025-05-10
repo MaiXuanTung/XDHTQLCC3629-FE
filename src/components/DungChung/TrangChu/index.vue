@@ -298,19 +298,19 @@ body {
 
 /* css nút xem chi tiết */
 .btn-view-detail {
-    display: inline-block;
-    margin-top: 5px;
-    padding: 8px 16px;
-    background-color: #8a8c8d;
-    color: white;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
+  display: inline-block;
+  margin-top: 5px;
+  padding: 8px 16px;
+  background-color: #8a8c8d;
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
 .btn-view-detail:hover {
-    background-color: #ebeef1;
+  background-color: #ebeef1;
 }
 
 /* testttttttttttttttttttttttttttttt csssssssssssssssssssssssssssssssss */

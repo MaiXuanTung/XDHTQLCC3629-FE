@@ -100,6 +100,7 @@ export default {
           localStorage.setItem('so_dien_thoai', res.data.so_dien_thoai);
           localStorage.setItem('dia_chi', res.data.dia_chi);
           localStorage.setItem('user_id', res.data.user_id);
+          localStorage.setItem('dia_chi_vi', res.data.dia_chi_vi);
           switch (res.data.loai_tai_khoan) {
             case 'Nhân Viên':
               this.$router.push('/admin/danh-sach-don-hang');
