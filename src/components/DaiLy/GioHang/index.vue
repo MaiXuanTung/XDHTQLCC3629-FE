@@ -267,7 +267,8 @@ export default {
   width: 32px;
   height: 32px;
   font-size: 20px;
-  background: rgb(228, 230, 231); /* Màu xanh nhạt */
+  background: rgb(228, 230, 231);
+  /* Màu xanh nhạt */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -282,7 +283,7 @@ export default {
   border: 1px solid #ddd;
   border-radius: 5px;
   background: #fff;
- 
+
 }
 
 
@@ -313,16 +314,18 @@ export default {
   text-align: center;
   font-weight: bold;
 }
+
 .card {
-    box-shadow: none;
-    background-color: transparent;
+  box-shadow: none;
+  background-color: transparent;
 }
 
 .cart-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #e3f2fd; /* Màu xanh nhạt */
+  background: #e3f2fd;
+  /* Màu xanh nhạt */
   padding: 15px;
   border-radius: 8px;
 }
@@ -366,7 +369,8 @@ export default {
 }
 
 .page-breadcrumb {
-  background: #e3f2fd; /* Màu xanh nhạt */
+  background: #e3f2fd;
+  /* Màu xanh nhạt */
   padding: 10px;
   border-radius: 5px;
 }

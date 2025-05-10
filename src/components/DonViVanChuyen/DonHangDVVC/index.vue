@@ -118,7 +118,7 @@
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong>
                   </td>
                   <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen)
-                  }}</strong></td>
+                      }}</strong></td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong>
                   </td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -207,7 +207,7 @@
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <h4>Chi tiết của đơn hàng {{ this.id_don_hang_dang_xem }}</h4>
+            <h4>Chi tiết đơn hàng</h4>
             <hr>
             <table class="table mb-0">
               <thead class="table-light">
@@ -232,8 +232,9 @@
                     </td>
                     <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
                     <td>{{ v.so_luong }} sản phẩm</td>
-                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong)
-                    }}</strong></td>
+                    <td>
+                      <strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong>
+                    </td>
                     <td>{{ v.ten_nha_san_xuat }}</td>
                     <td>{{ v.dia_chi_nsx }}</td>
                     <td>
@@ -839,9 +840,14 @@ export default {
     },
 
     addToBlockChain(steps) {
-      this.isLoading = true
+      this.isLoading = true;
+      const diaChiVi = localStorage.getItem('dia_chi_vi');
       baseRequest
-        .post('user/don-hang/don-vi-van-chuyen/dvvc-mint', { routes: steps })
+        .post('user/don-hang/don-vi-van-chuyen/dvvc-mint',
+          {
+            routes: steps,
+            dia_chi_vi: diaChiVi
+          })
         .then((res) => {
           if (res.data.success) {
             toaster.success("Mint thành công")

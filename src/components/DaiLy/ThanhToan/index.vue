@@ -181,6 +181,7 @@ export default {
         let tongTien = tongTienSanPham + cuocVanChuyen;
         let orderData = {
           user_id: localStorage.getItem("user_id"),
+          dia_chi_vi: localStorage.getItem("dia_chi_vi"),
           ten_nguoi_nhan: this.ten_nguoi_nhan,
           so_dien_thoai: this.so_dien_thoai,
           dia_chi: this.dia_chi,
