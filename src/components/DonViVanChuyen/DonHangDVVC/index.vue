@@ -145,63 +145,59 @@
     </div>
     <!-- modal -->
     <!-- modal xác nhận -->
-    <div class="modal fade" id="xacNhanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-body d-flex flex-column gap-3">
-            <!-- Hiển thị thông báo "Đang tải tuyến đường" khi đang tải -->
-            <div v-if="isLoading" class="d-flex justify-content-center flex-column align-items-center">
-              <div class="spinner-border" role="status">
+    <div class="modal fade" id="xacNhanModal" tabindex="-1" aria-labelledby="xacNhanModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow rounded-4 overflow-hidden">
+          <!-- Body: có scroll nếu dài -->
+          <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+            <!-- Loading -->
+            <div v-if="isLoading" class="d-flex justify-content-center flex-column align-items-center py-4">
+              <div class="spinner-border text-success" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-              <p class="mt-3">Đang tải...</p>
+              <p class="mt-3">Đang tải tuyến đường...</p>
             </div>
-            <!-- Nội dung modal khi không còn tải -->
+            <!-- Khi đã tải xong -->
             <div v-else>
-              <div class="alert border-0 border-start border-5 border-success alert-dismissible fade show py-2">
-                <div class="d-flex align-items-center">
-                  <div class="ms-3">
-                    <h2 class="mb-0 text-success">Thông Báo</h2>
-                    <div>
-                      <h4 class="text-lg font-semibold mb-2">Các tuyến đường vận chuyển tối ưu:
-                      </h4>
-                      <!-- Vòng lặp hiển thị mỗi tuyến -->
-                      <template v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="indexTuyen">
-                        <div class="mb-3 ms-4">
-                          <h5 class="mb-1">Tuyến từ nhà sản xuất {{ tuyen.nha_san_xuat_name
-                          }}:</h5>
-                          <div class="flex flex-wrap items-center">
-                            <template v-for="(dia_diem, index) in tuyen.path_names" :key="index">
-                              <span :class="getClass(dia_diem)" class="flex items-center space-x-1"
-                                style="font-size: large; font-style: italic;">
-                                <span>{{ getIcon(dia_diem) }}</span>
-                                <span>{{ cleanText(dia_diem) }}</span>
-                              </span>
-                              <span v-if="index < tuyen.path_names.length - 1" class="mx-2 text-gray-500"
-                                style="font-size: large;">
-                                <i class="fa-solid fa-arrow-right"></i>
-                              </span>
-                            </template>
-                          </div>
-                          <h5 class="mb-2">Chiều dài tuyến: {{ tuyen.distance }}</h5>
-                          <hr>
-                        </div>
+              <div class="alert border-0 border-start border-5 border-success bg-light p-4 mb-4">
+                <h5 class="text-success mb-3">🚚 Các tuyến đường vận chuyển tối ưu:</h5>
+                <!-- Danh sách tuyến -->
+                <template v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="indexTuyen">
+                  <div class="ps-3 mb-4">
+                    <h6 class="fw-bold mb-2">Tuyến từ nhà sản xuất {{ tuyen.nha_san_xuat_name }}:</h6>
+                    <div class="d-flex flex-wrap align-items-center mb-2">
+                      <template v-for="(dia_diem, index) in tuyen.path_names" :key="index">
+                        <span :class="getClass(dia_diem)" class="d-flex align-items-center me-2">
+                          <span class="me-1">{{ getIcon(dia_diem) }}</span>
+                          <span class="fst-italic">{{ cleanText(dia_diem) }}</span>
+                        </span>
+                        <span v-if="index < tuyen.path_names.length - 1" class="text-muted mx-1">
+                          <i class="fa-solid fa-arrow-right"></i>
+                        </span>
                       </template>
                     </div>
-                    <div style="font-size: large;">Bạn chắc chắn muốn xác nhận đơn hàng này?</div>
+                    <div class="text-muted mb-2">Chiều dài tuyến: {{ tuyen.distance }}</div>
+                    <hr class="my-2">
                   </div>
+                </template>
+                <div class="fw-semibold text-dark fs-5 mt-3">
+                  ❓ Bạn có chắc chắn muốn xác nhận đơn hàng này?
                 </div>
               </div>
             </div>
-            <!-- Nút Xác Nhận chỉ hiển thị khi không còn tải -->
-            <button v-if="!isLoading" @click="xacNhan()" data-bs-dismiss="modal"
-              class="btn btn-border bg-light-success align-middle">
-              <h5 class="text-success mt-1">Xác Nhận</h5>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer border-0">
+            <button v-if="!isLoading" @click="xacNhan()" data-bs-dismiss="modal" class="btn btn-outline-success">
+              Xác Nhận
             </button>
+            <button v-if="!isLoading" type="button" class="btn btn-outline-secondary"
+              data-bs-dismiss="modal">Đóng</button>
           </div>
         </div>
       </div>
     </div>
+
     <!-- modal chi tiết -->
     <div class="modal fade" id="chiTietDonHangModal" tabindex="-1" aria-hidden="true" style="display: none;">
       <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -290,7 +286,7 @@
               <p class="mt-3">Đang tải...</p>
             </div>
             <div v-else>
-              <h4>Lịch trình vận chuyển của đơn hàng:</h4>
+              <h4>Lịch trình vận chuyển:</h4>
               <!-- Tabs -->
               <ul class="nav nav-tabs mb-3" id="tuyenTabs" role="tablist">
                 <li v-for="(tuyen, indexTuyen) in tuyen_duong_de_xuat" :key="indexTuyen" class="nav-item"
@@ -323,9 +319,9 @@
                   </div>
                   <h6 class="mb-3">Chiều dài tuyến: {{ tuyen.distance }}</h6>
                   <!-- Table Scroll -->
-                  <div style="max-height: 300px; overflow-y: auto;">
-                    <table class="table mb-0">
-                      <thead class="table-light">
+                  <div style="max-height: 260px; overflow-y: auto;">
+                    <table class="table mb-0" style="margin-bottom: 0;">
+                      <thead class="table-light sticky-top bg-white" style="top: 0; z-index: 1;">
                         <tr>
                           <th>#</th>
                           <th>Vị Trí Hiện Tại</th>
@@ -461,7 +457,7 @@ export default {
     this.loadDataDonHang();
     this.loadDataDaiLy();
     this.tuyen_hien_tai;
-    this.xemLichTrinhDonHang();
+    // this.xemLichTrinhDonHang(1);
   },
   computed: {
     locDataTheoTenCongTy() {
