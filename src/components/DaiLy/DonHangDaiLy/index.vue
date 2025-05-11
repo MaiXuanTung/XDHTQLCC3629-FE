@@ -132,7 +132,7 @@
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <h4>Chi tiết của đơn hàng {{ this.id_don_hang_dang_xem }}</h4>
+            <h4>Chi tiết đơn hàng</h4>
             <i class="text-danger">*Cước vận chuyển được tính 1 lần cho mỗi đơn vị vận chuyển</i>
             <hr>
             <table class="table mb-0">
@@ -208,7 +208,7 @@
                 </div>
                 <div class="ms-3">
                   <h6 class="mb-0 text-danger">Thông Báo</h6>
-                  <div>Bạn chắc chắn muốn xóa mục này?</div>
+                  <div>Bạn chắc chắn muốn hủy đơn hàng này?</div>
                 </div>
               </div>
             </div>
@@ -242,48 +242,50 @@
       </div>
     </div>
     <!-- modal xem đơn hàng blockchain -->
-    <div class="modal fade" id="xemInfoBlockChain" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="xemInfoBlockChain" tabindex="-1" aria-labelledby="xemInfoBlockChainLabel"
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-body d-flex">
-            <div class="alert border-0 border-start border-5 border-info alert-dismissible fade show py-2">
-              <div class="d-flex align-items-center">
-                <div class="font-35 text-info"><i class="fa-solid fa-circle-info"></i>
-                </div>
-                <div class="ms-3">
-                  <!-- <h2 class="mb-0 mb-2">Truy xuất thông tin đơn hàng</h2> -->
+        <div class="modal-content shadow rounded-4 overflow-hidden">
 
-                  <div v-if="list_info_blockchain.length">
-                    <h2 class="mb-0 mb-2">Truy xuất thông tin đơn hàng</h2>
-                    <h6 class="mb-0 mb-2 ms-1">
-                      Mã đơn hàng: <i>{{ list_info_blockchain[0].ma_don_hang }}</i>
-                    </h6>
-                  </div>
-                  <template v-for="(v, k) in list_info_blockchain">
-                    <p style="font-size: large;" class="ms-3">
-                    <div>
-                      <i>Thông tin giao dịch ở blockchain: </i>
-                      <a :href="'https://shasta.tronscan.org/#/transaction/' + v.transaction_hash" target="_blank">
-                        <i><u>Click <i style="font-style: italic;"
-                              class="fa-solid fa-arrow-up-right-from-square"></i></u></i>
-                      </a>
-                    </div>
-                    <div>
-                      <i>Chi tiết hợp đồng: </i>
-                      <a :href="v.metadata_uri" target="_blank">
-                        <i><u>Click <i style="font-style: italic;"
-                              class="fa-solid fa-arrow-up-right-from-square"></i></u></i>
-                      </a>
-                    </div>
-                    </p>
-                  </template>
-                </div>
-              </div>
+          <!-- Phần đầu modal: luôn hiển thị -->
+          <div class="modal-header bg-info bg-opacity-10 border-0 py-3">
+            <div>
+              <h4 class="mb-1">📦 Truy xuất thông tin đơn hàng</h4>
             </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
           </div>
-          <button data-bs-dismiss="modal" class="btn btn-border bg-light-info align-middle">
-            <h5 class="text-info mt-1">Đóng</h5>
-          </button>
+
+          <!-- Phần nội dung cuộn -->
+          <div class="modal-body" style="max-height: 500px; overflow-y: auto; background-color: #fdfdfd;">
+            <template v-for="(v, k) in list_info_blockchain" :key="k">
+              <div
+                style="border: 1px solid #e0e0e0; border-left: 4px solid #0dcaf0; border-radius: 8px; padding: 16px; margin-bottom: 16px; background-color: #ffffff;">
+                <h5 class="mb-2">🕘 Lịch sử thay đổi</h5>
+                <p class="mb-1"><strong>Hành động:</strong> {{ v.action }}</p>
+                <p class="mb-1"><strong>Người thực hiện:</strong> {{ v.nguoi_thuc_hien }}</p>
+                <p class="mb-1"><strong>Loại người dùng:</strong> {{ v.loai_tai_khoan }}</p>
+                <p class="mb-1 fst-italic">
+                  Giao dịch blockchain:
+                  <a :href="'https://shasta.tronscan.org/#/transaction/' + v.transaction_hash" target="_blank"
+                    class="text-info text-decoration-underline ms-1">
+                    Xem chi tiết <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </p>
+                <p class="mb-0 fst-italic">
+                  Chi tiết hợp đồng:
+                  <a :href="v.metadata_uri" target="_blank" class="text-info text-decoration-underline ms-1">
+                    Xem thêm <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </p>
+              </div>
+            </template>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer border-0">
+            <button class="btn btn-outline-info" data-bs-dismiss="modal">
+              Đóng
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -323,8 +325,6 @@
                       </a>
                     </div>
                     </p>
-                    <!-- <p style="font-size: large;">
-                    </p> -->
                   </template>
                 </div>
               </div>
@@ -394,10 +394,20 @@ export default {
     },
 
     huyDonHang(v) {
+      let orderData = {
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        nguoi_thuc_hien: localStorage.getItem('ho_ten'),
+        dia_chi_vi: localStorage.getItem('dia_chi_vi'),
+      }
       baseRequest
-        .post('user/don-hang/dai-ly/huy-don-hang', v)
+        .post('user/don-hang/dai-ly/huy-don-hang',
+          {
+            v,
+            orderData
+          }
+        )
         .then((res) => {
-          if (res.data.status == true) {
+          if (res.data.success == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataDonHang();
           }
@@ -435,10 +445,20 @@ export default {
     },
 
     xacNhanDonHang(v) {
+      let orderData = {
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        nguoi_thuc_hien: localStorage.getItem('ho_ten'),
+        dia_chi_vi: localStorage.getItem('dia_chi_vi'),
+      }
       baseRequest
-        .post('user/don-hang/dai-ly/xac-nhan-don-hang', v)
+        .post('user/don-hang/dai-ly/xac-nhan-don-hang',
+          {
+            v,
+            orderData
+          }
+        )
         .then((res) => {
-          if (res.data.status == true) {
+          if (res.data.success == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataDonHang();
           }

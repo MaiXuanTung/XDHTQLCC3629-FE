@@ -182,6 +182,7 @@ export default {
         let orderData = {
           user_id: localStorage.getItem("user_id"),
           dia_chi_vi: localStorage.getItem("dia_chi_vi"),
+          loai_tai_khoan: localStorage.getItem("loai_tai_khoan"),
           ten_nguoi_nhan: this.ten_nguoi_nhan,
           so_dien_thoai: this.so_dien_thoai,
           dia_chi: this.dia_chi,

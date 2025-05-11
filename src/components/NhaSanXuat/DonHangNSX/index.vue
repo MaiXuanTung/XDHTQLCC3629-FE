@@ -37,14 +37,15 @@
             <thead class="table-light">
               <tr>
                 <th>#</th>
-                <th>Đơn Hàng</th>
+                <th>Mã Đơn Hàng</th>
                 <th class="text-center">Actions</th>
+                <th>Chi Tiết</th>
+                <th class="text-center">Truy Xuất</th>
                 <th>Tình Trạng</th>
                 <th>Người Đặt</th>
                 <th>Tổng Tiền</th>
                 <th>Cước Vận Chuyển</th>
                 <th>Cần Thanh Toán</th>
-                <th>Chi Tiết</th>
                 <th>Ngày Đặt</th>
                 <th>Tình Trạng TT</th>
               </tr>
@@ -52,18 +53,50 @@
             <tbody>
               <template v-for="(v, k) in locDataTheoTenCongTy" :key="k">
                 <tr>
-                  <td><strong>{{ k + 1 }}</strong></td>
-                  <td><strong>ĐH {{ v.id_don_hang }}</strong></td>
+                  <td>{{ k + 1 }}</td>
+                  <td>{{ v.ma_don_hang }}</td>
                   <td>
                     <div v-if="v.tinh_trang_chi_tiet_don_hang == 1" class="d-flex order-actions">
                       <a type="button" @click="moXacNhan(v)" class="ms-3 text-success" data-bs-toggle="modal"
                         data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
+                      <a type="button" @click="moXacNhanHuy(v)" title="Hủy đơn hàng" class="ms-3" style="color: red;"
+                        data-bs-toggle="modal" data-bs-target="#huyModal"><i class="bx bxs-trash"></i></a>
                     </div>
                     <div
                       v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6 || v.tinh_trang_chi_tiet_don_hang == 5 || v.tinh_trang_chi_tiet_don_hang == 3 || v.tinh_trang_chi_tiet_don_hang == 4 || v.tinh_trang_chi_tiet_don_hang == 2 || v.tinh_trang_chi_tiet_don_hang == 6"
                       :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6 || v.tinh_trang_chi_tiet_don_hang == 5 || v.tinh_trang_chi_tiet_don_hang == 3 || v.tinh_trang_chi_tiet_don_hang == 4 || v.tinh_trang_chi_tiet_don_hang == 2 || v.tinh_trang_chi_tiet_don_hang == 6"
                       class="d-flex order-actions">
                       <a type="button" class="ms-3"><i class="fa-solid fa-check" style="color: gray;"></i></a>
+                      <a type="button" title="Hủy đơn hàng" class="ms-3" style="color: gray;"><i
+                          class="bx bxs-trash"></i></a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex order-actions">
+                      <a title="Xem chi tiết đơn hàng" @click="xemChiTietDonHang(v.id_don_hang)"
+                        class="ms-3 text-info"><i type="button" data-bs-toggle="modal"
+                          data-bs-target="#chiTietDonHangModal" class="fa-solid fa-circle-info"></i></a>
+                    </div>
+                  </td>
+                  <td>
+                    <div v-if="v.tinh_trang_don_hang == 6 || v.tinh_trang_don_hang == 3" class="d-flex order-actions">
+                      <a type="button" title="Smart contract vận chuyển" class="ms-3"><i
+                          class="fa-solid fa-truck-fast text-warning" data-bs-toggle="modal"
+                          data-bs-target="#xemLSVCBlockChain" @click="xemLichSuVanChuyenOnBlockChain(v.id)"></i></a>
+                      <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
+                          class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
+                          data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id_don_hang)"></i></a>
+                    </div>
+                    <div
+                      v-else-if="v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 1 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 0"
+                      class="d-flex order-actions">
+                      <a type="button" title="Smart contract vận chuyển" class="ms-3"
+                        :class="{ 'disabled text-secondary': true }" @click.prevent>
+                        <i class="fa-solid fa-truck-fast"></i>
+                      </a>
+                      <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
+                          class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
+                          data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id_don_hang)"></i></a>
                     </div>
                   </td>
                   <td>
@@ -90,13 +123,6 @@
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong></td>
                   <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen) }}</strong></td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong></td>
-                  <td>
-                    <div class="d-flex order-actions">
-                      <a title="Xem chi tiết đơn hàng" @click="xemChiTietDonHang(v.id_don_hang)"
-                        class="ms-3 text-info"><i type="button" data-bs-toggle="modal"
-                          data-bs-target="#chiTietDonHangModal" class="fa-solid fa-circle-info"></i></a>
-                    </div>
-                  </td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
                   <td>
                     <div v-if="v.tinh_trang_thanh_toan == 0"
@@ -144,7 +170,7 @@
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <h4>Chi tiết của đơn hàng {{ this.id_don_hang_dang_xem }}</h4>
+            <h4>Chi tiết đơn hàng</h4>
             <hr>
             <table class="table mb-0">
               <thead class="table-light">
@@ -180,6 +206,123 @@
         </div>
       </div>
     </div>
+    <!-- modal xem đơn hàng blockchain -->
+    <div class="modal fade" id="xemInfoBlockChain" tabindex="-1" aria-labelledby="xemInfoBlockChainLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow rounded-4 overflow-hidden">
+
+          <!-- Phần đầu modal: luôn hiển thị -->
+          <div class="modal-header bg-info bg-opacity-10 border-0 py-3">
+            <div>
+              <h4 class="mb-1">📦 Truy xuất thông tin đơn hàng</h4>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+          </div>
+
+          <!-- Phần nội dung cuộn -->
+          <div class="modal-body" style="max-height: 500px; overflow-y: auto; background-color: #fdfdfd;">
+            <template v-for="(v, k) in list_info_blockchain" :key="k">
+              <div
+                style="border: 1px solid #e0e0e0; border-left: 4px solid #0dcaf0; border-radius: 8px; padding: 16px; margin-bottom: 16px; background-color: #ffffff;">
+                <h5 class="mb-2">🕘 Lịch sử thay đổi</h5>
+                <p class="mb-1"><strong>Hành động:</strong> {{ v.action }}</p>
+                <p class="mb-1"><strong>Người thực hiện:</strong> {{ v.nguoi_thuc_hien }}</p>
+                <p class="mb-1"><strong>Loại người dùng:</strong> {{ v.loai_tai_khoan }}</p>
+                <p class="mb-1 fst-italic">
+                  Giao dịch blockchain:
+                  <a :href="'https://shasta.tronscan.org/#/transaction/' + v.transaction_hash" target="_blank"
+                    class="text-info text-decoration-underline ms-1">
+                    Xem chi tiết <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </p>
+                <p class="mb-0 fst-italic">
+                  Chi tiết hợp đồng:
+                  <a :href="v.metadata_uri" target="_blank" class="text-info text-decoration-underline ms-1">
+                    Xem thêm <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </p>
+              </div>
+            </template>
+          </div>
+          <!-- Footer -->
+          <div class="modal-footer border-0">
+            <button class="btn btn-outline-info" data-bs-dismiss="modal">
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal xem lịch sử vận chuyển blockchain -->
+    <div class="modal fade" id="xemLSVCBlockChain" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-body d-flex">
+            <div class="alert border-0 border-start border-5 border-warning alert-dismissible fade show py-2">
+              <div class="d-flex align-items-center">
+                <div class="font-35 text-warning"><i class="fa-solid fa-circle-info"></i>
+                </div>
+                <div class="ms-3">
+                  <div v-if="list_lsvc_blockchain.length">
+                    <h2 class="mb-0 mb-2">Truy xuất lịch sử vận chuyển đơn hàng</h2>
+                    <h6 class="mb-0 mb-2 ms-3">
+                      Mã đơn hàng: <i>{{ list_lsvc_blockchain[0].ma_don_hang }}</i>
+                    </h6>
+                  </div>
+                  <template v-for="(v, k) in list_lsvc_blockchain">
+                    <p style="font-size: large;">
+                    <div class="ms-3">
+                      <b>Tuyến số #{{ v.tuyen_so }}</b>
+                    </div>
+                    <div class="ms-5">
+                      <i>Thông tin giao dịch ở blockchain: </i>
+                      <a :href="'https://shasta.tronscan.org/#/transaction/' + v.transaction_hash" target="_blank">
+                        <i><u>Click <i style="font-style: italic;"
+                              class="fa-solid fa-arrow-up-right-from-square"></i></u></i>
+                      </a>
+                    </div>
+                    <div class="ms-5">
+                      <i>Chi tiết lịch sử vận chuyển: </i>
+                      <a :href="v.metadata_uri" target="_blank">
+                        <i><u>Click <i style="font-style: italic;"
+                              class="fa-solid fa-arrow-up-right-from-square"></i></u></i>
+                      </a>
+                    </div>
+                    </p>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button data-bs-dismiss="modal" class="btn btn-border bg-light-warning align-middle">
+            <h5 class="mt-1">Đóng</h5>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- modal hủy đơn hàng -->
+    <div class="modal fade" id="huyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body d-flex">
+            <div class="alert border-0 border-start border-5 border-danger alert-dismissible fade show py-2">
+              <div class="d-flex align-items-center">
+                <div class="font-35 text-danger"><i class="bx bxs-message-square-x"></i>
+                </div>
+                <div class="ms-3">
+                  <h6 class="mb-0 text-danger">Thông Báo</h6>
+                  <div>Bạn chắc chắn muốn hủy đơn hàng này?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button @click="xacNhanHuy()" data-bs-dismiss="modal" class="btn btn-border bg-light-danger align-middle">
+            <h5 class="text-danger mt-1">Xác Nhận</h5>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -196,6 +339,8 @@ export default {
       id_can_huy: '',
       key_search: {},
       LocTheoTenCongTy: "",
+      list_info_blockchain: [],
+      list_lsvc_blockchain: [],
     }
   },
   mounted() {
@@ -238,10 +383,20 @@ export default {
     },
 
     xacNhanDonHang(v) {
+      let orderData = {
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        nguoi_thuc_hien: localStorage.getItem('ho_ten'),
+        dia_chi_vi: localStorage.getItem('dia_chi_vi'),
+      }
       baseRequest
-        .post('user/don-hang/nha-san-xuat/xac-nhan-don-hang', v)
+        .post('user/don-hang/nha-san-xuat/xac-nhan-don-hang',
+          {
+            v,
+            orderData
+          }
+        )
         .then((res) => {
-          if (res.data.status == true) {
+          if (res.data.success == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataDonHang();
           }
@@ -295,6 +450,74 @@ export default {
           if (res.data.status) {
             this.list_dai_ly = res.data.dai_ly;
           } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+
+    xemDonHangOnBlockChain(id) {
+      let orderData = {
+        id_don_hang: id,
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        id_nsx: localStorage.getItem('user_id'),
+      }
+      baseRequest
+        .post(`user/don-hang/nha-san-xuat/lay-thong-tin-don-hang-blockchain`, orderData)
+        .then((res) => {
+          if (res.data.status) {
+            this.list_info_blockchain = res.data.data;
+          } else {
+            toaster.error("Không thể tải dữ liệu blockchain.");
+          }
+        });
+    },
+
+    xemLichSuVanChuyenOnBlockChain(id) {
+      this.id_don_hang_dang_xem = id;
+      baseRequest
+        .post(`user/don-hang/nha-san-xuat/lay-lich-su-van-chuyen-blockchain`, { id_don_hang: id })
+        .then((res) => {
+          if (res.data.status) {
+            this.list_lsvc_blockchain = res.data.data;
+          } else {
+            toaster.error("Không thể tải dữ liệu blockchain.");
+          }
+        });
+    },
+
+    //hủy đơn hàng
+    moXacNhanHuy(donHang) {
+      this.donHangHuy = donHang;
+    },
+
+    xacNhanHuy() {
+      if (this.donHangHuy) {
+        this.huyDonHang(this.donHangHuy);
+        this.donHangHuy = null;
+      }
+      const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
+      modal.hide();
+    },
+
+    huyDonHang(v) {
+      let orderData = {
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        nguoi_thuc_hien: localStorage.getItem('ho_ten'),
+        dia_chi_vi: localStorage.getItem('dia_chi_vi'),
+      }
+      baseRequest
+        .post('user/don-hang/nha-san-xuat/huy-don-hang',
+          {
+            v,
+            orderData
+          }
+        )
+        .then((res) => {
+          if (res.data.success == true) {
+            toaster.success('Thông báo<br>' + res.data.message);
+            this.loadDataDonHang();
+          }
+          else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });
