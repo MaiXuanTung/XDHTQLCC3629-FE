@@ -118,7 +118,7 @@
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong>
                   </td>
                   <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen)
-                      }}</strong></td>
+                  }}</strong></td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong>
                   </td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
@@ -670,8 +670,17 @@ export default {
     },
 
     xacNhanDonHang(v) {
+      let orderData = {
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        nguoi_thuc_hien: localStorage.getItem('ho_ten'),
+        dia_chi_vi: localStorage.getItem('dia_chi_vi'),
+      }
       baseRequest
-        .post('user/don-hang/don-vi-van-chuyen/xac-nhan-don-hang', v)
+        .post('user/don-hang/don-vi-van-chuyen/xac-nhan-don-hang',
+          {
+            v, orderData
+          }
+        )
         .then((res) => {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);

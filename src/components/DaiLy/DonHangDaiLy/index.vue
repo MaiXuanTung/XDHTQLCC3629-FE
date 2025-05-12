@@ -61,7 +61,7 @@
                       class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
                         class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
                   </td>
-                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
+                  <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_can_thanh_toan) }}</strong></td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
                   <td>{{ formatDate(v.ngay_giao) }}</td>
                   <td>
