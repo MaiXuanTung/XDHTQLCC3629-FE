@@ -109,7 +109,7 @@ export default {
               this.$router.push('/home-page');
               break;
             case 'Nhà Sản Xuất':
-              this.$router.push('/nsx/danh-sach-san-pham');
+              this.$router.push('/nsx/danh-sach-don-hang');
               break;
             case 'Đơn vị vận chuyển':
               this.$router.push('/dvvc/danh-sach-don-hang');
