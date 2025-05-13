@@ -13,7 +13,7 @@
           <router-link to="/nsx/danh-sach-san-pham">
             <a href="/nsx/danh-sach-san-pham" class="nav-link">
               <div class="parent-icon">
-                <i class="fa-solid fa-list-ul"></i>
+                <i class="fa-solid fa-boxes-stacked"></i>
               </div>
               <div class="menu-title">Sản Phẩm</div>
             </a>
@@ -23,7 +23,7 @@
           <router-link to="/nsx/nguyen-lieu">
             <a href="/nsx/nguyen-lieu" class="nav-link">
               <div class="parent-icon">
-                <i class="fa-solid fa-list-ul"></i>
+                <i class="fa-solid fa-wheat-awn"></i>
               </div>
               <div class="menu-title">Nguyên liệu</div>
             </a>
