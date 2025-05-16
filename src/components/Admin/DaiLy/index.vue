@@ -146,12 +146,6 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputMatKhau" class="col-sm-3 col-form-label">Mật Khẩu</label>
-                    <div class="col-sm-9">
-                      <input v-model="update_dai_ly.mat_khau" class="form-control" id="inputMatKhau">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
                     <label for="inputDiaChi" class="col-sm-3 col-form-label">Địa Chỉ</label>
                     <div class="col-sm-9">
                       <input v-model="update_dai_ly.dia_chi" class="form-control" id="inputDiaChi">
