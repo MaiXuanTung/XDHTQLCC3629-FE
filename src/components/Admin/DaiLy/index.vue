@@ -130,7 +130,7 @@
               <div class="card-body">
                 <div class="border p-4 rounded">
                   <div class="card-title d-flex align-items-center">
-                    <h4 class="mb-0 text-info">Cập Nhật Thông Tin Nhà Sản Xuất</h4>
+                    <h4 class="mb-0 text-info">Cập Nhật Thông Tin Đại Lý</h4>
                   </div>
                   <hr>
                   <div class="row mb-3">
