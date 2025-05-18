@@ -400,19 +400,19 @@ export default {
         });
     },
 
-    updateSanPham() {
-      baseRequest
-        .post('admin/san-pham/cap-nhat-san-pham', this.update_san_pham)
-        .then((res) => {
-          if (res.data.status == true) {
-            toaster.success('Thông báo<br>' + res.data.message);
-            this.loadDataSanPham();
-          }
-          else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
-    },
+    // updateSanPham() {
+    //   baseRequest
+    //     .post('admin/san-pham/cap-nhat-san-pham', this.update_san_pham)
+    //     .then((res) => {
+    //       if (res.data.status == true) {
+    //         toaster.success('Thông báo<br>' + res.data.message);
+    //         this.loadDataSanPham();
+    //       }
+    //       else {
+    //         toaster.error('Thông báo<br>' + res.data.message);
+    //       }
+    //     });
+    // },
 
     doiTinhTrang(v) {
       baseRequest
