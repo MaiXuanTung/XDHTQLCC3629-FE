@@ -2,11 +2,14 @@
   <div class="page-content">
     <div class="card">
       <div style="max-height: 110px;" class="card-header">
-        <div class="row mb-2">
+        <div class="row mb-2 mt-2">
           <div class="col-sm-6 text-start">
             <h4 class="text-dark">DANH SÁCH ĐƠN HÀNG</h4>
           </div>
           <div class="col-sm-6 text-end">
+            <button v-on:click="CheckThanhToan()" class="btn btn-danger">
+              <i class="bx bxs-circle align-middle me-1"></i>Check Thanh Toán
+            </button>
           </div>
         </div>
         <div class="row">
@@ -130,12 +133,12 @@
                     </div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
-                  <td>{{ formatDate(v.ngay_dat) }}</td>
-                  <td>{{ formatDate(v.ngay_giao) }}</td>
-                  <td>
-                    <div v-if="v.tinh_trang_thanh_toan == 0"
-                      class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                        class="bx bxs-circle align-middle me-1"></i>Chờ thanh toán</div>
+                  <td class="text-center">{{ formatDate(v.ngay_dat) }}</td>
+                  <td class="text-center">{{ formatDate(v.ngay_giao) }}</td>
+                  <td class="text-center">
+                    <div v-if="v.tinh_trang_thanh_toan == 0" class="badge rounded-pill text-primary bg-light-primary p-2 text-uppercase px-3">
+                      <i class="bx bxs-circle align-middle me-1"></i>Chờ thanh toán
+                      </div>
                     <div v-else-if="v.tinh_trang_thanh_toan == 1"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle me-1"></i>Đã thanh toán</div>
@@ -566,6 +569,17 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+        });
+    },
+    CheckThanhToan() {
+      baseRequest
+        .get('check-giao-dich')
+        .then((res) => {
+          if (res.data.status) {
+            this.loadDataDonHang();
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
         });
     },
   },
