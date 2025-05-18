@@ -58,15 +58,15 @@
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ma_don_hang }}</td>
                   <td>
-                    <div v-if="v.tinh_trang_don_hang == 2" class="d-flex order-actions">
+                    <div v-if="v.tinh_trang_lich_su_don_hang == 2" class="d-flex order-actions">
                       <a title="Xác nhận vận chuyển" type="button" @click="xemChiTietVaXacNhanDonHang(v)"
                         class="ms-3 text-success" data-bs-toggle="modal" data-bs-target="#xacNhanModal">
                         <i class="fa-solid fa-check"></i>
                       </a>
                     </div>
                     <div
-                      v-else-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 6"
-                      :disabled="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 6"
+                      v-else-if="v.tinh_trang_lich_su_don_hang == 5 || v.tinh_trang_lich_su_don_hang == 3 || v.tinh_trang_lich_su_don_hang == 4 || v.tinh_trang_lich_su_don_hang == 6"
+                      :disabled="v.tinh_trang_lich_su_don_hang == 5 || v.tinh_trang_lich_su_don_hang == 3 || v.tinh_trang_lich_su_don_hang == 4 || v.tinh_trang_lich_su_don_hang == 6"
                       class="d-flex order-actions">
                       <a type="button" class="ms-3">
                         <i class="fa-solid fa-check" style="color: gray;"></i>
@@ -74,29 +74,30 @@
                     </div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang_don_hang == 2"
+                    <div v-if="v.tinh_trang_lich_su_don_hang == 2"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
                       <i class="bx bxs-circle align-middle me-1"></i>Chờ vận chuyển
                     </div>
-                    <div v-else-if="v.tinh_trang_don_hang == 3"
+                    <div v-else-if="v.tinh_trang_lich_su_don_hang == 3"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
                       <i class="bx bxs-circle me-1"></i>Hoàn thành
                     </div>
-                    <div v-else-if="v.tinh_trang_don_hang == 4"
+                    <div v-else-if="v.tinh_trang_lich_su_don_hang == 4"
                       class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">
                       <i class="bx bxs-circle align-middle me-1"></i>Đã hủy
                     </div>
-                    <div v-else-if="v.tinh_trang_don_hang == 5"
+                    <div v-else-if="v.tinh_trang_lich_su_don_hang == 5"
                       class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
                       <i class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển
                     </div>
-                    <div v-else-if="v.tinh_trang_don_hang == 6"
+                    <div v-else-if="v.tinh_trang_lich_su_don_hang == 6"
                       class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3">
                       <i class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công
                     </div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3 || v.tinh_trang_don_hang == 6"
+                    <div
+                      v-if="v.tinh_trang_lich_su_don_hang == 5 || v.tinh_trang_lich_su_don_hang == 3 || v.tinh_trang_lich_su_don_hang == 6"
                       class="d-flex order-actions">
                       <a title="Xem lịch trình vận chuyển đơn hàng" @click="handleClick(v)" class="ms-3 text-warning"><i
                           type="button" data-bs-toggle="modal" data-bs-target="#lichTrinhDonHangModal"
@@ -109,14 +110,14 @@
                   </td>
                   <td class="text-center">
                     <div
-                      v-if="v.tinh_trang_don_hang == 2 || v.tinh_trang_don_hang == 6 || v.tinh_trang_don_hang == 5 || v.tinh_trang_don_hang == 3"
+                      v-if="v.tinh_trang_lich_su_don_hang == 2 || v.tinh_trang_lich_su_don_hang == 6 || v.tinh_trang_lich_su_don_hang == 5 || v.tinh_trang_lich_su_don_hang == 3"
                       class="d-flex order-actions">
                       <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
                           class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
                           data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id_don_hang)"></i></a>
                     </div>
                     <div
-                      v-else-if="v.tinh_trang_don_hang == 1 || v.tinh_trang_don_hang == 4 || v.tinh_trang_don_hang == 0"
+                      v-else-if="v.tinh_trang_lich_su_don_hang == 1 || v.tinh_trang_lich_su_don_hang == 4 || v.tinh_trang_lich_su_don_hang == 0"
                       class="d-flex order-actions">
                       <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
                           class="fa-solid fa-layer-group text-gray"></i></a>
@@ -134,7 +135,7 @@
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_san_pham) }}</strong>
                   </td>
                   <td class="text-danger text-center"><strong>{{ formatToVND(v.tong_cuoc_van_chuyen)
-                      }}</strong></td>
+                  }}</strong></td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien_don_hang) }}</strong>
                   </td>
                   <td>{{ formatDate(v.ngay_dat) }}</td>
