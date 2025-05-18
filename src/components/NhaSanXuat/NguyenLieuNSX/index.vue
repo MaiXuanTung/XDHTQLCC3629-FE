@@ -7,8 +7,8 @@
                         <h4 class="text-primary"><i class="fa-solid fa-bullseye"></i> Danh Sách Nguyên Liệu</h4>
                     </div>
                     <div class="col-sm-6 text-end">
-                        <button type="button" class="btn btn-sm btn-outline-primary px-5 border-dark" data-bs-toggle="modal"
-                            data-bs-target="#themMoiModal"><i class="bx bx-user mr-1"></i>Thêm
+                        <button type="button" class="btn btn-sm btn-outline-primary px-5 border-dark"
+                            data-bs-toggle="modal" data-bs-target="#themMoiModal"><i class="bx bx-user mr-1"></i>Thêm
                             Mới +</button>
                     </div>
                     <!-- themmoi -->
@@ -41,11 +41,6 @@
                                     <label class="mb-2">Hạn sử dụng</label>
                                     <input v-model="create_nguyen_lieu.han_su_dung" type="date"
                                         class="form-control mb-2" placeholder="Đơn vị tính ">
-                                    <label class="mb-2">Tình trạng</label>
-                                    <select v-model="create_nguyen_lieu.tinh_trang" class="form-control">
-                                        <option value="1">Hoạt Động</option>
-                                        <option value="0">Tạm Dừng</option>
-                                    </select>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát
@@ -95,11 +90,14 @@
                                     <td class="text-center">
                                         <div>
                                             <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
-                                                class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                                                class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                                                     class="bx bxs-circle align-middle me-1"></i>Hoạt Động</a>
-                                            <a v-on:click="doiTinhTrang(v)" v-else type="button"
+                                            <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 0" type="button"
                                                 class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                                                    class="bx bxs-circle align-middle me-1"></i>Tạm Dừng</a>
+                                                    class="bx bxs-circle align-middle me-1"></i>Tạm Dừng </a>
+                                            <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 2" type="button"
+                                                class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                                                    class="bx bxs-circle align-middle me-1"></i>Chờ duyệt </a>
                                         </div>
                                     </td>
                                     <td class="text-center">
@@ -175,7 +173,7 @@
                                 </div>
                                 <div class="modal-body">
                                     Bạn có chắc chắn muốn xóa nguyên liệu <b>{{ delete_nguyen_lieu.ten_nguyen_lieu
-                                    }}</b> này
+                                        }}</b> này
                                     không?
                                 </div>
                                 <div class="modal-footer">
