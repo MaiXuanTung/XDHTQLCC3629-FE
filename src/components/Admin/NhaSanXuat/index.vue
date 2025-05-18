@@ -63,9 +63,9 @@
                         <a v-on:click="Object.assign(update_nha_san_xuat, v)" type="button" title="Cập Nhật"
                           data-bs-toggle="modal" data-bs-target="#capNhatModal" class="ms-2 bg-light-info"><i
                             class="fa-solid fa-arrows-rotate text-info"></i></a>
-                        <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
+                        <!-- <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
                           data-bs-target="#xoaModal" class="ms-2 bg-light-danger"><i
-                            class="fa-solid fa-xmark text-danger"></i></a>
+                            class="fa-solid fa-xmark text-danger"></i></a> -->
                       </div>
                     </div>
                   </td>
@@ -87,20 +87,13 @@
                   <hr>
                   <form class="row g-3">
                     <div class="col-md-6">
-                      <label for="inputTenCongTy" class="form-label">Tên Công Ty</label>
+                      <label for="inputTenCongTyCreate" class="form-label">Tên Công Ty</label>
                       <input v-model="create_nha_san_xuat.ten_cong_ty" type="text" class="form-control"
-                        id="inputTenCongTy" placeholder="Nhập tên công ty">
+                        id="inputTenCongTyCreate" placeholder="Nhập tên công ty">
                     </div>
-                    <!-- <div class="col-md-6">
-                      <label for="selectLoaiDoiTac" class="form-label">Loại Đối Tác</label>
-                      <select v-model="create_nha_san_xuat.loai_doi_tac" class="form-control">
-                        <option value="1">Nhà Cung Cấp</option>
-                        <option value="2">Đại Lý</option>
-                      </select>
-                    </div> -->
                     <div class="col-md-6">
-                      <label for="inputEmail" class="form-label">Email</label>
-                      <input v-model="create_nha_san_xuat.email" type="email" class="form-control" id="inputEmail"
+                      <label for="inputEmailCreate" class="form-label">Email</label>
+                      <input v-model="create_nha_san_xuat.email" type="email" class="form-control" id="inputEmailCreate"
                         placeholder="Nhập email">
                     </div>
                     <div class="col-md-6">
@@ -109,9 +102,9 @@
                         id="inputPassword" placeholder="Nhập password">
                     </div>
                     <div class="col-md-6">
-                      <label for="inputSoDienThoai" class="form-label">Số Điện Thoại</label>
+                      <label for="inputSoDienThoaiCreate" class="form-label">Số Điện Thoại</label>
                       <input v-model="create_nha_san_xuat.so_dien_thoai" type="text" class="form-control"
-                        id="inputSoDienThoai" placeholder="Nhập số điện thoại">
+                        id="inputSoDienThoaiCreate" placeholder="Nhập số điện thoại">
                     </div>
                     <div class="col-md-6">
                       <label for="inputAddress" class="form-label">Địa Chỉ</label>
@@ -125,7 +118,7 @@
                         <option value="0">Tạm Dừng</option>
                       </select>
                     </div>
-                    
+
                   </form>
                 </div>
               </div>
@@ -148,10 +141,10 @@
                   </div>
                   <hr>
                   <div class="row mb-3">
-                    <label for="inputTenCongTy" class="col-sm-3 col-form-label">Tên Công Ty</label>
+                    <label for="inputTenCongTyUpdate" class="col-sm-3 col-form-label">Tên Công Ty</label>
                     <div class="col-sm-9">
                       <input v-model="update_nha_san_xuat.ten_cong_ty" type="text" class="form-control"
-                        id="inputTenCongTy">
+                        id="inputTenCongTyUpdate">
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -164,16 +157,17 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                    <label for="inputEmailUpdate" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                      <input v-model="update_nha_san_xuat.email" type="email" class="form-control" id="inputEmail">
+                      <input v-model="update_nha_san_xuat.email" type="email" class="form-control"
+                        id="inputEmailUpdate">
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputSoDienThoai" class="col-sm-3 col-form-label">Số Điện Thoại</label>
+                    <label for="inputSoDienThoaiUpdate" class="col-sm-3 col-form-label">Số Điện Thoại</label>
                     <div class="col-sm-9">
                       <input v-model="update_nha_san_xuat.so_dien_thoai" type="text" class="form-control"
-                        id="inputSoDienThoai">
+                        id="inputSoDienThoaiUpdate">
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -203,7 +197,7 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-body d-flex">
@@ -224,7 +218,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -267,7 +261,7 @@ export default {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataNhaSanXuat();
-            this.create_nha_san_xuat = { ten_cong_ty: ""};
+            this.create_nha_san_xuat = { ten_cong_ty: "" };
           }
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);

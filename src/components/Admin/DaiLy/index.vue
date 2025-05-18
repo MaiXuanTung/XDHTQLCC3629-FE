@@ -58,9 +58,9 @@
                         <a v-on:click="Object.assign(update_dai_ly, v)" type="button" title="Cập Nhật"
                           data-bs-toggle="modal" data-bs-target="#capNhatModal" class="ms-2 bg-light-info"><i
                             class="fa-solid fa-arrows-rotate text-info"></i></a>
-                        <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
+                        <!-- <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
                           data-bs-target="#xoaModal" class="ms-2 bg-light-danger"><i
-                            class="fa-solid fa-xmark text-danger"></i></a>
+                            class="fa-solid fa-xmark text-danger"></i></a> -->
                       </div>
                     </div>
                   </td>
@@ -179,7 +179,7 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-body d-flex">
@@ -200,7 +200,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
