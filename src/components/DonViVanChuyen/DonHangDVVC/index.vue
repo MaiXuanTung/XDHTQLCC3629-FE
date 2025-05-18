@@ -359,7 +359,7 @@
                             <td>
                               <div class="d-flex order-actions">
                                 <!-- Nếu là chặng cuối -->
-                                <template v-if="isLastStep(v)">
+                                <template v-if="isLastStep?.(v)">
                                   <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
                                     <a @click="xacNhanDen(v.id)" type="button" title="Xác nhận đã đến"
                                       class="ms-3 text-success">
@@ -408,7 +408,7 @@
                   <!-- Ghim phần này bên dưới table -->
                   <hr>
                   <div class="mt-4 text-center">
-                    <template v-if="isLastStep(visibleSteps[visibleSteps.length - 1]) &&
+                    <template v-if="isLastStep?.(visibleSteps[visibleSteps.length - 1]) &&
                       [1, 2].includes(visibleSteps[visibleSteps.length - 1].tinh_trang) &&
                       !visibleSteps[0].transaction_hash">
                       <button type="button" class="btn btn-warning" @click="addToBlockChain(visibleSteps)"
@@ -418,7 +418,7 @@
                         <span v-else class="ms-2">Đang xử lý...</span>
                       </button>
                     </template>
-                    <template v-if="visibleSteps[0].transaction_hash">
+                    <template v-if="visibleSteps[0]?.transaction_hash">
                       <h6>
                         <a :href="'https://shasta.tronscan.org/#/transaction/' + visibleSteps[0].transaction_hash"
                           target="_blank">
@@ -627,10 +627,16 @@ export default {
     },
 
     isLastStep(step) {
+      if (!step) return false;
+
       if (!step.id_kho_hang && !step.thoi_gian_den && !step.thoi_gian_di) {
         return true;
       }
-      const stepsCurrentTuyen = (this.list_lich_trinh_don_hang || []).filter(s => s.tuyen_so === this.tuyen_hien_tai);
+
+      const stepsCurrentTuyen = (this.list_lich_trinh_don_hang || []).filter(
+        s => s.tuyen_so === this.tuyen_hien_tai
+      );
+
       return stepsCurrentTuyen[stepsCurrentTuyen.length - 1]?.id === step.id;
     },
 
