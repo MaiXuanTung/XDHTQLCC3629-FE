@@ -80,6 +80,10 @@
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
+                  <template v-if="loai_tai_khoan =='Nhà Sản Xuất' || loai_tai_khoan =='Đơn vị vận chuyển'">
+                    <li><a class="dropdown-item"><i class="fa-solid fa-wallet"></i><span class="text-danger">Số dư: {{ formatToVND(so_du_tai_khoan) }}</span></a>
+                  </li>
+                  </template>
                   <li><a v-on:click="dangXuat()" class="dropdown-item"><i class='bx bx-log-out-circle'></i><span>Đăng
                         Xuất</span></a>
                   </li>
@@ -107,12 +111,16 @@ export default {
       is_check: false,
       loai_tai_khoan: 'null',
       dia_chi_vi: 'null',
+      so_du_tai_khoan: 'null',
     }
   },
   mounted() {
     this.checkLogin();
   },
   methods: {
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    },
     dangXuat() {
       baseRequest
         .get('auth/dang-xuat')
@@ -150,6 +158,7 @@ export default {
             this.ten_hien_thi = localStorage.getItem('ho_ten');
             this.loai_tai_khoan = localStorage.getItem('loai_tai_khoan');
             this.dia_chi_vi = localStorage.getItem('dia_chi_vi');
+            this.so_du_tai_khoan = res.data.so_du_tai_khoan;
           }
         });
     },
