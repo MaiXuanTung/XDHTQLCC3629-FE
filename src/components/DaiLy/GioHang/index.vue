@@ -195,7 +195,6 @@ export default {
       }
       localStorage.setItem("donHangData", JSON.stringify(sanPhamDaChon));
       this.$router.push("/thanh-toan");
-      console.log(this.list_san_pham)
     }
   },
 }

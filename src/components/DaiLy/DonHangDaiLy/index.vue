@@ -84,8 +84,13 @@
                   </td>
                   <td>
                     <div v-if="v.tinh_trang == 0 || v.tinh_trang == 1" class="d-flex order-actions">
-                      <a type="button" @click="moXacNhanHuy(v)" title="Hủy đơn hàng" class="ms-3" style="color: red;"
-                        data-bs-toggle="modal" data-bs-target="#huyModal"><i class="bx bxs-trash"></i></a>
+                      <a type="button" :disabled="isLoading === v.id" @click="moXacNhanHuy(v)" title="Hủy đơn hàng"
+                        class="ms-3 d-inline-flex align-items-center justify-content-center" style="color: red;"
+                        data-bs-toggle="modal" data-bs-target="#huyModal">
+                        <span v-if="isLoading === v.id" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                        <i v-else class="bx bxs-trash"></i>
+                      </a>
                     </div>
                     <div v-else-if="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4 || v.tinh_trang == 5"
                       :disabled="v.tinh_trang == 2 || v.tinh_trang == 3 || v.tinh_trang == 4 || v.tinh_trang == 5"
@@ -94,8 +99,12 @@
                           class="bx bxs-trash"></i></a>
                     </div>
                     <div v-else-if="v.tinh_trang == 6" class="d-flex order-actions">
-                      <a title="Đã nhận được hàng" type="button" @click="moXacNhan(v)" class="ms-3 text-success"
-                        data-bs-toggle="modal" data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
+                      <a title="Đã nhận được hàng" type="button" :disabled="isLoading === v.id" @click="moXacNhan(v)"
+                        class="ms-3 text-success d-inline-flex align-items-center justify-content-center"
+                        data-bs-toggle="modal" data-bs-target="#xacNhanModal">
+                        <span v-if="isLoading === v.id" class="spinner-border spinner-border-sm" role="status"></span>
+                        <i v-else class="fa-solid fa-check"></i>
+                      </a>
                     </div>
                   </td>
                   <td>
@@ -135,61 +144,63 @@
             <h4>Chi tiết đơn hàng</h4>
             <i class="text-danger">*Cước vận chuyển được tính 1 lần cho mỗi đơn vị vận chuyển</i>
             <hr>
-            <table class="table mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th>#</th>
-                  <th>Sản Phẩm</th>
-                  <th>Hình Ảnh</th>
-                  <th>Đơn Giá</th>
-                  <th>SL</th>
-                  <th>Thành Tiền</th>
-                  <th>Nhà Sản Xuất</th>
-                  <th>Đơn Vị Vận Chuyển</th>
-                  <th>Tình Trạng</th>
-                  <th>Cước VC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <template v-for="(v, k) in list_chi_tiet_don_hang">
+            <div style="max-height: 470px; overflow-y: auto;">
+              <table class="table mb-0">
+                <thead class="table-light">
                   <tr>
-                    <td>{{ k + 1 }}</td>
-                    <td>{{ v.ten_san_pham }}</td>
-                    <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
-                    </td>
-                    <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
-                    <td>{{ v.so_luong }} sản phẩm</td>
-                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
-                    <td>{{ v.ten_nha_san_xuat }}</td>
-                    <td>{{ v.ten_dvvc }}</td>
-                    <td>
-                      <div v-if="v.tinh_trang == 0"
-                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
-                      <div v-else-if="v.tinh_trang == 1"
-                        class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
-                      <div v-else-if="v.tinh_trang == 2"
-                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
-                      <div v-else-if="v.tinh_trang == 3"
-                        class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle me-1"></i>Hoàn thành</div>
-                      <div v-else-if="v.tinh_trang == 4"
-                        class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
-                      <div v-else-if="v.tinh_trang == 5"
-                        class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
-                      <div v-else-if="v.tinh_trang == 6"
-                        class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
-                          class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
-                    </td>
-                    <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
+                    <th>#</th>
+                    <th>Sản Phẩm</th>
+                    <th>Hình Ảnh</th>
+                    <th>Đơn Giá</th>
+                    <th>SL</th>
+                    <th>Thành Tiền</th>
+                    <th>Nhà Sản Xuất</th>
+                    <th>Đơn Vị Vận Chuyển</th>
+                    <th>Tình Trạng</th>
+                    <th>Cước VC</th>
                   </tr>
-                </template>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <template v-for="(v, k) in list_chi_tiet_don_hang">
+                    <tr>
+                      <td>{{ k + 1 }}</td>
+                      <td>{{ v.ten_san_pham }}</td>
+                      <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
+                      </td>
+                      <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
+                      <td>{{ v.so_luong }} sản phẩm</td>
+                      <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
+                      <td>{{ v.ten_nha_san_xuat }}</td>
+                      <td>{{ v.ten_dvvc }}</td>
+                      <td>
+                        <div v-if="v.tinh_trang == 0"
+                          class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                        <div v-else-if="v.tinh_trang == 1"
+                          class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle align-middle me-1"></i>Chờ xác nhận</div>
+                        <div v-else-if="v.tinh_trang == 2"
+                          class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle align-middle me-1"></i>Đã xác nhận</div>
+                        <div v-else-if="v.tinh_trang == 3"
+                          class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle me-1"></i>Hoàn thành</div>
+                        <div v-else-if="v.tinh_trang == 4"
+                          class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle align-middle me-1"></i>Đã hủy</div>
+                        <div v-else-if="v.tinh_trang == 5"
+                          class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle align-middle me-1"></i>Đang vận chuyển</div>
+                        <div v-else-if="v.tinh_trang == 6"
+                          class="badge rounded-pill text-success bg-light-info p-2 text-uppercase px-3"><i
+                            class="bx bxs-circle align-middle me-1"></i>Giao hàng thành công</div>
+                      </td>
+                      <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -415,51 +426,53 @@ export default {
         });
     },
 
-    huyDonHang(v) {
-      let orderData = {
+    //hủy đơn hàng
+    async huyDonHang(v) {
+      this.isLoading = v.id;
+      const orderData = {
         loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
         nguoi_thuc_hien: localStorage.getItem('ho_ten'),
         dia_chi_vi: localStorage.getItem('dia_chi_vi'),
-      }
-      baseRequest
-        .post('user/don-hang/dai-ly/huy-don-hang',
-          {
-            v,
-            orderData
-          }
-        )
-        .then((res) => {
-          if (res.data.success == true) {
-            toaster.success('Thông báo<br>' + res.data.message);
-            this.loadDataDonHang();
-          }
-          else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
+      };
+      try {
+        const res = await baseRequest.post('user/don-hang/dai-ly/huy-don-hang', {
+          v,
+          orderData,
         });
+        if (res.data.success === true) {
+          toaster.success('Thông báo<br>' + res.data.message);
+          this.loadDataDonHang();
+        } else {
+          toaster.error('Thông báo<br>' + res.data.message);
+        }
+      } catch (err) {
+        toaster.error('Lỗi hệ thống, vui lòng thử lại sau!');
+      } finally {
+        this.isLoading = null;
+      }
     },
 
-    //hủy đơn hàng
     moXacNhanHuy(donHang) {
       this.donHangHuy = donHang;
     },
 
-    xacNhanHuy() {
+    async xacNhanHuy() {
       if (this.donHangHuy) {
-        this.huyDonHang(this.donHangHuy);
+        await this.huyDonHang(this.donHangHuy);
         this.donHangHuy = null;
       }
       const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
       modal.hide();
     },
 
+    //xác nhận đơn hàng
     moXacNhan(donHang) {
       this.donHangXacNhan = donHang;
     },
 
-    xacNhan() {
+    async xacNhan() {
       if (this.donHangXacNhan) {
-        this.xacNhanDonHang(this.donHangXacNhan);
+        await this.xacNhanDonHang(this.donHangXacNhan);
         this.donHangXacNhan = null;
       }
       const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
@@ -467,26 +480,31 @@ export default {
     },
 
     xacNhanDonHang(v) {
+      this.isLoading = v.id;
       let orderData = {
         loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
         nguoi_thuc_hien: localStorage.getItem('ho_ten'),
         dia_chi_vi: localStorage.getItem('dia_chi_vi'),
-      }
+      };
       baseRequest
-        .post('user/don-hang/dai-ly/xac-nhan-don-hang',
-          {
-            v,
-            orderData
-          }
-        )
+        .post('user/don-hang/dai-ly/xac-nhan-don-hang', {
+          v,
+          orderData
+        })
         .then((res) => {
           if (res.data.success == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataDonHang();
-          }
-          else {
+          } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
+        })
+        .catch((error) => {
+          console.log("Lỗi xác nhận đơn hàng: ", error)
+          toaster.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        })
+        .finally(() => {
+          this.isLoading = null;
         });
     },
 

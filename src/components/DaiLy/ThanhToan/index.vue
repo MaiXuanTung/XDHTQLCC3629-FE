@@ -102,7 +102,10 @@
           <span>Tổng tiền cần thanh toán: </span>
           <span class="amount">{{ formatToVND(tongTien) }}</span>
         </div>
-        <button class="btn-buy" @click="datHang">Đặt hàng</button>
+        <button class="btn-buy" :disabled="isLoading" @click="datHang">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ isLoading ? "Đang xử lý..." : "Đặt hàng" }}
+        </button>
       </div>
     </div>
   </div>
@@ -122,6 +125,7 @@ export default {
       dia_chi: "",
       list_don_vi_van_chuyen: [],
       groupedSanPham: [],
+      isLoading: false,
     };
   },
   computed: {
@@ -166,6 +170,7 @@ export default {
           return;
         }
       }
+      this.isLoading = true;
       try {
         let dsCuocVanChuyen = this.groupedSanPham.map(shop => ({
           id_nha_san_xuat: shop.id_nha_san_xuat,
@@ -213,6 +218,8 @@ export default {
       } catch (error) {
         console.error("Lỗi khi đặt hàng:", error);
         toaster.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+      } finally {
+        this.isLoading = false; // tắt spinner
       }
     },
 
@@ -289,7 +296,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card-header {
   background-color: #f8f9fa;
   padding: 15px;

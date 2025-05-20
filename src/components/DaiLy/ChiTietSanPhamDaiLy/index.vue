@@ -57,21 +57,8 @@
                     <span class="text">Thêm vào giỏ hàng</span> <i class="bx bxs-cart-alt ms-1"></i>
                   </a>
 
-                  <a href="#" class="btn btn-primary">Mua ngay</a>
+                  <button @click="muaHang()" class="btn btn-primary">Mua ngay</button>
                 </div>
-
-                <!-- <div class="col-auto align-items-center">
-                  <label class="form-label mb-0 me-2">Số lượng:</label>
-                  <input type="number" class="form-control text-center" style="width: 80px"
-                    v-model.number="so_luong" @input="validateQuantity">
-                </div>
-                <div class="col-auto ">
-                  <div class="d-flex gap-2">
-                    <a href="#" v-on:click="createSanPhamVaoGioHang()" class="btn btn-outline-primary d-flex align-items-center"><span
-                        class="text">Thêm vào giỏ hàng</span> <i class="bx bxs-cart-alt ms-1"></i></a>
-                    <a href="#" class="btn btn-primary">Mua ngay</a>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -97,7 +84,7 @@
         </div>
       </div>
       <h4 class="text-uppercase mb-0 text-center text-primary ">SẢN PHẨM LIÊN QUAN</h4>
-      
+
       <div class="row row-cols-1 row-cols-lg-3 mt-3">
         <div class="col mt-2" v-for="(v, k) in relatedProducts" :key="k">
           <div class="card">
@@ -134,114 +121,132 @@
 </template>
 <script>
 import { createToaster } from "@meforma/vue-toaster";
- import baseRequest from "../../../core/baseRequest";
- const toaster = createToaster({ position: "top-right" });
+import baseRequest from "../../../core/baseRequest";
+const toaster = createToaster({ position: "top-right" });
 export default {
   data() {
-     return {
-       san_pham: {},
-       list_san_pham: [],
-       so_luong: 1,
-       create_san_pham: {},
-     }
-   },
- 
-   mounted() {
-     this.loadDataChiTietSanPham();
-     this.loadDataSanPham();
-   },
- 
-   computed: {
-     relatedProducts() {
-       return this.list_san_pham
-         .filter(v => v.nsx_id === this.san_pham.nha_san_xuat_id) // Lọc theo nhà sản xuất
-         .sort(() => 0.5 - Math.random()) // Xáo trộn ngẫu nhiên danh sách
-         .slice(0, 3); // Chỉ lấy 3 sản phẩm
-     }
-   },
- 
-   methods: {
-     loadDataChiTietSanPham() {
-       var url = window.location.href;
-       var arr = url.split('/');
-       var id = {
-         id: arr[arr.length - 1]
-       }
-       baseRequest
-         .post('user/san-pham/lay-du-lieu-san-pham/data', id)
-         .then((res) => {
-           if (res.data.status) {
-             this.san_pham = res.data.chi_tiet_san_pham;
-           } else {
-             toaster.error('Thông báo<br>' + res.data.message);
-           }
-         });
-     },
- 
-     loadDataSanPham() {
-       baseRequest
-         .get('admin/san-pham/lay-du-lieu')
-         .then((res) => {
-           if (res.data.status) {
-             this.list_san_pham = res.data.san_pham;
-           } else {
-             toaster.error('Thông báo<br>' + res.data.message);
-           }
-         });
-     },
- 
-     validateQuantity() {
-       // Nếu người dùng nhập số nhỏ hơn 1, đặt lại là 1
-       if (this.so_luong < 1 || isNaN(this.so_luong)) {
-         this.so_luong = 1;
-         toaster.warning("Số lượng tối thiểu là " + this.so_luong);
-       }
-       // Nếu nhập số lớn hơn tồn kho, đặt lại số lượng tối đa
-       if (this.so_luong > this.san_pham.so_luong_ton_kho) {
-         this.so_luong = this.san_pham.so_luong_ton_kho;
-         toaster.warning("Trong kho chỉ còn " + this.san_pham.so_luong_ton_kho + " sản phẩm");
-       }
-     },
- 
-     createSanPhamVaoGioHang() {
-       const payload = {
-         id_san_pham: this.san_pham.id,
-         so_luong: this.so_luong,
-         don_gia: this.san_pham.gia_ban,
-       };
-       baseRequest
-         .post("user/gio-hang/them-vao-gio-hang", payload)
-         .then((res) => {
-           if (res.data.status) {
-             toaster.success("Đã thêm vào giỏ hàng!");
-           } else {
-             // Kiểm tra lỗi "Số lượng sản phẩm vượt quá tồn kho" từ server
-             if (res.data.message === "Không thể thêm vào giỏ hàng! Số lượng sản phẩm vượt quá tồn kho.") {
-               toaster.error(res.data.message);
-             } else {
-               toaster.error("Lỗi: " + res.data.message);
-             }
-           }
-         })
-         .catch((error) => {
-           // Kiểm tra nếu lỗi từ server có response.data.message
-           if (error.response && error.response.data && error.response.data.message) {
-             toaster.error(error.response.data.message);
-           } else {
-             toaster.error("Lỗi kết nối! Vui lòng thử lại.");
-           }
-           console.error(error);
-         })
-         .finally(() => {
-           this.so_luong = 1;
-         });
-     },
- 
-     formatToVND(amount) {
-       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-     },
-   },
- }
+    return {
+      san_pham: {},
+      list_san_pham: [],
+      so_luong: 1,
+      create_san_pham: {},
+    }
+  },
+
+  mounted() {
+    this.loadDataChiTietSanPham();
+    this.loadDataSanPham();
+  },
+
+  computed: {
+    relatedProducts() {
+      return this.list_san_pham
+        .filter(v => v.nsx_id === this.san_pham.nha_san_xuat_id) // Lọc theo nhà sản xuất
+        .sort(() => 0.5 - Math.random()) // Xáo trộn ngẫu nhiên danh sách
+        .slice(0, 3); // Chỉ lấy 3 sản phẩm
+    }
+  },
+
+  methods: {
+    loadDataChiTietSanPham() {
+      var url = window.location.href;
+      var arr = url.split('/');
+      var id = {
+        id: arr[arr.length - 1]
+      }
+      baseRequest
+        .post('user/san-pham/lay-du-lieu-san-pham/data', id)
+        .then((res) => {
+          if (res.data.status) {
+            this.san_pham = res.data.chi_tiet_san_pham;
+            console.log('sản phẩm: ', this.san_pham)
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+
+    loadDataSanPham() {
+      baseRequest
+        .get('admin/san-pham/lay-du-lieu')
+        .then((res) => {
+          if (res.data.status) {
+            this.list_san_pham = res.data.san_pham;
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+
+    validateQuantity() {
+      // Nếu người dùng nhập số nhỏ hơn 1, đặt lại là 1
+      if (this.so_luong < 1 || isNaN(this.so_luong)) {
+        this.so_luong = 1;
+        toaster.warning("Số lượng tối thiểu là " + this.so_luong);
+      }
+      // Nếu nhập số lớn hơn tồn kho, đặt lại số lượng tối đa
+      if (this.so_luong > this.san_pham.so_luong_ton_kho) {
+        this.so_luong = this.san_pham.so_luong_ton_kho;
+        toaster.warning("Trong kho chỉ còn " + this.san_pham.so_luong_ton_kho + " sản phẩm");
+      }
+    },
+
+    createSanPhamVaoGioHang() {
+      const payload = {
+        id_san_pham: this.san_pham.id,
+        so_luong: this.so_luong,
+        don_gia: this.san_pham.gia_ban,
+      };
+      baseRequest
+        .post("user/gio-hang/them-vao-gio-hang", payload)
+        .then((res) => {
+          if (res.data.status) {
+            toaster.success("Đã thêm vào giỏ hàng!");
+          } else {
+            // Kiểm tra lỗi "Số lượng sản phẩm vượt quá tồn kho" từ server
+            if (res.data.message === "Không thể thêm vào giỏ hàng! Số lượng sản phẩm vượt quá tồn kho.") {
+              toaster.error(res.data.message);
+            } else {
+              toaster.error("Lỗi: " + res.data.message);
+            }
+          }
+        })
+        .catch((error) => {
+          // Kiểm tra nếu lỗi từ server có response.data.message
+          if (error.response && error.response.data && error.response.data.message) {
+            toaster.error(error.response.data.message);
+          } else {
+            toaster.error("Lỗi kết nối! Vui lòng thử lại.");
+          }
+          console.error(error);
+        })
+        .finally(() => {
+          this.so_luong = 1;
+        });
+    },
+
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    },
+
+    muaHang() {
+      const sanPhamCanMua = [{
+        id_san_pham: this.san_pham.id,
+        ten_san_pham: this.san_pham.ten_san_pham,
+        so_luong: this.so_luong || 1, // đảm bảo có ít nhất 1
+        don_gia: this.san_pham.gia_ban,
+        hinh_anh: this.san_pham.hinh_anh,
+        ten_cong_ty: this.san_pham.ten_cong_ty,
+        id_nha_san_xuat: this.san_pham.nha_san_xuat_id,
+        ngay_dat_hang: new Date().toISOString(),
+      }];
+
+      localStorage.setItem("donHangData", JSON.stringify(sanPhamCanMua));
+      this.$router.push("/thanh-toan");
+    },
+
+  },
+}
 </script>
 <style>
 .card {
@@ -271,11 +276,14 @@ export default {
 .img-hover-zoom:hover {
   transform: scale(1.1);
 }
+
 .page-breadcrumb {
-    background: #e3f2fd; /* Màu xanh nhạt */
-    padding: 10px;
-    border-radius: 5px;
+  background: #e3f2fd;
+  /* Màu xanh nhạt */
+  padding: 10px;
+  border-radius: 5px;
 }
+
 .cardimg {
   width: 100%;
   height: 100%;
@@ -284,6 +292,4 @@ export default {
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
 }
-
 </style>
-

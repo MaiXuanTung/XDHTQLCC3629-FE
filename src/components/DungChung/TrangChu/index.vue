@@ -154,7 +154,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 /* Card có hiệu ứng nổi khi hover */
 .card-home-page {
   transition: transform 0.3s ease, box-shadow 0.3s ease;

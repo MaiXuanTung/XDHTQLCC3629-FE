@@ -7,8 +7,10 @@
             <h4 class="text-dark">DANH SÁCH ĐƠN HÀNG</h4>
           </div>
           <div class="col-sm-6 text-end">
-            <button v-on:click="CheckThanhToan()" class="btn btn-danger">
-              <i class="bx bxs-circle align-middle me-1"></i>Check Thanh Toán
+            <button @click="CheckThanhToan" class="btn btn-danger" :disabled="isLoadingCheckThanhToan">
+              <span v-if="isLoadingCheckThanhToan" class="spinner-border spinner-border-sm me-1" role="status"
+                aria-hidden="true"></span>
+              {{ isLoadingCheckThanhToan ? "Đang xử lý..." : "Check Thanh Toán" }}
             </button>
           </div>
         </div>
@@ -90,10 +92,21 @@
                   </td>
                   <td>
                     <div v-if="v.tinh_trang == 0" class="d-flex order-actions">
-                      <a type="button" @click="moXacNhan(v)" title="Xác nhận đơn hàng" class="ms-3 text-success"
-                        data-bs-toggle="modal" data-bs-target="#xacNhanModal"><i class="fa-solid fa-check"></i></a>
-                      <a type="button" @click="moXacNhanHuy(v)" title="Hủy đơn hàng" class="ms-3" style="color: red;"
-                        data-bs-toggle="modal" data-bs-target="#huyModal"><i class="bx bxs-trash"></i></a>
+                      <a title="Xác nhận đơn hàng" type="button" :disabled="isLoadingXacNhan === v.id"
+                        @click="moXacNhan(v)"
+                        class="ms-3 text-success d-inline-flex align-items-center justify-content-center"
+                        data-bs-toggle="modal" data-bs-target="#xacNhanModal">
+                        <span v-if="isLoadingXacNhan === v.id" class="spinner-border spinner-border-sm"
+                          role="status"></span>
+                        <i v-else class="fa-solid fa-check"></i>
+                      </a>
+                      <a type="button" :disabled="isLoadingHuy === v.id" @click="moXacNhanHuy(v)" title="Hủy đơn hàng"
+                        class="ms-3 d-inline-flex align-items-center justify-content-center" style="color: red;"
+                        data-bs-toggle="modal" data-bs-target="#huyModal">
+                        <span v-if="isLoadingHuy === v.id" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                        <i v-else class="bx bxs-trash"></i>
+                      </a>
                     </div>
                     <div v-if="v.tinh_trang == 4" :disabled="v.tinh_trang == 4" class="d-flex order-actions">
                       <a type="button" title="Xác nhận đơn hàng" class="ms-3"><i class="fa-solid fa-check"
@@ -139,8 +152,7 @@
                       <template v-else>
                         <a type="button" title="Đơn Hàng Chưa Thanh Toán" class="ms-3"
                           :class="{ 'disabled text-secondary': true }" @click.prevent>
-                          <i class="fa-solid fa-building-columns"
-                            data-bs-toggle="modal"></i></a>
+                          <i class="fa-solid fa-building-columns" data-bs-toggle="modal"></i></a>
                       </template>
                     </div>
                   </td>
@@ -167,7 +179,7 @@
       </div>
     </div>
     <!-- modal -->
-    <!-- modal xem chi tiết -->
+    <!-- modal chi tiết -->
     <div class="modal fade" id="chiTietDonHangModal" tabindex="-1" aria-hidden="true" style="display: none;">
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -175,37 +187,39 @@
             <h4>Chi tiết đơn hàng</h4>
             <i class="text-danger">*Cước vận chuyển được tính 1 lần cho mỗi đơn vị vận chuyển</i>
             <hr>
-            <table class="table mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th>#</th>
-                  <th>Sản Phẩm</th>
-                  <th>Hình Ảnh</th>
-                  <th>Đơn Giá</th>
-                  <th>Số Lượng</th>
-                  <th>Thành Tiền</th>
-                  <th>Nhà Sản Xuất</th>
-                  <th>Đơn Vị Vận Chuyển</th>
-                  <th>Cước VC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <template v-for="(v, k) in list_chi_tiet_don_hang" :key="k">
+            <div style="max-height: 470px; overflow-y: auto;">
+              <table class="table mb-0">
+                <thead class="table-light">
                   <tr>
-                    <td>{{ k + 1 }}</td>
-                    <td>{{ v.ten_san_pham }}</td>
-                    <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
-                    </td>
-                    <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
-                    <td>{{ v.so_luong }} sản phẩm</td>
-                    <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
-                    <td>{{ v.ten_nha_san_xuat }}</td>
-                    <td>{{ v.ten_dvvc }}</td>
-                    <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
+                    <th>#</th>
+                    <th>Sản Phẩm</th>
+                    <th>Hình Ảnh</th>
+                    <th>Đơn Giá</th>
+                    <th>Số Lượng</th>
+                    <th>Thành Tiền</th>
+                    <th>Nhà Sản Xuất</th>
+                    <th>Đơn Vị Vận Chuyển</th>
+                    <th>Cước VC</th>
                   </tr>
-                </template>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <template v-for="(v, k) in list_chi_tiet_don_hang" :key="k">
+                    <tr>
+                      <td>{{ k + 1 }}</td>
+                      <td>{{ v.ten_san_pham }}</td>
+                      <td><img :src="v.hinh_anh" class="img-fluid" alt="..." style="max-width: 100px; height: auto;" />
+                      </td>
+                      <td><strong>{{ formatToVND(v.don_gia) }}</strong></td>
+                      <td>{{ v.so_luong }} sản phẩm</td>
+                      <td><strong class="text-danger">{{ formatToVND(v.don_gia * v.so_luong) }}</strong></td>
+                      <td>{{ v.ten_nha_san_xuat }}</td>
+                      <td>{{ v.ten_dvvc }}</td>
+                      <td><strong>{{ formatToVND(v.cuoc_van_chuyen) }}</strong></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -429,6 +443,9 @@ export default {
       list_info_blockchain: [],
       list_lsvc_blockchain: [],
       isLoading: false,
+      isLoadingHuy: false,
+      isLoadingXacNhan: false,
+      isLoadingCheckThanhToan: false,
     }
   },
   mounted() {
@@ -497,9 +514,9 @@ export default {
       this.donHangHuy = donHang;
     },
 
-    xacNhanHuy() {
+    async xacNhanHuy() {
       if (this.donHangHuy) {
-        this.huyDonHang(this.donHangHuy);
+        await this.huyDonHang(this.donHangHuy);
         this.donHangHuy = null;
       }
       const modal = bootstrap.Modal.getInstance(document.getElementById('huyModal'));
@@ -507,6 +524,7 @@ export default {
     },
 
     huyDonHang(v) {
+      this.isLoadingHuy = v.id
       let orderData = {
         loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
         nguoi_thuc_hien: localStorage.getItem('ho_ten'),
@@ -527,6 +545,12 @@ export default {
           else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
+        }).catch((error) => {
+          console.log("Lỗi khi hủy đơn hàng: ", error)
+          toaster.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        })
+        .finally(() => {
+          this.isLoadingHuy = null;
         });
     },
 
@@ -547,9 +571,9 @@ export default {
       this.donHangXacNhan = donHang;
     },
 
-    xacNhan() {
+    async xacNhan() {
       if (this.donHangXacNhan) {
-        this.xacNhanDonHang(this.donHangXacNhan);
+        await this.xacNhanDonHang(this.donHangXacNhan);
         this.donHangXacNhan = null;
       }
       const modal = bootstrap.Modal.getInstance(document.getElementById('xacNhanModal'));
@@ -557,6 +581,7 @@ export default {
     },
 
     xacNhanDonHang(v) {
+      this.isLoadingXacNhan = v.id
       let orderData = {
         loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
         nguoi_thuc_hien: localStorage.getItem('ho_ten'),
@@ -577,6 +602,12 @@ export default {
           else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
+        }).catch((error) => {
+          console.log("Lỗi xác nhận đơn hàng: ", error)
+          toaster.error("Có lỗi xảy ra, vui lòng thử lại sau!");
+        })
+        .finally(() => {
+          this.isLoadingXacNhan = null;
         });
     },
     searchDonHang() {
@@ -633,15 +664,28 @@ export default {
         });
     },
     CheckThanhToan() {
+      this.isLoadingCheckThanhToan = true;
       baseRequest
         .get('check-giao-dich')
         .then((res) => {
           if (res.data.status) {
-            this.loadDataDonHang();
+            if (res.data.matched_hoa_don && res.data.matched_hoa_don.length > 0) {
+              toaster.success('Thông báo<br>' + res.data.message);
+              this.loadDataDonHang();
+            } else {
+              toaster.warning('Thông báo<br>' + res.data.message_void);
+              this.loadDataDonHang();
+            }
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
           }
-        });
+        }).catch((error) => {
+          console.log("Lỗi khi check thanh toán: ", error)
+          toaster.error("Đã xảy ra lỗi khi check thanh toán.");
+        })
+        .finally(() => {
+          this.isLoadingCheckThanhToan = false;
+        })
     },
   },
 }
