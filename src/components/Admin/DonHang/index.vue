@@ -112,33 +112,46 @@
                     </div>
                   </td>
                   <td>
-                    <div v-if="v.tinh_trang == 6 || v.tinh_trang == 3" class="d-flex order-actions">
-                      <a type="button" title="Smart contract vận chuyển" class="ms-3"><i
-                          class="fa-solid fa-truck-fast text-warning" data-bs-toggle="modal"
-                          data-bs-target="#xemLSVCBlockChain" @click="xemLichSuVanChuyenOnBlockChain(v.id)"></i></a>
-                      <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
-                          class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
-                          data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id)"></i></a>
-                    </div>
-                    <div
-                      v-else-if="v.tinh_trang == 2 || v.tinh_trang == 1 || v.tinh_trang == 4 || v.tinh_trang == 5 || v.tinh_trang == 0"
-                      class="d-flex order-actions">
-                      <a type="button" title="Smart contract vận chuyển" class="ms-3"
-                        :class="{ 'disabled text-secondary': true }" @click.prevent>
-                        <i class="fa-solid fa-truck-fast"></i>
-                      </a>
-                      <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
-                          class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
-                          data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id)"></i></a>
+                    <div class="d-flex order-actions">
+                      <template v-if="v.tinh_trang == 6 || v.tinh_trang == 3">
+                        <a type="button" title="Smart contract vận chuyển" class="ms-3"><i
+                            class="fa-solid fa-truck-fast text-warning" data-bs-toggle="modal"
+                            data-bs-target="#xemLSVCBlockChain" @click="xemLichSuVanChuyenOnBlockChain(v.id)"></i></a>
+                        <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
+                            class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
+                            data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id)"></i></a>
+                      </template>
+                      <template
+                        v-else-if="v.tinh_trang == 2 || v.tinh_trang == 1 || v.tinh_trang == 4 || v.tinh_trang == 5 || v.tinh_trang == 0">
+                        <a type="button" title="Smart contract vận chuyển" class="ms-3"
+                          :class="{ 'disabled text-secondary': true }" @click.prevent>
+                          <i class="fa-solid fa-truck-fast"></i>
+                        </a>
+                        <a type="button" title="Smart contract đơn hàng" class="ms-3"><i
+                            class="fa-solid fa-layer-group text-primary" data-bs-toggle="modal"
+                            data-bs-target="#xemInfoBlockChain" @click="xemDonHangOnBlockChain(v.id)"></i></a>
+                      </template>
+                      <template v-if="v.tinh_trang_thanh_toan == 1">
+                        <a type="button" title="Hóa Đơn Giao Dịch" class="ms-3 text-danger">
+                          <i @click="xemChiTietHoaDon(v.ma_don_hang)" class="fa-solid fa-building-columns "
+                            data-bs-toggle="modal" data-bs-target="#xemLSHoaDon"></i></a>
+                      </template>
+                      <template v-else>
+                        <a type="button" title="Đơn Hàng Chưa Thanh Toán" class="ms-3"
+                          :class="{ 'disabled text-secondary': true }" @click.prevent>
+                          <i class="fa-solid fa-building-columns"
+                            data-bs-toggle="modal"></i></a>
+                      </template>
                     </div>
                   </td>
                   <td class="text-danger"><strong>{{ formatToVND(v.tong_tien) }}</strong></td>
                   <td class="text-center">{{ formatDate(v.ngay_dat) }}</td>
                   <td class="text-center">{{ formatDate(v.ngay_giao) }}</td>
                   <td class="text-center">
-                    <div v-if="v.tinh_trang_thanh_toan == 0" class="badge rounded-pill text-primary bg-light-primary p-2 text-uppercase px-3">
+                    <div v-if="v.tinh_trang_thanh_toan == 0"
+                      class="badge rounded-pill text-primary bg-light-primary p-2 text-uppercase px-3">
                       <i class="bx bxs-circle align-middle me-1"></i>Chờ thanh toán
-                      </div>
+                    </div>
                     <div v-else-if="v.tinh_trang_thanh_toan == 1"
                       class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3"><i
                         class="bx bxs-circle me-1"></i>Đã thanh toán</div>
@@ -360,6 +373,40 @@
         </div>
       </div>
     </div>
+    <!-- model hóa đơn giao dịch  -->
+    <div class="modal fade" id="xemLSHoaDon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 text-info" id="staticBackdropLabel">Chi tiết giao dịch qua ngân hàng</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <template v-for="(value, index) in list_hoa_don" :key="index">
+              <div>
+                <b>Mã giao dịch: </b>{{ value.ma_giao_dich }}
+                <hr>
+                <b>Mã hóa đơn: </b>{{ value.ma_don_hang }}
+                <hr>
+                <b>Nội dung chuyển tiền: </b>{{ value.mo_ta }}
+                <hr>
+                <b>Số tiền:</b> <a class="text-danger">{{ value.gia_tri }}</a>
+                <hr>
+                <b>Số tài khoản:</b> <a class="text-danger">{{ value.so_tai_khoan }}</a>
+                <hr>
+                <b>Ngày thực hiện:</b> {{ formatDate(value.ngay_thuc_hien) }}
+                <hr>
+                <b>Mã tham chiếu:</b> {{ value.ma_tham_chieu }}
+              </div>
+            </template>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -372,6 +419,8 @@ export default {
       list_don_hang: [],
       list_dai_ly: [],
       list_chi_tiet_don_hang: [],
+      list_hoa_don: [],
+      id_hoa_don_dang_xem: {},
       id_don_hang_dang_xem: null,
       key_search: {},
       id_can_huy: '',
@@ -428,6 +477,18 @@ export default {
             this.list_don_hang = res.data.data;
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    xemChiTietHoaDon(id) {
+      this.id_hoa_don_dang_xem = id;
+      baseRequest
+        .post(`admin/don-hang/xem-hoa-don-giao-dich`, { ma_don_hang: id })
+        .then((res) => {
+          if (res.data.status) {
+            this.list_hoa_don = res.data.data;
+          } else {
+            toaster.error("Không thể tải chi tiết hóa đơn.");
           }
         });
     },
