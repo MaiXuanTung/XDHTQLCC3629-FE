@@ -107,9 +107,29 @@
                         id="inputSoDienThoaiCreate" placeholder="Nhập số điện thoại">
                     </div>
                     <div class="col-md-6">
-                      <label for="inputAddress" class="form-label">Địa Chỉ</label>
+                      <label class="form-label">Tỉnh Thành</label>
+                      <select class="form-control" v-model="create_nha_san_xuat.tinh_thanh_id">
+                        <option disabled value="">-- Chọn Tỉnh Thành --</option>
+                        <template v-for="(value, index) in list_tinh_thanh" :key="index">
+                          <option v-bind:value="value.id">{{ value.ten_tinh_thanh }} </option>
+                        </template>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Quận Huyện</label>
+                      <select class="form-control" v-model="create_nha_san_xuat.quan_huyen_id">
+                        <option disabled value="">-- Chọn Quận Huyện --</option>
+                        <template
+                          v-for="(value, index) in list_quan_huyen.filter(q => q.id_tinh_thanh === create_nha_san_xuat.tinh_thanh_id)"
+                          :key="index">
+                          <option v-bind:value="value.id">{{ value.ten_quan_huyen }} </option>
+                        </template>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputAddress" class="form-label">Địa Chỉ Cụ Thể</label>
                       <input v-model="create_nha_san_xuat.dia_chi" class="form-control" id="inputAddress"
-                        placeholder="Nhập địa chỉ">
+                        placeholder="Nhập địa chỉ cụ thể">
                     </div>
                     <div class="col-md-6">
                       <label for="selectTinhTrang" class="form-label">Tình Trạng</label>
@@ -148,15 +168,6 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputLoaiDoiTac" class="col-sm-3 col-form-label">Loại Đối Tác</label>
-                    <div class="col-sm-9">
-                      <select v-model="update_nha_san_xuat.loai_doi_tac" class="form-control">
-                        <option value="1">Nhà Cung Cấp</option>
-                        <option value="2">Đại Lý</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
                     <label for="inputEmailUpdate" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
                       <input v-model="update_nha_san_xuat.email" type="email" class="form-control"
@@ -171,16 +182,35 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label">Tình Trạng</label>
-                    <div class="col-sm-9">
-                      <select v-model="update_nha_san_xuat.tinh_trang" class="form-control">
-                        <option value="1">Hoạt Động</option>
-                        <option value="0">Tạm Dừng</option>
+                    <div class="col-lg-3">
+                      <label class="form-label">Tỉnh Thành</label>
+                    </div>
+                    <div class="col-lg-9">
+                      <select class="form-control" v-model="update_nha_san_xuat.tinh_thanh_id">
+                        <option disabled value="">-- Chọn Tỉnh Thành --</option>
+                        <template v-for="(value, index) in list_tinh_thanh" :key="index">
+                          <option v-bind:value="value.id">{{ value.ten_tinh_thanh }} </option>
+                        </template>
                       </select>
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputDiaChi" class="col-sm-3 col-form-label">Địa Chỉ</label>
+                    <div class="col-lg-3">
+                      <label class="form-label">Quận Huyện</label>
+                    </div>
+                    <div class="col-md-9">
+                      <select class="form-control" v-model="update_nha_san_xuat.quan_huyen_id">
+                        <option disabled value="">-- Chọn Quận Huyện --</option>
+                        <template
+                          v-for="(value, index) in list_quan_huyen.filter(q => q.id_tinh_thanh === update_nha_san_xuat.tinh_thanh_id)"
+                          :key="index">
+                          <option v-bind:value="value.id">{{ value.ten_quan_huyen }} </option>
+                        </template>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3 mb-3">
+                    <label for="inputDiaChi" class="col-sm-3 col-form-label">Địa Chỉ Cụ Thể</label>
                     <div class="col-sm-9">
                       <textarea v-model="update_nha_san_xuat.dia_chi" class="form-control" id="inputDiaChi"
                         rows="3"></textarea>
@@ -231,15 +261,18 @@ export default {
   data() {
     return {
       list_nha_san_xuat: [],
+      list_tinh_thanh: [],
+      list_quan_huyen: [],
       create_nha_san_xuat: {},
       id_can_xoa: '',
       update_nha_san_xuat: {},
       key_search: {},
-      create_nha_san_xuat: {},
     }
   },
   mounted() {
     this.loadDataNhaSanXuat();
+    this.loadDataTinhThanh();
+    this.loadDataQuanHuyen();
   },
   methods: {
     loadDataNhaSanXuat() {
@@ -250,6 +283,28 @@ export default {
             this.list_nha_san_xuat = res.data.nha_san_xuat;
           } else {
             toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
+    },
+    loadDataTinhThanh() {
+      baseRequest
+        .get('admin/tinh-thanh/lay-du-lieu-tinh')
+        .then((res) => {
+          if (res.data.status) {
+            this.list_tinh_thanh = res.data.tinh_thanh;
+          } else {
+            toaster.error('Thông báo<br>' + "Không tải được dữ liệu Tình Thành");
+          }
+        });
+    },
+    loadDataQuanHuyen() {
+      baseRequest
+        .get('admin/quan-huyen/lay-du-lieu-qh')
+        .then((res) => {
+          if (res.data.status) {
+            this.list_quan_huyen = res.data.quan_huyen;
+          } else {
+            toaster.error('Thông báo<br>' + "Không tải được dữ liệu Quận Huyện");
           }
         });
     },
