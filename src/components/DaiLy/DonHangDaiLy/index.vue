@@ -395,7 +395,8 @@
                 <hr>
                 <b>Mã đơn hàng: </b>{{ value.ma_don_hang }}
                 <hr>
-                <b>Nội dung chuyển tiền: </b>{{ value.mo_ta }}
+                <b>Nội dung chuyển tiền: </b>
+                <div class="mo-ta">{{ value.mo_ta }}</div>
                 <hr>
                 <b>Số tiền:</b> <a class="text-danger">{{ formatToVND(value.gia_tri) }}</a>
                 <hr>
@@ -616,5 +617,12 @@ export default {
   top: 0;
   background: white;
   z-index: 10;
+}
+
+.mo-ta {
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 </style>

@@ -10,8 +10,8 @@
     <nav class="navbar navbar-expand-xl w-100">
       <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
         <li class="nav-item">
-          <router-link to="/home-page">
-            <a href="/home-page" class="nav-link">
+          <router-link to="/">
+            <a href="/" class="nav-link">
               <div class="parent-icon">
                 <i class="fa-solid fa-home"></i>
               </div>
