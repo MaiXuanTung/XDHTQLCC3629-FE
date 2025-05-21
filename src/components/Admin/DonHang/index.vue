@@ -405,7 +405,7 @@
                 <hr>
                 <b>Nội dung chuyển tiền: </b>{{ value.mo_ta }}
                 <hr>
-                <b>Số tiền:</b> <a class="text-danger">{{ value.gia_tri }}</a>
+                <b>Số tiền:</b> <a class="text-danger">{{ formatToVND(value.gia_tri) }}</a>
                 <hr>
                 <b>Số tài khoản:</b> <a class="text-danger">{{ value.so_tai_khoan }}</a>
                 <hr>
@@ -665,8 +665,13 @@ export default {
     },
     CheckThanhToan() {
       this.isLoadingCheckThanhToan = true;
+      let orderData = {
+        loai_tai_khoan: localStorage.getItem('loai_tai_khoan'),
+        nguoi_thuc_hien: localStorage.getItem('ho_ten'),
+        dia_chi_vi: localStorage.getItem('dia_chi_vi'),
+      }
       baseRequest
-        .get('check-giao-dich')
+        .post('check-giao-dich', orderData)
         .then((res) => {
           if (res.data.status) {
             if (res.data.matched_hoa_don && res.data.matched_hoa_don.length > 0) {
@@ -686,6 +691,9 @@ export default {
         .finally(() => {
           this.isLoadingCheckThanhToan = false;
         })
+    },
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     },
   },
 }
