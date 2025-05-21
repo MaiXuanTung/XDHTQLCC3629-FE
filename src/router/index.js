@@ -58,7 +58,7 @@ const routes = [
   },
   //dùng chung
   {
-    path: '/home-page',
+    path: '/danh-sach-san-pham',
     component: () => import('../components/DungChung/TrangChu/index.vue'),
     beforeEnter: checkLogin,
   },
@@ -117,6 +117,13 @@ const routes = [
     path: '/dvvc/danh-sach-don-hang',
     component: () =>
       import('../components/DonViVanChuyen/DonHangDVVC/index.vue'),
+    beforeEnter: checkLogin,
+  },
+
+  //home page
+  {
+    path: '/',
+    component: () => import('../components/DaiLy/HomePage/index.vue'),
     beforeEnter: checkLogin,
   },
 ]

@@ -97,14 +97,16 @@ export default {
   },
   methods: {
     loadDataSanPham() {
-      baseRequest.get('user/san-pham/get-data-by-user').then((res) => {
-        if (res.data.status) {
-          this.list_san_pham = res.data.data;
-          this.filtered_san_pham = res.data.data;
-        } else {
-          toaster.error('Thông báo<br>' + res.data.message);
-        }
-      });
+      baseRequest
+        .get('user/san-pham/get-data-by-user')
+        .then((res) => {
+          if (res.data.status) {
+            this.list_san_pham = res.data.data;
+            this.filtered_san_pham = res.data.data;
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
+          }
+        });
     },
     loadDataNhaSanXuat() {
       baseRequest

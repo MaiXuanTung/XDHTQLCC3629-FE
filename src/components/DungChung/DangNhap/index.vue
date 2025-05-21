@@ -106,7 +106,7 @@ export default {
               this.$router.push('/admin/danh-sach-don-hang');
               break;
             case 'Đại Lý':
-              this.$router.push('/home-page');
+              this.$router.push('/');
               break;
             case 'Nhà Sản Xuất':
               this.$router.push('/nsx/danh-sach-don-hang');

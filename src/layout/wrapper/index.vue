@@ -6,7 +6,10 @@
       <template v-else>
         <MenuRocker v-if="is_nguoi_dung === 0"></MenuRocker>
         <MenuNSX v-else-if="is_nguoi_dung === 1"></MenuNSX>
-        <MenuDaiLy v-else-if="is_nguoi_dung === 2"></MenuDaiLy>
+        <!-- <MenuDaiLy v-else-if="is_nguoi_dung === 2"></MenuDaiLy> -->
+        <template v-else-if="is_nguoi_dung === 2">
+          <MenuDaiLy></MenuDaiLy>
+        </template>
         <MenuDonViVanChuyen v-else-if="is_nguoi_dung === 3"></MenuDonViVanChuyen>
       </template>
     </div>
@@ -19,13 +22,20 @@
     <a href="javaScript:;" class="back-to-top">
       <i class='bx bxs-up-arrow-alt'></i>
     </a>
-    <BotRocker></BotRocker>
+    <div v-if="isLoading">Đang tải...</div>
+    <template v-else-if="is_nguoi_dung === 2">
+      <FooterDaiLy></FooterDaiLy>
+    </template>
+    <template v-else>
+      <BotRocker></BotRocker>
+    </template>
   </div>
 </template>
 <script>
 import TopRocker from "../components/TopRocker.vue";
 import MenuRocker from "../components/MenuRocker.vue";
 import BotRocker from "../components/BotRocker.vue";
+import FooterDaiLy from "../components/FooterDaiLy.vue";
 
 import "../../assets/js/pace.min.js";
 import "../../assets/js/bootstrap.bundle.min.js";
@@ -48,7 +58,7 @@ export default {
     }
   },
   components: {
-    TopRocker, MenuRocker, BotRocker, MenuDaiLy, MenuNSX, MenuDonViVanChuyen
+    TopRocker, MenuRocker, BotRocker, MenuDaiLy, MenuNSX, MenuDonViVanChuyen, FooterDaiLy
   },
   mounted() {
     this.checkNguoiDung();
