@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="modal-body">
                                     Bạn có chắc chắn muốn xóa nguyên liệu <b>{{ delete_nguyen_lieu.ten_nguyen_lieu
-                                        }}</b> này
+                                    }}</b> này
                                     không?
                                 </div>
                                 <div class="modal-footer">
@@ -238,6 +238,18 @@ export default {
                     }
                     else {
                         toaster.error(); ('Thông báo<br>' + res.data.message);
+                    }
+                })
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        const errors = error.response.data.errors;
+                        for (const key in errors) {
+                            errors[key].forEach(msg => {
+                                toaster.error('Lỗi: ' + msg);
+                            });
+                        }
+                    } else {
+                        toaster.error('Lỗi không xác định!');
                     }
                 });
         },

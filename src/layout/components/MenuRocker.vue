@@ -11,13 +11,6 @@
       <ul class="navbar-nav justify-content-start flex-grow-1 gap-1">
         <li class="nav-item dropdown">
           <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
-            <div class="parent-icon"><i class='bx bx-home-circle'></i>
-            </div>
-            <div class="menu-title">Home</div>
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a href="javascript:;" class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
             <div class="parent-icon"><i class="fa-solid fa-boxes-packing"></i>
             </div>
             <div class="menu-title">Hàng Hóa</div>
