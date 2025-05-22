@@ -58,9 +58,6 @@
                         <a v-on:click="Object.assign(update_dai_ly, v)" type="button" title="Cập Nhật"
                           data-bs-toggle="modal" data-bs-target="#capNhatModal" class="ms-2 bg-light-info"><i
                             class="fa-solid fa-arrows-rotate text-info"></i></a>
-                        <!-- <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
-                          data-bs-target="#xoaModal" class="ms-2 bg-light-danger"><i
-                            class="fa-solid fa-xmark text-danger"></i></a> -->
                       </div>
                     </div>
                   </td>
@@ -224,28 +221,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-body d-flex">
-                <div class="alert border-0 border-start border-5 border-danger alert-dismissible fade show py-2">
-                  <div class="d-flex align-items-center">
-                    <div class="font-35 text-danger"><i class="bx bxs-message-square-x"></i>
-                    </div>
-                    <div class="ms-3">
-                      <h6 class="mb-0 text-danger">Thông Báo</h6>
-                      <div>Bạn chắc chắn muốn xóa đại lý này?</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button v-on:click="deleteDaiLy()" data-bs-dismiss="modal"
-                class="btn btn-border bg-light-danger align-middle">
-                <h5 class="text-danger mt-1">Xác Nhận</h5>
-              </button>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>

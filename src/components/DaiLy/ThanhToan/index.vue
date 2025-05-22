@@ -368,18 +368,10 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background-color: white;
-  border-top: 1px solid #ddd;
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1265px;
-  padding-bottom: 55px;
-  padding-bottom: 15px; /* Giảm bớt để không bị lấn ra ngoài */
-  z-index: 1000;
+  background: #e3f2fd;
+  /* Màu xanh nhạt */
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .total-amount {

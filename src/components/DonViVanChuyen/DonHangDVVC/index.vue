@@ -305,7 +305,7 @@
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>
-              <p class="mt-3">Đang tải...</p>
+              <p class="mt-3">Đang xử lý...</p>
             </div>
             <div v-else>
               <h4>Lịch trình vận chuyển:</h4>
