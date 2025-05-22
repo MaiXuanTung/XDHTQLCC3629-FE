@@ -7,8 +7,8 @@
             <h4 class="text-dark mt-1">Danh Sách Sản Phẩm</h4>
           </div>
           <div class="col-sm-6 text-end border-dark">
-            <button type="button" class="btn btn-sm btn-outline-primary border-dark px-5 text-dark" data-bs-toggle="modal"
-              data-bs-target="#themMoiModal"><i class="bx bx-user mr-1 text-dark"></i>Thêm
+            <button type="button" class="btn btn-sm btn-outline-primary border-dark px-5 text-dark"
+              data-bs-toggle="modal" data-bs-target="#themMoiModal"><i class="bx bx-user mr-1 text-dark"></i>Thêm
               Mới</button>
           </div>
         </div>
@@ -381,6 +381,18 @@ export default {
           }
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data && error.response.data.errors) {
+            const errors = error.response.data.errors;
+            for (const key in errors) {
+              errors[key].forEach(msg => {
+                toaster.error('Lỗi: ' + msg);
+              });
+            }
+          } else {
+            toaster.error('Lỗi không xác định!');
           }
         });
     },

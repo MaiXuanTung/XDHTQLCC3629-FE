@@ -28,6 +28,7 @@
                 <th>#</th>
                 <th>Họ Tên</th>
                 <th>Email</th>
+                <th>Số Dư Giao Dịch</th>
                 <th>Tình Trạng</th>
                 <th>Action</th>
               </tr>
@@ -38,6 +39,7 @@
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ho_ten }}</td>
                   <td>{{ v.email }}</td>
+                  <td class="text-danger"><b>{{ formatToVND(v.so_du_tai_khoan) }}</b></td>
                   <td>
                     <div>
                       <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
@@ -91,10 +93,6 @@
                       <label for="inputPassword" class="form-label">Password</label>
                       <input v-model="create_nhan_vien.password" type="password" class="form-control" id="inputPassword"
                         placeholder="Nhập password">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="selectChucVu" class="form-label">Chức Vụ - chưa làm</label>
-                      <input v-model="create_nhan_vien.id_chuc_vu" type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                       <label for="selectTinhTrang" class="form-label">Tình Trạng</label>
@@ -227,9 +225,20 @@ export default {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataNhanVien();
             this.create_nhan_vien = { ho_ten: "", email: "", so_dien_thoai: "", dia_chi: "" };
+          } else {
+            toaster.error('Thông báo<br>' + res.data.message);
           }
-          else {
-            toaster.error(); ('Thông báo<br>' + res.data.message);
+        })
+        .catch((error) => {
+          if (error.response && error.response.data && error.response.data.errors) {
+            const errors = error.response.data.errors;
+            for (const key in errors) {
+              errors[key].forEach(msg => {
+                toaster.error('Lỗi: ' + msg);
+              });
+            }
+          } else {
+            toaster.error('Lỗi không xác định!');
           }
         });
     },
@@ -286,6 +295,9 @@ export default {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });
+    },
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     },
   },
 }
