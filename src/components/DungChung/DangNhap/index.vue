@@ -111,7 +111,7 @@ export default {
               this.$router.push('/admin/danh-sach-don-hang');
               break;
             case 'Đại Lý':
-              this.$router.push('/');
+              this.$router.push('/home-page-bscm');
               break;
             case 'Nhà Sản Xuất':
               this.$router.push('/nsx/danh-sach-don-hang');
