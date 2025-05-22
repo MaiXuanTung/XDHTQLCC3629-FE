@@ -122,7 +122,7 @@ const routes = [
 
   //home page
   {
-    path: '/',
+    path: '/home-page-bscm',
     component: () => import('../components/DaiLy/HomePage/index.vue'),
     beforeEnter: checkLogin,
   },
