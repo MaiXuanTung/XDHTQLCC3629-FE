@@ -53,7 +53,7 @@
                 <tbody>
                   <template v-for="(v, k) in list_danh_muc_sp" :key="k">
                     <tr>
-                      <td>{{ k+1 }}</td>
+                      <td>{{ k + 1 }}</td>
                       <td>{{ v.ma_danh_muc }}</td>
                       <td>{{ v.ten_danh_muc }}</td>
                       <td>
@@ -196,10 +196,22 @@ export default {
           if (res.data.status == true) {
             toaster.success('Thông báo<br>' + res.data.message);
             this.loadDataDanhMuc();
-            this.create_danh_muc_sp = { ma_danh_muc: ""};
+            this.create_danh_muc_sp = { ma_danh_muc: "" };
           }
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data && error.response.data.errors) {
+            const errors = error.response.data.errors;
+            for (const key in errors) {
+              errors[key].forEach(msg => {
+                toaster.error('Lỗi: ' + msg);
+              });
+            }
+          } else {
+            toaster.error('Lỗi không xác định!');
           }
         });
     },
