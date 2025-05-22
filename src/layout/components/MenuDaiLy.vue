@@ -20,6 +20,16 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link to="/danh-sach-san-pham">
+            <a href="/danh-sach-san-pham" class="nav-link">
+              <div class="parent-icon">
+                <i class="fa-solid fa-shop"></i>
+              </div>
+              <div class="menu-title">Sản phẩm</div>
+            </a>
+          </router-link>
+        </li>
+        <li class="nav-item">
           <router-link to="/gio-hang">
             <a href="/gio-hang" class="nav-link">
               <div class="parent-icon">

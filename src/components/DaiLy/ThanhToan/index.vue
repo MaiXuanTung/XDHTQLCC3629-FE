@@ -65,8 +65,8 @@
             </template>
             <div class="row mb-3 ms-2 me-3">
               <div class="col-sm-6">
-                <div class="col-sm-12">
-                  <strong>Phương thức vận chuyển:</strong>
+                <div class="col-sm-12 mt-2">
+                  <strong>Phương thức vận chuyển: </strong>
                   <select v-model="shop.selectedDVVC" @change="handleChonDVVC(shop)">
                     <option disabled value="">-- Chọn đơn vị vận chuyển --</option>
                     <option v-for="dv in list_don_vi_van_chuyen" :key="dv.id" :value="dv">
@@ -76,7 +76,7 @@
                 </div>
                 <hr>
                 <div class="col-sm-12" v-if="shop.selectedDVVC">
-                  <strong>Phí vận chuyển</strong>: {{ formatToVND(shop.selectedDVVC.cuoc_van_chuyen) }}
+                  <strong>Phí vận chuyển</strong>: <a class="text-danger"> {{ formatToVND(shop.selectedDVVC.cuoc_van_chuyen) }}</a>
                 </div>
                 <hr>
                 <div class="col-sm-12">
@@ -86,7 +86,7 @@
                 <div class="col-sm-12"><strong>Được đồng kiểm</strong></div>
               </div>
               <div class="col-sm-2"></div>
-              <div class="col-sm-4 text-end">
+              <div class="col-sm-4 text-end mt-2">
                 <h5>Tổng tiền:
                   <strong style="color: red;">
                     {{ formatToVND(getTotalByShop(shop.products) + (shop.cuoc_van_chuyen || 0)) }}
@@ -378,6 +378,8 @@ export default {
   width: 100%;
   max-width: 1265px;
   padding-bottom: 55px;
+  padding-bottom: 15px; /* Giảm bớt để không bị lấn ra ngoài */
+  z-index: 1000;
 }
 
 .total-amount {
