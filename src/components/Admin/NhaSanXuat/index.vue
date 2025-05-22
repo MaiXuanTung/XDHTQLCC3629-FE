@@ -27,10 +27,10 @@
               <tr>
                 <th>#</th>
                 <th>Tên Công Ty</th>
-                <!-- <th>Loại Đối Tác</th> -->
                 <th>Địa Chỉ</th>
                 <th>Số Điện Thoại</th>
                 <th>Email</th>
+                <th>Doanh Thu</th>
                 <th>Tình Trạng</th>
                 <th>Action</th>
               </tr>
@@ -40,13 +40,10 @@
                 <tr>
                   <td>{{ k + 1 }}</td>
                   <td>{{ v.ten_cong_ty }}</td>
-                  <!-- <td>
-                  <td v-if="v.loai_doi_tac == 1">Nhà Cung Cấp</td>
-                  <td v-else>Đại Lý</td>
-                  </td> -->
                   <td>{{ v.dia_chi }}</td>
                   <td>{{ v.so_dien_thoai }}</td>
                   <td>{{ v.email }}</td>
+                  <td class="text-danger"><b>{{ formatToVND(v.so_du_tai_khoan) }}</b></td>
                   <td>
                     <div>
                       <a v-on:click="doiTinhTrang(v)" v-if="v.tinh_trang == 1" type="button"
@@ -63,9 +60,6 @@
                         <a v-on:click="Object.assign(update_nha_san_xuat, v)" type="button" title="Cập Nhật"
                           data-bs-toggle="modal" data-bs-target="#capNhatModal" class="ms-2 bg-light-info"><i
                             class="fa-solid fa-arrows-rotate text-info"></i></a>
-                        <!-- <a v-on:click="id_can_xoa = v.id" type="button" title="Xóa" data-bs-toggle="modal"
-                          data-bs-target="#xoaModal" class="ms-2 bg-light-danger"><i
-                            class="fa-solid fa-xmark text-danger"></i></a> -->
                       </div>
                     </div>
                   </td>
@@ -227,28 +221,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="modal fade" id="xoaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-body d-flex">
-                <div class="alert border-0 border-start border-5 border-danger alert-dismissible fade show py-2">
-                  <div class="d-flex align-items-center">
-                    <div class="font-35 text-danger"><i class="bx bxs-message-square-x"></i>
-                    </div>
-                    <div class="ms-3">
-                      <h6 class="mb-0 text-danger">Thông Báo</h6>
-                      <div>Bạn chắc chắn muốn xóa nhà sản xuất này?</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button v-on:click="deleteNhaSanXuat()" data-bs-dismiss="modal"
-                class="btn btn-border bg-light-danger align-middle">
-                <h5 class="text-danger mt-1">Xác Nhận</h5>
-              </button>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -321,6 +293,18 @@ export default {
           else {
             toaster.error(); ('Thông báo<br>' + res.data.message);
           }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data && error.response.data.errors) {
+            const errors = error.response.data.errors;
+            for (const key in errors) {
+              errors[key].forEach(msg => {
+                toaster.error('Lỗi: ' + msg);
+              });
+            }
+          } else {
+            toaster.error('Lỗi không xác định!');
+          }
         });
     },
 
@@ -335,21 +319,6 @@ export default {
           }
         });
     },
-
-    deleteNhaSanXuat() {
-      baseRequest
-        .delete('admin/nha-san-xuat/xoa-nha-san-xuat/' + this.id_can_xoa)
-        .then((res) => {
-          if (res.data.status == true) {
-            toaster.success('Thông báo<br>' + res.data.message);
-            this.loadDataNhaSanXuat();
-          }
-          else {
-            toaster.error('Thông báo<br>' + res.data.message);
-          }
-        });
-    },
-
     updateNhaSanXuat() {
       baseRequest
         .post('admin/nha-san-xuat/cap-nhat-nha-san-xuat', this.update_nha_san_xuat)
@@ -376,6 +345,10 @@ export default {
             toaster.error('Thông báo<br>' + res.data.message);
           }
         });
+    },
+
+    formatToVND(amount) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     },
   },
 }

@@ -80,9 +80,11 @@
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <template v-if="loai_tai_khoan =='Nhà Sản Xuất' || loai_tai_khoan =='Đơn vị vận chuyển'">
-                    <li><a class="dropdown-item"><i class="fa-solid fa-wallet"></i><span class="text-danger">Số dư: {{ formatToVND(so_du_tai_khoan) }}</span></a>
-                  </li>
+                  <template
+                    v-if="loai_tai_khoan == 'Nhà Sản Xuất' || loai_tai_khoan == 'Đơn vị vận chuyển' || loai_tai_khoan == 'Nhân Viên'">
+                    <li><a class="dropdown-item"><i class="fa-solid fa-wallet"></i><span class="text-danger">Số dư: {{
+                      formatToVND(so_du_tai_khoan) }}</span></a>
+                    </li>
                   </template>
                   <li><a v-on:click="dangXuat()" class="dropdown-item"><i class='bx bx-log-out-circle'></i><span>Đăng
                         Xuất</span></a>
