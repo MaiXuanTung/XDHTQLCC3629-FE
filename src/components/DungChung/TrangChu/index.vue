@@ -14,7 +14,7 @@
     </div>
 
     <!-- Nút tìm kiếm cố định góc phải dưới -->
-    <button @click="showPopup = true" class="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <button @click="showPopup = true" class="search-button mb-3 me-2"><i class="fa-solid fa-magnifying-glass"></i></button>
 
     <!-- Popup tìm kiếm -->
     <div v-if="showPopup" class="search-popup" @click.self="closePopup">
