@@ -1,13 +1,14 @@
 <template>
   <div class="row">
-    <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+    <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-ride="carousel"
+      data-bs-interval="3000">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img src="../../../layout/image/Light Blue Creative Logistic Distribution Presentation (1899 x 500 px).png"
             class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="../../../layout/image/logo-big.png" class="d-block w-100" alt="...">
+          <img src="../../../layout/image/slide-gradient.png" class="d-block w-100" alt="...">
         </div>
         <div class="carousel-item">
           <img src="../../../layout/image/Navy Yellow Professional Delivery Service Presentation.png"
@@ -31,8 +32,7 @@
       <div class="col-lg-12">
         <router-link to="/danh-sach-san-pham">
           <button type="button" class="btn btn-info form-control px-5 bg-gradient-scooter text-dark ms-auto">
-            <h2 class="mt-2 text-white">TÌM KIẾM SẢN PHẨM BẠN MONG MUỐN<i
-                class="fa-solid fa-magnifying-glass ms-2 py-3"></i>
+            <h2 class="mt-2 text-white">TÌM KIẾM SẢN PHẨM<i class="fa-solid fa-magnifying-glass ms-2 py-3"></i>
             </h2>
           </button>
         </router-link>
