@@ -67,16 +67,20 @@
               <div class="col-sm-6">
                 <div class="col-sm-12 mt-2">
                   <strong>Phương thức vận chuyển: </strong>
-                  <select v-model="shop.selectedDVVC" @change="handleChonDVVC(shop)">
-                    <option disabled value="">-- Chọn đơn vị vận chuyển --</option>
-                    <option v-for="dv in list_don_vi_van_chuyen" :key="dv.id" :value="dv">
-                      {{ dv.ten_cong_ty }} ({{ formatToVND(dv.cuoc_van_chuyen) }})
-                    </option>
-                  </select>
+                  <div class="col-sm-12 mt-2">
+                    <strong>Phương thức vận chuyển: </strong>
+                    <select v-model="shop.selectedDVVC" @change="handleChonDVVC(shop)" class="custom-select mt-1">
+                      <option disabled value="">-- Chọn đơn vị vận chuyển --</option>
+                      <option v-for="dv in list_don_vi_van_chuyen" :key="dv.id" :value="dv">
+                        {{ dv.ten_cong_ty }} ({{ formatToVND(dv.cuoc_van_chuyen) }})
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <hr>
                 <div class="col-sm-12" v-if="shop.selectedDVVC">
-                  <strong>Phí vận chuyển</strong>: <a class="text-danger"> {{ formatToVND(shop.selectedDVVC.cuoc_van_chuyen) }}</a>
+                  <strong>Phí vận chuyển</strong>: <a class="text-danger"> {{
+                    formatToVND(shop.selectedDVVC.cuoc_van_chuyen) }}</a>
                 </div>
                 <hr>
                 <div class="col-sm-12">
@@ -406,5 +410,21 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+
+.custom-select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  font-size: 1rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 </style>
