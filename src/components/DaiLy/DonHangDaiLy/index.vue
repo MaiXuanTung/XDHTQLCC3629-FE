@@ -400,7 +400,7 @@
                 <hr>
                 <b>Số tiền:</b> <a class="text-danger">{{ formatToVND(value.gia_tri) }}</a>
                 <hr>
-                <b>Số tài khoản:</b> <a class="text-danger">{{ value.so_tai_khoan }}</a>
+                <b>Số tài khoản:</b> <a class="text-danger">{{ value.so_tai_khoan_doi_ung }}</a>
                 <hr>
                 <b>Ngày thực hiện:</b> {{ formatDate(value.ngay_thuc_hien) }}
                 <hr>
