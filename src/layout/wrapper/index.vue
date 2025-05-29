@@ -6,7 +6,6 @@
       <template v-else>
         <MenuRocker v-if="is_nguoi_dung === 0"></MenuRocker>
         <MenuNSX v-else-if="is_nguoi_dung === 1"></MenuNSX>
-        <!-- <MenuDaiLy v-else-if="is_nguoi_dung === 2"></MenuDaiLy> -->
         <template v-else-if="is_nguoi_dung === 2">
           <MenuDaiLy></MenuDaiLy>
         </template>

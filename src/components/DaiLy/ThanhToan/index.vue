@@ -66,9 +66,8 @@
             <div class="row mb-3 ms-2 me-3">
               <div class="col-sm-6">
                 <div class="col-sm-12 mt-2">
-                  <strong>Phương thức vận chuyển: </strong>
                   <div class="col-sm-12 mt-2">
-                    <strong>Phương thức vận chuyển: </strong>
+                    <strong>Đơn vị vận chuyển: </strong>
                     <select v-model="shop.selectedDVVC" @change="handleChonDVVC(shop)" class="custom-select mt-1">
                       <option disabled value="">-- Chọn đơn vị vận chuyển --</option>
                       <option v-for="dv in list_don_vi_van_chuyen" :key="dv.id" :value="dv">

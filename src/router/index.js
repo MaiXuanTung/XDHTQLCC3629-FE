@@ -126,6 +126,10 @@ const routes = [
     component: () => import('../components/DaiLy/HomePage/index.vue'),
     beforeEnter: checkLogin,
   },
+  {
+    path: '/test',
+    component: () => import('../layout/components/index.vue'),
+  },
 ]
 
 const router = createRouter({
